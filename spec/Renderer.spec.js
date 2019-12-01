@@ -1,19 +1,74 @@
 import Renderer from "../src/Renderer";
 
 describe('Renderer', () => {
-  let container;
+  let containerMock;
+  let contextMock;
+  let canvasMock;
+
   beforeEach(() => {
-    container = document.createElement('div');
+    setupMocks();
   });
 
   it('creates canvas on instantiation', () => {
-    const r = new Renderer(container);
+    new Renderer(containerMock);
 
-    expect(container.getElementsByTagName('canvas').length).toBe(1);
-    expect(typeof r.ctx).toBe('object');
+    expect(containerMock.appendChild).toHaveBeenCalledTimes(1);
+    expect(containerMock.appendChild).toHaveBeenCalledWith(canvasMock);
+  });
+
+  it('gets context', () => {
+    const r = new Renderer(containerMock);
+
+    expect(r.ctx).toEqual(contextMock);
+    expect(canvasMock.getContext).toHaveBeenCalledTimes(1);
+    expect(canvasMock.getContext).toHaveBeenCalledWith('2d');
+  });
+
+  it('renderBoard()', () => {
+    const r = new Renderer(containerMock);
+
+    r.renderBoard();
+
+    expect(contextMock.fillStyle).toBe('#FFE4E1');
+    expect(contextMock.fillRect).toHaveBeenCalledTimes(1);
+    expect(contextMock.fillRect).toHaveBeenCalledWith(0, 0, 1000, 800);
   });
 
   afterEach(() => {
-    container = undefined;
+    clearMocks();
   });
+
+  function setupMocks() {
+    containerMock = createContainerMock();
+    contextMock = createContextMock();
+    canvasMock = createCanvasMock();
+    createDocumentMock();
+
+    function createContainerMock() {
+      return {
+        appendChild: jasmine.createSpy(),
+      };
+    }
+    function createCanvasMock() {
+      return jasmine.createSpyObj('canvas', {
+        setAttribute: undefined,
+        getContext: contextMock,
+      });
+    }
+    function createContextMock() {
+      return jasmine.createSpyObj(
+        'ctx',
+        ['fillRect'],
+      );
+    }
+    function createDocumentMock() {
+      spyOn(document, 'createElement').and.returnValue(canvasMock);
+    }
+  }
+
+  function clearMocks() {
+    containerMock = undefined;
+    contextMock = undefined;
+    canvasMock = undefined;
+  }
 });
