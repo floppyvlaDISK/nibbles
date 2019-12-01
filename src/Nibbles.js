@@ -1,9 +1,11 @@
+import Renderer from './Renderer';
+
 export default class Nibbles {
   constructor(container) {
-    this._container = container;
+    this._renderer = new Renderer(container);
   }
 
   render() {
-    this._container.innerHTML = '<div>Nibbles game</div>';
+    this._renderer.drawBoard();
   }
 }
