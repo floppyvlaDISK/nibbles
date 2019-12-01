@@ -5,11 +5,13 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
+    "jasmine": "^3.5.0",
     "parcel-bundler": "^1.12.4"
   },
   "scripts": {
     "dev": "parcel index.html",
-    "build": "parcel build index.html"
+    "build": "parcel build index.html",
+    "test": "jasmine"
   },
   "keywords": [],
   "author": "",
