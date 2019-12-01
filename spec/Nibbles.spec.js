@@ -1,13 +1,29 @@
 import Nibbles from '../src/Nibbles';
 
 describe('Nibbles', () => {
-  let container;
+  let rendererMock;
 
   beforeEach(() => {
-    container = document.createElement('div');
+    rendererMock = createRendererMock();
+  });
+
+  it('render()', () => {
+    const r = new Nibbles(rendererMock);
+
+    r.render();
+
+    expect(rendererMock.renderBoard).toHaveBeenCalledTimes(1);
+    expect(rendererMock.renderBoardObject).toHaveBeenCalledTimes(2);
   });
 
   afterEach(() => {
-    container = undefined;
+    rendererMock = undefined;
   });
+
+  function createRendererMock() {
+    return jasmine.createSpyObj(
+      'Renderer',
+      ['renderBoard', 'renderBoardObject'],
+    );
+  }
 });
