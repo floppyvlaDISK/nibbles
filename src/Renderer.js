@@ -18,8 +18,10 @@ export default class Renderer {
     return this._canvas.getContext('2d');
   }
 
-  drawBoard() {
-    this.ctx.fillStyle = 'orange';
+  renderBoard() {
+    this.ctx.fillStyle = '#FFE4E1';
     this.ctx.fillRect(0, 0, Renderer.WIDTH, Renderer.HEIGHT);
   }
+
+  // renderBoardObject(aBoardObject) {}
 }
