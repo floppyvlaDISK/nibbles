@@ -1,18 +1,13 @@
 import Nibbles from '../src/Nibbles';
 
 describe('Nibbles', () => {
-  let containerMock;
+  let container;
+
   beforeEach(() => {
-    containerMock = {};
+    container = document.createElement('div');
   });
 
-  it('render()', () => {
-    const n = new Nibbles(containerMock);
-
-    expect(containerMock.innerHTML).toBe(undefined);
-
-    n.render();
-
-    expect(containerMock.innerHTML).toBe('<div>Nibbles game</div>');
+  afterEach(() => {
+    container = undefined;
   });
 });
