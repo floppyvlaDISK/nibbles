@@ -1,4 +1,5 @@
-import Renderer from "../src/Renderer";
+import Renderer from '../src/Renderer';
+import BoardObject from '../src/BoardObject';
 
 describe('Renderer', () => {
   let containerMock;
@@ -31,7 +32,19 @@ describe('Renderer', () => {
 
     expect(contextMock.fillStyle).toBe('#FFE4E1');
     expect(contextMock.fillRect).toHaveBeenCalledTimes(1);
-    expect(contextMock.fillRect).toHaveBeenCalledWith(0, 0, 1000, 800);
+    expect(contextMock.fillRect).toHaveBeenCalledWith(0, 0, 800, 800);
+  });
+
+  it('renderBoardObject()', () => {
+    const r = new Renderer(containerMock);
+    const aBoardObject = new BoardObject(250, 250, 40, 40, 'blue');
+
+    r.renderBoard();
+    r.renderBoardObject(aBoardObject);
+
+    expect(contextMock.fillStyle).toBe('blue');
+    expect(contextMock.fillRect).toHaveBeenCalledTimes(2);
+    expect(contextMock.fillRect.calls.argsFor(1)).toEqual([250, 250, 40, 40]);
   });
 
   afterEach(() => {

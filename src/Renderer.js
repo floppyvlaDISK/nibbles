@@ -3,7 +3,7 @@ export default class Renderer {
     this._canvas = Renderer._createCanvas(container);
   }
 
-  static WIDTH = 1000;
+  static WIDTH = 800;
   static HEIGHT = 800;
 
   static _createCanvas(container) {
@@ -19,9 +19,18 @@ export default class Renderer {
   }
 
   renderBoard() {
+    // FIXME: Is board a board object itself?
     this.ctx.fillStyle = '#FFE4E1';
     this.ctx.fillRect(0, 0, Renderer.WIDTH, Renderer.HEIGHT);
   }
 
-  // renderBoardObject(aBoardObject) {}
+  renderBoardObject(aBoardObject) {
+    this.ctx.fillStyle = aBoardObject.color;
+    this.ctx.fillRect(
+      aBoardObject.x,
+      aBoardObject.y,
+      aBoardObject.width,
+      aBoardObject.height,
+    );
+  }
 }
