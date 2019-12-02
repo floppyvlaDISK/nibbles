@@ -3,11 +3,19 @@ export default class Nibbles {
     this._renderer = renderer;
     this._snake = snake;
     this._target = target;
+    this._intervalId = null;
   }
 
   render() {
     this._renderer.renderBoard();
     this._renderer.renderBoardObject(this._snake);
     this._renderer.renderBoardObject(this._target);
+  }
+
+  start() {
+    this.render();
+    this._intervalId = setInterval(() => {
+      this.render();
+    }, 750);
   }
 }
