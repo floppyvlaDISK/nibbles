@@ -8,15 +8,15 @@ export default class GameController {
 
   exec() {
     this._nibbles.render();
-    this.addKeyDownEventListener();
+    this._addKeyDownEventListener();
   }
 
-  addKeyDownEventListener() {
-    document.body.addEventListener('keydown', this.handleKeyDown.bind(this));
+  _addKeyDownEventListener() {
+    document.body.addEventListener('keydown', this._handleKeyDown.bind(this));
   }
 
-  handleKeyDown(event) {
-    if (!isArrowKey(event.keyCode)) {
+  _handleKeyDown(event) {
+    if (isArrowKey(event.keyCode)) {
       if (!this._hasStarted) {
         this._hasStarted = true;
         this._nibbles.start();
