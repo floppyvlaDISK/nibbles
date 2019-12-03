@@ -12,8 +12,16 @@ export default class BoardObject {
     return this._coordinates.x;
   }
 
+  set x(arg) {
+    this._coordinates.x = arg;
+  }
+
   get y() {
     return this._coordinates.y;
+  }
+
+  set y(arg) {
+    this._coordinates.y = arg;
   }
 
   get width() {

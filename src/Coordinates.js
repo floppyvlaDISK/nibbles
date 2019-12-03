@@ -8,7 +8,15 @@ export default class Coordinates {
     return this._x;
   }
 
+  set x(arg) {
+    this._x = arg;
+  }
+
   get y() {
     return this._y;
+  }
+
+  set y(arg) {
+    this._y = arg;
   }
 }
