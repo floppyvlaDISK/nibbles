@@ -4,19 +4,32 @@ describe('Nibbles', () => {
   let rendererMock;
 
   beforeEach(() => {
+    jasmine.clock().install();
     rendererMock = createRendererMock();
   });
 
   it('render()', () => {
-    const r = new Nibbles(rendererMock);
+    const n = new Nibbles(rendererMock);
 
-    r.render();
+    n.render();
 
-    expect(rendererMock.renderBoard).toHaveBeenCalledTimes(1);
-    expect(rendererMock.renderBoardObject).toHaveBeenCalledTimes(2);
+    testRenderCalls(1);
+  });
+
+  it('start()', () => {
+    const n = new Nibbles(rendererMock);
+
+    n.start();
+
+    testRenderCalls(1);
+
+    jasmine.clock().tick(750 * 4);
+
+    testRenderCalls(5);
   });
 
   afterEach(() => {
+    jasmine.clock().uninstall();
     rendererMock = undefined;
   });
 
@@ -25,5 +38,10 @@ describe('Nibbles', () => {
       'Renderer',
       ['renderBoard', 'renderBoardObject'],
     );
+  }
+
+  function testRenderCalls(callCount) {
+    expect(rendererMock.renderBoard).toHaveBeenCalledTimes(callCount);
+    expect(rendererMock.renderBoardObject).toHaveBeenCalledTimes(callCount * 2);
   }
 });
