@@ -15,7 +15,12 @@ export default class Nibbles {
   start() {
     this.render();
     this._intervalId = setInterval(() => {
+      this._updateBoardObjectsPosition();
       this.render();
     }, 750);
+  }
+
+  _updateBoardObjectsPosition() {
+    this._snake.move();
   }
 }
