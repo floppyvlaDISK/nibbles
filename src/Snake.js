@@ -9,7 +9,7 @@ export default class Snake extends BoardObject {
 
   static DIRECTION_UP = 0;
   static DIRECTION_RIGHT = 1;
-  static DIRECTION_BOTTOM = 2;
+  static DIRECTION_DOWN = 2;
   static DIRECTION_LEFT = 3;
 
   move() {
@@ -24,7 +24,7 @@ export default class Snake extends BoardObject {
       case Snake.DIRECTION_RIGHT:
         this.x += this.width;
         break;
-      case Snake.DIRECTION_BOTTOM:
+      case Snake.DIRECTION_DOWN:
         this.y += this.height;
         break;
       case Snake.DIRECTION_LEFT:
