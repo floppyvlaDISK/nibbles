@@ -1,8 +1,8 @@
-import isArrowKey, { ARRROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from '../src/utils/isArrowKey';
+import isArrowKey, { ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from '../src/utils/isArrowKey';
 
 describe('isArrowKey', () => {
   it('arrow up key', () => {
-    expect(isArrowKey(ARRROW_UP)).toBe(true);
+    expect(isArrowKey(ARROW_UP)).toBe(true);
   });
 
   it('arrow right key', () => {
