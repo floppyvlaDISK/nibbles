@@ -1,4 +1,5 @@
 import Nibbles from '../src/Nibbles';
+import { ARROW_UP } from '../src/utils/isArrowKey';
 
 describe('Nibbles', () => {
   let rendererMock;
@@ -41,6 +42,17 @@ describe('Nibbles', () => {
     expect(snakeMock.move).toHaveBeenCalledTimes(1);
   });
 
+  it('setSnakeDirectionFromKeyCode()', () => {
+    const aNibbles = setupNibbles();
+
+    expect(snakeMock.setDirectionFromKeyCode).toHaveBeenCalledTimes(0);
+
+    aNibbles.setSnakeDirectionFromKeyCode(ARROW_UP);
+
+    expect(snakeMock.setDirectionFromKeyCode).toHaveBeenCalledTimes(1);
+    expect(snakeMock.setDirectionFromKeyCode).toHaveBeenCalledWith(ARROW_UP);
+  });
+
   afterEach(() => {
     jasmine.clock().uninstall();
     rendererMock = undefined;
@@ -59,7 +71,7 @@ describe('Nibbles', () => {
   function createSnakeMock() {
     return jasmine.createSpyObj(
       'Snake',
-      ['move']
+      ['move', 'setDirectionFromKeyCode']
     );
   }
   function testRenderCalls(callCount) {
