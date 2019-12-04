@@ -38,5 +38,12 @@ describe('Snake', () => {
         expect(aSnake.x).toBe(testCase.expectedX);
       });
     });
+
+    it('throws an error if direction has unknown value', () => {
+      const aSnake = new Snake(100, 100, 40, 40, 'red', 'up-right');
+      const fn = () => aSnake.move();
+
+      expect(fn).toThrow();
+    });
   });
 });
