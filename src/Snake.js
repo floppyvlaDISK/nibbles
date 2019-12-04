@@ -2,11 +2,15 @@ import BoardObject from './BoardObject';
 import { ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from './utils/isArrowKey';
 
 // FIXME: Is snake a board object or a collection of board objects
-// FIXME: Should I make direction a class and use polymorphism?
 export default class Snake extends BoardObject {
   constructor(x, y, width, height, color, direction) {
     super(x, y, width, height, color);
     this._direction = direction;
+
+    this._moveUp = this._moveUp.bind(this);
+    this._moveRight = this._moveRight.bind(this);
+    this._moveDown = this._moveDown.bind(this);
+    this._moveLeft = this._moveLeft.bind(this);
   }
 
   static DIRECTION_UP = 'up';
@@ -27,23 +31,18 @@ export default class Snake extends BoardObject {
   }
 
   _updateCoordinate() {
-    const method = this._getUpdateCoordinateMethod();
-    method();
-  }
-
-  _getUpdateCoordinateMethod() {
-    const result = {
-      [Snake.DIRECTION_UP]: this._moveUp.bind(this),
-      [Snake.DIRECTION_RIGHT]: this._moveRight.bind(this),
-      [Snake.DIRECTION_DOWN]: this._moveDown.bind(this),
-      [Snake.DIRECTION_LEFT]: this._moveLeft.bind(this),
+    const method = {
+      [Snake.DIRECTION_UP]: this._moveUp,
+      [Snake.DIRECTION_RIGHT]: this._moveRight,
+      [Snake.DIRECTION_DOWN]: this._moveDown,
+      [Snake.DIRECTION_LEFT]: this._moveLeft,
     }[this._direction];
 
-    if (!result) {
-        throw new RangeError('Unknown direction');
+    if (!method) {
+        throw new RangeError(`No update method found for direction: ${this._direction}`);
     }
 
-    return result
+    method();
   }
 
   _moveUp() {
@@ -71,9 +70,9 @@ export default class Snake extends BoardObject {
     }[value];
 
     if (!result) {
-      throw new RangeError(`Unknown keyCode: ${value}`);
+      throw new RangeError(`No direction found from keyCode: ${value}`);
     }
 
-    return result
+    return result;
   }
 }
