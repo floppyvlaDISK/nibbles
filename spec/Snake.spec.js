@@ -1,4 +1,5 @@
 import Snake from "../src/Snake";
+import { ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from "../src/utils/isArrowKey";
 
 describe('Snake', () => {
   describe('move()', () => {
@@ -44,6 +45,40 @@ describe('Snake', () => {
       const fn = () => aSnake.move();
 
       expect(fn).toThrow();
+    });
+  });
+
+  describe('setDirectionFromKeyCode()', () => {
+    const testCases = [
+      {
+        title: 'sets direction up on arrow up key',
+        keyCode: ARROW_UP,
+        expectedDirection: Snake.DIRECTION_UP,
+      },
+      {
+        title: 'sets direction right on arrow right key',
+        keyCode: ARROW_RIGHT,
+        expectedDirection: Snake.DIRECTION_RIGHT,
+      },
+      {
+        title: 'sets direction down on arrow down key',
+        keyCode: ARROW_DOWN,
+        expectedDirection: Snake.DIRECTION_DOWN,
+      },
+      {
+        title: 'sets direction left on arrow left key',
+        keyCode: ARROW_LEFT,
+        expectedDirection: Snake.DIRECTION_LEFT,
+      },
+    ];
+    testCases.forEach(testCase => {
+      it(testCase.title, () => {
+        const aSnake = new Snake(100, 100, 40, 40, 'red', Snake.DIRECTION_DOWN);
+
+        aSnake.setDirectionFromKeyCode(testCase.keyCode);
+
+        expect(aSnake.direction).toBe(testCase.expectedDirection);
+      });
     });
   });
 });

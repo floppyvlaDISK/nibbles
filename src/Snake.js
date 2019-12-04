@@ -13,6 +13,10 @@ export default class Snake extends BoardObject {
   static DIRECTION_DOWN = 2;
   static DIRECTION_LEFT = 3;
 
+  get direction() {
+    return this._direction;
+  }
+
   setDirectionFromKeyCode(value) {
     const hash = {
       [ARROW_UP]: Snake.DIRECTION_UP,
@@ -44,5 +48,9 @@ export default class Snake extends BoardObject {
       default:
         throw new RangeError('Unknown direction');
     }
+  }
+
+  _getDirectionFromKeyCode(value) {
+    // TODO: Move here
   }
 }
