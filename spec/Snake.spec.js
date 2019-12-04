@@ -1,39 +1,42 @@
 import Snake from "../src/Snake";
 
 describe('Snake', () => {
-  it('move() decreases y coordinate if direction is up', () => {
-    const aSnake = new Snake(100, 100, 40, 40, 'red', Snake.DIRECTION_UP);
+  describe('move()', () => {
+    const testCases = [
+      {
+        title: 'decreases y coordinate if direction is up',
+        direction: Snake.DIRECTION_UP,
+        expectedY: 60,
+        expectedX: 100,
+      },
+      {
+        title: 'increases x coordinate if direction is right',
+        direction: Snake.DIRECTION_RIGHT,
+        expectedY: 100,
+        expectedX: 140,
+      },
+      {
+        title: 'increases y coordinate if direction is down',
+        direction: Snake.DIRECTION_DOWN,
+        expectedY: 140,
+        expectedX: 100,
+      },
+      {
+        title: 'descreases x coordinate if direction is left',
+        direction: Snake.DIRECTION_LEFT,
+        expectedY: 100,
+        expectedX: 60,
+      }
+    ];
+    testCases.forEach(testCase => {
+      it(testCase.title, () => {
+        const aSnake = new Snake(100, 100, 40, 40, 'red', testCase.direction);
 
-    aSnake.move();
+        aSnake.move();
 
-    expect(aSnake.y).toBe(60);
-    expect(aSnake.x).toBe(100);
-  });
-
-  it('move() increases x coordinate if direction is right', () => {
-    const aSnake = new Snake(100, 100, 40, 40, 'red', Snake.DIRECTION_RIGHT);
-
-    aSnake.move();
-
-    expect(aSnake.y).toBe(100);
-    expect(aSnake.x).toBe(140);
-  });
-
-  it('move() increases y coordinate if direction is down', () => {
-    const aSnake = new Snake(100, 100, 40, 40, 'red', Snake.DIRECTION_DOWN);
-
-    aSnake.move();
-
-    expect(aSnake.y).toBe(140);
-    expect(aSnake.x).toBe(100);
-  });
-
-  it('move() descreases x coordinate if direction is left', () => {
-    const aSnake = new Snake(100, 100, 40, 40, 'red', Snake.DIRECTION_LEFT);
-
-    aSnake.move();
-
-    expect(aSnake.y).toBe(100);
-    expect(aSnake.x).toBe(60);
+        expect(aSnake.y).toBe(testCase.expectedY);
+        expect(aSnake.x).toBe(testCase.expectedX);
+      });
+    });
   });
 });
