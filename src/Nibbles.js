@@ -20,6 +20,10 @@ export default class Nibbles {
     }, 750);
   }
 
+  setSnakeDirectionFromKeyCode(value) {
+    this._snake.setDirectionFromKeyCode(value);
+  }
+
   _updateBoardObjectsPosition() {
     this._snake.move();
   }
