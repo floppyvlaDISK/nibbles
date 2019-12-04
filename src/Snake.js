@@ -9,10 +9,10 @@ export default class Snake extends BoardObject {
     this._direction = direction;
   }
 
-  static DIRECTION_UP = 0;
-  static DIRECTION_RIGHT = 1;
-  static DIRECTION_DOWN = 2;
-  static DIRECTION_LEFT = 3;
+  static DIRECTION_UP = 'up';
+  static DIRECTION_RIGHT = 'right';
+  static DIRECTION_DOWN = 'down';
+  static DIRECTION_LEFT = 'left';
 
   get direction() {
     return this._direction;
@@ -63,11 +63,17 @@ export default class Snake extends BoardObject {
   }
 
   _getDirectionFromKeyCode(value) {
-    return {
+    let result = {
       [ARROW_UP]: Snake.DIRECTION_UP,
       [ARROW_RIGHT]: Snake.DIRECTION_RIGHT,
       [ARROW_DOWN]: Snake.DIRECTION_DOWN,
       [ARROW_LEFT]: Snake.DIRECTION_LEFT,
     }[value];
+
+    if (!result) {
+      throw new RangeError(`Unknown keyCode: ${value}`);
+    }
+
+    return result
   }
 }

@@ -80,5 +80,12 @@ describe('Snake', () => {
         expect(aSnake.direction).toBe(testCase.expectedDirection);
       });
     });
+
+    it('throws an error if keyCode is has unknown value', () => {
+      const aSnake = new Snake(100, 100, 40, 40, 'red', Snake.DIRECTION_DOWN);
+      const fn = () => aSnake.setDirectionFromKeyCode(122);
+
+      expect(fn).toThrow();
+    });
   });
 });
