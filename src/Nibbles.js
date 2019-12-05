@@ -16,7 +16,7 @@ export default class Nibbles {
   }
 
   start() {
-    this.render(); // TODO: Remove
+    this._performUpdate();
     this._intervalId = setInterval(this._performUpdate, 750);
   }
 
