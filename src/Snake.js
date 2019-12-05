@@ -18,12 +18,27 @@ export default class Snake extends BoardObject {
   static DIRECTION_DOWN = 'down';
   static DIRECTION_LEFT = 'left';
 
+  static directionFromKeyCode(value) {
+    let result = {
+      [ARROW_UP]: Snake.DIRECTION_UP,
+      [ARROW_RIGHT]: Snake.DIRECTION_RIGHT,
+      [ARROW_DOWN]: Snake.DIRECTION_DOWN,
+      [ARROW_LEFT]: Snake.DIRECTION_LEFT,
+    }[value];
+
+    if (!result) {
+      throw new RangeError(`No direction found from keyCode: ${value}`);
+    }
+
+    return result;
+  }
+
   get direction() {
     return this._direction;
   }
 
-  setDirectionFromKeyCode(value) {
-    this._direction = this._getDirectionFromKeyCode(value);
+  set direction(arg) {
+    this._direction = arg;
   }
 
   move() {
@@ -59,21 +74,5 @@ export default class Snake extends BoardObject {
 
   _moveLeft() {
     this.x -= this.width;
-  }
-
-  // TODO: Next refactoring
-  _getDirectionFromKeyCode(value) {
-    let result = {
-      [ARROW_UP]: Snake.DIRECTION_UP,
-      [ARROW_RIGHT]: Snake.DIRECTION_RIGHT,
-      [ARROW_DOWN]: Snake.DIRECTION_DOWN,
-      [ARROW_LEFT]: Snake.DIRECTION_LEFT,
-    }[value];
-
-    if (!result) {
-      throw new RangeError(`No direction found from keyCode: ${value}`);
-    }
-
-    return result;
   }
 }

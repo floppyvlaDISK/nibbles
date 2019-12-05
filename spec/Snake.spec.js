@@ -48,42 +48,38 @@ describe('Snake', () => {
     });
   });
 
-  describe('setDirectionFromKeyCode()', () => {
+  describe('directionFromKeyCode()', () => {
     const testCases = [
       {
-        title: 'sets direction up on arrow up key',
+        title: 'direction up on arrow up key',
         keyCode: ARROW_UP,
         expectedDirection: Snake.DIRECTION_UP,
       },
       {
-        title: 'sets direction right on arrow right key',
+        title: 'direction right on arrow right key',
         keyCode: ARROW_RIGHT,
         expectedDirection: Snake.DIRECTION_RIGHT,
       },
       {
-        title: 'sets direction down on arrow down key',
+        title: 'direction down on arrow down key',
         keyCode: ARROW_DOWN,
         expectedDirection: Snake.DIRECTION_DOWN,
       },
       {
-        title: 'sets direction left on arrow left key',
+        title: 'direction left on arrow left key',
         keyCode: ARROW_LEFT,
         expectedDirection: Snake.DIRECTION_LEFT,
       },
     ];
     testCases.forEach(testCase => {
       it(testCase.title, () => {
-        const aSnake = new Snake(100, 100, 40, 40, 'red', Snake.DIRECTION_DOWN);
-
-        aSnake.setDirectionFromKeyCode(testCase.keyCode);
-
-        expect(aSnake.direction).toBe(testCase.expectedDirection);
+        expect(Snake.directionFromKeyCode(testCase.keyCode))
+          .toBe(testCase.expectedDirection);
       });
     });
 
     it('throws an error if keyCode is has unknown value', () => {
-      const aSnake = new Snake(100, 100, 40, 40, 'red', Snake.DIRECTION_DOWN);
-      const fn = () => aSnake.setDirectionFromKeyCode(122);
+      const fn = () => Snake.directionFromKeyCode(122);
 
       expect(fn).toThrow();
     });

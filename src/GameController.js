@@ -17,14 +17,14 @@ export default class GameController {
 
   _handleKeyDown(event) {
     if (isArrowKey(event.keyCode)) {
-      this._updateSnakeDirection(event.keyCode);
+      this._setSnakeDirection(event.keyCode);
       if (!this._hasStarted) {
         this._startTheGame();
       }
     }
   }
 
-  _updateSnakeDirection(keyCode) {
+  _setSnakeDirection(keyCode) {
     this._nibbles.setSnakeDirectionFromKeyCode(keyCode);
   }
 

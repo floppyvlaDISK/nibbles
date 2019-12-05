@@ -1,5 +1,6 @@
 import Nibbles from '../src/Nibbles';
 import { ARROW_UP } from '../src/utils/isArrowKey';
+import Snake from '../src/Snake';
 
 describe('Nibbles', () => {
   let rendererMock;
@@ -48,14 +49,13 @@ describe('Nibbles', () => {
   it('setSnakeDirectionFromKeyCode() queues snake direction change to be set on performing update', () => {
     const aNibbles = setupNibbles();
 
-    expect(snakeMock.setDirectionFromKeyCode).toHaveBeenCalledTimes(0);
+    expect(snakeMock.direction).toBe(Snake.DIRECTION_RIGHT);
 
     aNibbles.setSnakeDirectionFromKeyCode(ARROW_UP);
     aNibbles.start();
     jasmine.clock().tick(750);
 
-    expect(snakeMock.setDirectionFromKeyCode).toHaveBeenCalledTimes(1);
-    expect(snakeMock.setDirectionFromKeyCode).toHaveBeenCalledWith(ARROW_UP);
+    expect(snakeMock.direction).toBe(Snake.DIRECTION_UP);
   });
 
   afterEach(() => {
@@ -74,10 +74,12 @@ describe('Nibbles', () => {
     );
   }
   function createSnakeMock() {
-    return jasmine.createSpyObj(
+    const result = jasmine.createSpyObj(
       'Snake',
-      ['move', 'setDirectionFromKeyCode']
+      ['move'],
     );
+    result.direction = Snake.DIRECTION_RIGHT;
+    return result;
   }
   function testRenderCalls(callCount) {
     expect(rendererMock.renderBoard).toHaveBeenCalledTimes(callCount);
