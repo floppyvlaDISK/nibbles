@@ -24,8 +24,10 @@ export default class Nibbles {
   }
 
   setSnakeDirectionFromKeyCode(value) {
-    // TODO: ignore is latest equals to value
-    this._snakeDirectionsQueue.push(Snake.directionFromKeyCode(value));
+    const latest = [...this._snakeDirectionsQueue].pop();
+    if (latest !== Snake.directionFromKeyCode(value)) {
+      this._snakeDirectionsQueue.push(Snake.directionFromKeyCode(value));
+    }
   }
 
   _getBoardObjects() {
