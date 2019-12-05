@@ -11,8 +11,9 @@ export default class Nibbles {
 
   render() {
     this._renderer.renderBoard();
-    this._renderer.renderBoardObject(this._snake);
-    this._renderer.renderBoardObject(this._target);
+    this._getBoardObjects().forEach(
+      obj => this._renderer.renderBoardObject(obj)
+    );
   }
 
   start() {
@@ -22,6 +23,10 @@ export default class Nibbles {
 
   setSnakeDirectionFromKeyCode(value) {
     this._queuedSnakeDirectionChanges.push(value);
+  }
+
+  _getBoardObjects() {
+    return [this._target, this._snake];
   }
 
   _performUpdate() {
