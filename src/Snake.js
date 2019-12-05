@@ -61,6 +61,7 @@ export default class Snake extends BoardObject {
     this.x -= this.width;
   }
 
+  // TODO: Next refactoring
   _getDirectionFromKeyCode(value) {
     let result = {
       [ARROW_UP]: Snake.DIRECTION_UP,

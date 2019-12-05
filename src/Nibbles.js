@@ -4,6 +4,9 @@ export default class Nibbles {
     this._snake = snake;
     this._target = target;
     this._intervalId = null;
+    this._queuedSnakeDirectionChanges = [];
+
+    this._performUpdate = this._performUpdate.bind(this);
   }
 
   render() {
@@ -13,18 +16,28 @@ export default class Nibbles {
   }
 
   start() {
-    this.render();
-    this._intervalId = setInterval(() => {
-      this._updateBoardObjectsPosition();
-      this.render();
-    }, 750);
+    this.render(); // TODO: Remove
+    this._intervalId = setInterval(this._performUpdate, 750);
   }
 
   setSnakeDirectionFromKeyCode(value) {
-    this._snake.setDirectionFromKeyCode(value);
+    this._queuedSnakeDirectionChanges.push(value);
   }
 
-  _updateBoardObjectsPosition() {
+  _performUpdate() {
+    this._trySetSnakeDirectionFromQueuedKeyCode();
+    this._updateBoardObjectsPositions();
+    this.render();
+  }
+
+  _updateBoardObjectsPositions() {
     this._snake.move();
+  }
+
+  _trySetSnakeDirectionFromQueuedKeyCode() {
+    const nextKeyCode = this._queuedSnakeDirectionChanges.shift();
+    if (nextKeyCode) {
+      this._snake.setDirectionFromKeyCode(nextKeyCode);
+    }
   }
 }

@@ -42,12 +42,14 @@ describe('Nibbles', () => {
     expect(snakeMock.move).toHaveBeenCalledTimes(1);
   });
 
-  it('setSnakeDirectionFromKeyCode()', () => {
+  it('setSnakeDirectionFromKeyCode() queues snake direction change to be set on performing update', () => {
     const aNibbles = setupNibbles();
 
     expect(snakeMock.setDirectionFromKeyCode).toHaveBeenCalledTimes(0);
 
     aNibbles.setSnakeDirectionFromKeyCode(ARROW_UP);
+    aNibbles.start();
+    jasmine.clock().tick(750);
 
     expect(snakeMock.setDirectionFromKeyCode).toHaveBeenCalledTimes(1);
     expect(snakeMock.setDirectionFromKeyCode).toHaveBeenCalledWith(ARROW_UP);
