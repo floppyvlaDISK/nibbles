@@ -1,10 +1,11 @@
 import Snake from './Snake';
 
 export default class Nibbles {
-  constructor(renderer, snake, target) {
+  constructor(renderer, snake, target, walls) {
     this._renderer = renderer;
     this._snake = snake;
     this._target = target;
+    this._walls = walls;
     this._intervalId = null;
     this._snakeDirectionsQueue = [];
 
@@ -31,7 +32,11 @@ export default class Nibbles {
   }
 
   _getBoardObjects() {
-    return [this._target, this._snake];
+    return [
+      this._target,
+      ...this._walls,
+      this._snake,
+    ];
   }
 
   _performUpdate() {

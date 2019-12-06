@@ -65,7 +65,12 @@ describe('Nibbles', () => {
   });
 
   function setupNibbles() {
-    return new Nibbles(rendererMock, snakeMock);
+    return new Nibbles(
+      rendererMock,
+      snakeMock,
+      null,
+      []
+    );
   }
   function createRendererMock() {
     return jasmine.createSpyObj(

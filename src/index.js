@@ -6,9 +6,15 @@ import Snake from './Snake';
 
 const container = document.getElementById('app-root');
 const aRenderer = new Renderer(container);
-const aSnake = new Snake(50, 50, 40, 40, 'green', Snake.DIRECTION_RIGHT);
-const aTarget = new BoardObject(500, 500, 40, 40, 'red');
-const aNibbles = new Nibbles(aRenderer, aSnake, aTarget);
+const aSnake = new Snake(80, 80, 40, 40, 'green', Snake.DIRECTION_RIGHT);
+const target = new BoardObject(480, 480, 40, 40, 'red');
+const walls = [
+  new BoardObject(0, 0, 800, 40, 'pink'),
+  new BoardObject(760, 0, 40, 800, 'pink'),
+  new BoardObject(0, 760, 800, 40, 'pink'),
+  new BoardObject(0, 0, 40, 800, 'pink'),
+]
+const aNibbles = new Nibbles(aRenderer, aSnake, target, walls);
 const aGameControls = new GameController(aNibbles);
 
 aGameControls.exec();
