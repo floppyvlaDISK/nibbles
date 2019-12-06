@@ -1,10 +1,10 @@
-import BoardObject from './BoardObject';
+import BoardObject from './BoardObject.ts';
 import { ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from './utils/isArrowKey';
 
 // FIXME: Is snake a board object or a collection of board objects
 export default class Snake extends BoardObject {
   constructor(x, y, width, height, color, direction) {
-    super(x, y, width, height, color);
+    super({ x, y, width, height, color });
     this._direction = direction;
 
     this._moveUp = this._moveUp.bind(this);
