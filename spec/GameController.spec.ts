@@ -1,8 +1,9 @@
 import GameController from '../src/GameController';
 import { ARROW_UP } from '../src/utils/isArrowKey';
+import Nibbles from '../src/Nibbles';
 
 describe('GameController', () => {
-  let nibblesMock;
+  let nibblesMock: Nibbles;
 
   beforeEach(() => {
     nibblesMock = createNibblesStack();
@@ -45,10 +46,6 @@ describe('GameController', () => {
 
     expect(nibblesMock.setSnakeDirectionFromKeyCode).toHaveBeenCalledTimes(1);
     expect(nibblesMock.setSnakeDirectionFromKeyCode).toHaveBeenCalledWith(ARROW_UP);
-  });
-
-  afterEach(() => {
-    nibblesMock = undefined;
   });
 
   function createNibblesStack() {
