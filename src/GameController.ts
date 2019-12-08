@@ -1,21 +1,25 @@
 import isArrowKey from './utils/isArrowKey';
+import Nibbles from './Nibbles';
 
 export default class GameController {
-  constructor(nibbles) {
+  private _nibbles: Nibbles;
+  private _hasStarted: boolean;
+
+  constructor(nibbles: Nibbles) {
     this._nibbles = nibbles;
     this._hasStarted = false;
   }
 
-  exec() {
+  public exec() {
     this._nibbles.render();
     this._addKeyDownEventListener();
   }
 
-  _addKeyDownEventListener() {
+  private _addKeyDownEventListener() {
     document.body.addEventListener('keydown', this._handleKeyDown.bind(this));
   }
 
-  _handleKeyDown(event) {
+  private _handleKeyDown(event: KeyboardEvent) {
     if (isArrowKey(event.keyCode)) {
       this._setSnakeDirection(event.keyCode);
       if (!this._hasStarted) {
@@ -24,11 +28,11 @@ export default class GameController {
     }
   }
 
-  _setSnakeDirection(keyCode) {
+  private _setSnakeDirection(keyCode: number) {
     this._nibbles.setSnakeDirectionFromKeyCode(keyCode);
   }
 
-  _startTheGame() {
+  private _startTheGame() {
     this._hasStarted = true;
     this._nibbles.start();
   }
