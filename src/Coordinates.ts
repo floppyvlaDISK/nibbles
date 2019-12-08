@@ -24,6 +24,6 @@ export default class Coordinates {
   }
 
   public equals(other: Coordinates) {
-    return false;
+    return this._x === other.x && this._y === other.y;
   }
 }
