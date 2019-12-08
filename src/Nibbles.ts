@@ -2,6 +2,7 @@ import Snake from './Snake';
 import Renderer from './Renderer';
 import BoardObject from './BoardObject';
 import Target from './Target';
+import randomWithin from './utils/randomWithin';
 
 export default class Nibbles {
   private _renderer: Renderer;
@@ -62,8 +63,18 @@ export default class Nibbles {
     this._snake.move();
     if (this._snake.canEat(this._target)) {
       this._snake.eat(this._target);
-      // futher actions with this._target
+      this._setNextTargetPosition();
     }
+  }
+
+  private _setNextTargetPosition() {
+    // TODO: 40 should be a const
+    // TODO: Should not overlap with the snake
+    // TODO: Should not be at the same position
+    // TODO: Should not be on the wall
+    // TODO: Should be placed in the middle of a cell
+    this._target.x = randomWithin(40, Renderer.WIDTH - 40);
+    this._target.y = randomWithin(40, Renderer.HEIGHT - 40);
   }
 
   private _trySetSnakeDirectionFromQueue() {

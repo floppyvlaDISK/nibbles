@@ -1,10 +1,15 @@
+import sinon from 'sinon';
+
 import { ARROW_UP } from '../src/utils/isArrowKey';
 import Nibbles from '../src/Nibbles';
 import Snake from '../src/Snake';
 import Target from '../src/Target';
 import Renderer from '../src/Renderer';
+import * as randomWithin from '../src/utils/randomWithin';
 
 describe('Nibbles', () => {
+  let sandbox = sinon.createSandbox();
+
   beforeEach(() => {
     jasmine.clock().install();
   });
@@ -61,6 +66,23 @@ describe('Nibbles', () => {
       expect(snakeMock.canEat).toHaveBeenCalledTimes(2);
       expect(snakeMock.eat).toHaveBeenCalledTimes(2);
     });
+
+    it('re-positions the target if it\'s eaten by snake', () => {
+      const { aNibbles, targetMock } = setup({ canEat: true });
+      const nextX = 120;
+      const nextY = 180;
+      const randomWithinStub = sandbox.stub(randomWithin, 'default')
+        .onCall(0)
+        .returns(nextX)
+        .onCall(1)
+        .returns(nextY);
+
+      aNibbles.start();
+
+      expect(targetMock.x).toBe(nextX);
+      expect(targetMock.y).toBe(nextY);
+      expect(randomWithinStub.callCount).toBe(2);
+    });
   });
 
   describe('setSnakeDirectionFromKeyCode()', () => {
@@ -79,26 +101,30 @@ describe('Nibbles', () => {
 
   afterEach(() => {
     jasmine.clock().uninstall();
+    sandbox.restore();
   });
 
   function setup({ canEat = false } = {}) {
     const rendererMock = createRendererMock();
     const snakeMock = createSnakeMock({ canEat });
+    const targetMock = createTargetMock();
     return {
       rendererMock,
       snakeMock,
-      aNibbles: setupNibbles(rendererMock, snakeMock),
+      targetMock,
+      aNibbles: setupNibbles(rendererMock, snakeMock, targetMock),
     };
   }
   function setupNibbles(
     rendererMock: jasmine.SpyObj<Renderer>,
     snakeMock: jasmine.SpyObj<Snake>,
+    targetMock: jasmine.SpyObj<Target>,
   ) {
     return new Nibbles(
       rendererMock,
       snakeMock,
-      new Target(0, 0, 0, 0, 'red', 10),
-      []
+      targetMock,
+      [],
     );
   }
   function createRendererMock() {
@@ -117,6 +143,15 @@ describe('Nibbles', () => {
       },
     );
     result.direction = Snake.DIRECTION_RIGHT;
+    return result;
+  }
+  function createTargetMock() {
+    const result = jasmine.createSpyObj(
+      'Target',
+      { value: 25 },
+    );
+    result.x = 80;
+    result.y = 80;
     return result;
   }
   function testRenderCalls(
