@@ -2,9 +2,9 @@ import Renderer from '../src/Renderer';
 import BoardObject from '../src/BoardObject';
 
 describe('Renderer', () => {
-  let containerMock: any;
-  let contextMock: any;
-  let canvasMock: any;
+  let containerMock: jasmine.SpyObj<HTMLElement>;
+  let contextMock: jasmine.SpyObj<CanvasRenderingContext2D>;
+  let canvasMock: jasmine.SpyObj<HTMLCanvasElement>;
 
   beforeEach(() => {
     setupMocks();

@@ -2,68 +2,94 @@ import { ARROW_UP } from '../src/utils/isArrowKey';
 import Nibbles from '../src/Nibbles';
 import Snake from '../src/Snake';
 import BoardObject from '../src/BoardObject';
+import Renderer from '../src/Renderer';
 
 describe('Nibbles', () => {
-  let rendererMock: any;
-  let snakeMock: any;
-
   beforeEach(() => {
     jasmine.clock().install();
-    rendererMock = createRendererMock();
-    snakeMock = createSnakeMock();
   });
 
   it('render()', () => {
-    const aNibbles = setupNibbles();
+    const { aNibbles, rendererMock } = setup();
 
     aNibbles.render();
 
-    testRenderCalls(1);
+    testRenderCalls(rendererMock, 1);
   });
 
-  it('start() render board and objects', () => {
-    const aNibbles = setupNibbles();
+  describe('start()', () => {
+    it('renders board and objects', () => {
+      const { aNibbles, rendererMock } = setup();
 
-    aNibbles.start();
+      aNibbles.start();
 
-    testRenderCalls(1);
+      testRenderCalls(rendererMock, 1);
 
-    jasmine.clock().tick(750 * 4);
+      jasmine.clock().tick(750 * 4);
 
-    testRenderCalls(5);
+      testRenderCalls(rendererMock, 5);
+    });
+
+    it('moves the snake', () => {
+      const { aNibbles, snakeMock } = setup();
+
+      expect(snakeMock.move).toHaveBeenCalledTimes(0);
+
+      aNibbles.start();
+
+      expect(snakeMock.move).toHaveBeenCalledTimes(1);
+
+      jasmine.clock().tick(750);
+
+      expect(snakeMock.move).toHaveBeenCalledTimes(2);
+    });
+
+
+    xit('makes the snake eat the target if their positions on board intersect after snake move', () => {
+      const { aNibbles, snakeMock } = setup(/* { canEat: true } */);
+
+      aNibbles.start();
+
+      expect(snakeMock.canEat).toHaveBeenCalledTimes(1);
+      expect(snakeMock.eat).toHaveBeenCalledTimes(1);
+    });
+
+    xit('updates target position when it\'s eated by snake', () => {
+      // TODO:
+    });
   });
 
-  it('start() moves the snake', () => {
-    const aNibbles = setupNibbles();
+  describe('setSnakeDirectionFromKeyCode()', () => {
+    it('queues snake direction change to be set on performing update', () => {
+      const { aNibbles, snakeMock } = setup();
 
-    expect(snakeMock.move).toHaveBeenCalledTimes(0);
+      expect(snakeMock.direction).toBe(Snake.DIRECTION_RIGHT);
 
-    aNibbles.start();
+      aNibbles.setSnakeDirectionFromKeyCode(ARROW_UP);
+      aNibbles.start();
+      jasmine.clock().tick(750);
 
-    expect(snakeMock.move).toHaveBeenCalledTimes(1);
-
-    jasmine.clock().tick(750);
-
-    expect(snakeMock.move).toHaveBeenCalledTimes(2);
-  });
-
-  it('setSnakeDirectionFromKeyCode() queues snake direction change to be set on performing update', () => {
-    const aNibbles = setupNibbles();
-
-    expect(snakeMock.direction).toBe(Snake.DIRECTION_RIGHT);
-
-    aNibbles.setSnakeDirectionFromKeyCode(ARROW_UP);
-    aNibbles.start();
-    jasmine.clock().tick(750);
-
-    expect(snakeMock.direction).toBe(Snake.DIRECTION_UP);
+      expect(snakeMock.direction).toBe(Snake.DIRECTION_UP);
+    });
   });
 
   afterEach(() => {
     jasmine.clock().uninstall();
   });
 
-  function setupNibbles() {
+  function setup() {
+    const rendererMock = createRendererMock();
+    const snakeMock = createSnakeMock();
+    return {
+      rendererMock,
+      snakeMock,
+      aNibbles: setupNibbles(rendererMock, snakeMock),
+    };
+  }
+  function setupNibbles(
+    rendererMock: jasmine.SpyObj<Renderer>,
+    snakeMock: jasmine.SpyObj<Snake>,
+  ) {
     return new Nibbles(
       rendererMock,
       snakeMock,
@@ -85,7 +111,10 @@ describe('Nibbles', () => {
     result.direction = Snake.DIRECTION_RIGHT;
     return result;
   }
-  function testRenderCalls(callCount: number) {
+  function testRenderCalls(
+    rendererMock: jasmine.SpyObj<Renderer>,
+    callCount: number
+  ) {
     expect(rendererMock.renderBoard).toHaveBeenCalledTimes(callCount);
     expect(rendererMock.renderBoardObject).toHaveBeenCalledTimes(callCount * 2);
   }

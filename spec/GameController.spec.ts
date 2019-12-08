@@ -1,8 +1,9 @@
 import GameController from '../src/GameController';
 import { ARROW_UP } from '../src/utils/isArrowKey';
+import Nibbles from '../src/Nibbles';
 
 describe('GameController', () => {
-  let nibblesMock: any;
+  let nibblesMock: jasmine.SpyObj<Nibbles>;
 
   beforeEach(() => {
     nibblesMock = createNibblesStack();
