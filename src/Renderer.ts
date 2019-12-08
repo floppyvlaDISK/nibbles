@@ -1,12 +1,19 @@
+import BoardObject from './BoardObject';
+
 export default class Renderer {
-  constructor(container) {
+  private _canvas: HTMLCanvasElement;
+
+  constructor(container: HTMLElement | null) {
+    if (!container) {
+      throw new RangeError('Renderer: container is not a valid HTMLElement');
+    }
     this._canvas = Renderer._createCanvas(container);
   }
 
-  static WIDTH = 800;
-  static HEIGHT = 800;
+  public static WIDTH = 800;
+  public static HEIGHT = 800;
 
-  static _createCanvas(container) {
+  private static _createCanvas(container: HTMLElement) {
     const canvas = document.createElement('canvas');
     canvas.setAttribute('width', `${Renderer.WIDTH}px`);
     canvas.setAttribute('height', `${Renderer.HEIGHT}px`);
@@ -15,16 +22,20 @@ export default class Renderer {
   }
 
   get ctx() {
-    return this._canvas.getContext('2d');
+    const result = this._canvas.getContext('2d');
+    if (!result) {
+      throw new RangeError('Renderer: could not get context of canvas');
+    }
+    return result;
   }
 
-  renderBoard() {
+  public renderBoard() {
     // FIXME: Is board a board object itself?
     this.ctx.fillStyle = '#FFE4E1';
     this.ctx.fillRect(0, 0, Renderer.WIDTH, Renderer.HEIGHT);
   }
 
-  renderBoardObject(aBoardObject) {
+  public renderBoardObject(aBoardObject: BoardObject) {
     this.ctx.fillStyle = aBoardObject.color;
     this.ctx.fillRect(
       aBoardObject.x,
