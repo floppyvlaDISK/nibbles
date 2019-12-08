@@ -23,4 +23,4 @@ describe('isArrowKey', () => {
     expect(isArrowKey(41)).toBe(false);
     expect(isArrowKey(132)).toBe(false);
   });
-})
+});
