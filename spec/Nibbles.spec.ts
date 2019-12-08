@@ -1,12 +1,11 @@
 import { ARROW_UP } from '../src/utils/isArrowKey';
 import Nibbles from '../src/Nibbles';
 import Snake from '../src/Snake';
-import Renderer from '../src/Renderer';
 import BoardObject from '../src/BoardObject';
 
 describe('Nibbles', () => {
-  let rendererMock: Renderer;
-  let snakeMock: Snake;
+  let rendererMock: any;
+  let snakeMock: any;
 
   beforeEach(() => {
     jasmine.clock().install();

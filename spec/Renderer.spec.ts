@@ -2,9 +2,9 @@ import Renderer from '../src/Renderer';
 import BoardObject from '../src/BoardObject';
 
 describe('Renderer', () => {
-  let containerMock;
-  let contextMock;
-  let canvasMock;
+  let containerMock: any;
+  let contextMock: any;
+  let canvasMock: any;
 
   beforeEach(() => {
     setupMocks();
@@ -47,10 +47,6 @@ describe('Renderer', () => {
     expect(contextMock.fillRect.calls.argsFor(1)).toEqual([250, 250, 40, 40]);
   });
 
-  afterEach(() => {
-    clearMocks();
-  });
-
   function setupMocks() {
     containerMock = createContainerMock();
     contextMock = createContextMock();
@@ -58,9 +54,9 @@ describe('Renderer', () => {
     createDocumentMock();
 
     function createContainerMock() {
-      return {
+      return jasmine.createSpyObj('container', {
         appendChild: jasmine.createSpy(),
-      };
+      });
     }
     function createCanvasMock() {
       return jasmine.createSpyObj('canvas', {
@@ -77,11 +73,5 @@ describe('Renderer', () => {
     function createDocumentMock() {
       spyOn(document, 'createElement').and.returnValue(canvasMock);
     }
-  }
-
-  function clearMocks() {
-    containerMock = undefined;
-    contextMock = undefined;
-    canvasMock = undefined;
   }
 });

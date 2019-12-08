@@ -1,9 +1,8 @@
 import GameController from '../src/GameController';
 import { ARROW_UP } from '../src/utils/isArrowKey';
-import Nibbles from '../src/Nibbles';
 
 describe('GameController', () => {
-  let nibblesMock: Nibbles;
+  let nibblesMock: any;
 
   beforeEach(() => {
     nibblesMock = createNibblesStack();
