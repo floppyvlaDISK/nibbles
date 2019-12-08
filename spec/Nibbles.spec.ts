@@ -45,17 +45,21 @@ describe('Nibbles', () => {
     });
 
 
-    xit('makes the snake eat the target if their positions on board intersect after snake move', () => {
-      const { aNibbles, snakeMock } = setup(/* { canEat: true } */);
+    it('makes the snake eat the target if their positions on board intersects after snake move', () => {
+      const { aNibbles, snakeMock } = setup({ canEat: true });
+
+      expect(snakeMock.canEat).toHaveBeenCalledTimes(0);
+      expect(snakeMock.eat).toHaveBeenCalledTimes(0);
 
       aNibbles.start();
 
       expect(snakeMock.canEat).toHaveBeenCalledTimes(1);
       expect(snakeMock.eat).toHaveBeenCalledTimes(1);
-    });
 
-    xit('updates target position when it\'s eated by snake', () => {
-      // TODO:
+      jasmine.clock().tick(750);
+
+      expect(snakeMock.canEat).toHaveBeenCalledTimes(2);
+      expect(snakeMock.eat).toHaveBeenCalledTimes(2);
     });
   });
 
@@ -77,9 +81,9 @@ describe('Nibbles', () => {
     jasmine.clock().uninstall();
   });
 
-  function setup() {
+  function setup({ canEat = false } = {}) {
     const rendererMock = createRendererMock();
-    const snakeMock = createSnakeMock();
+    const snakeMock = createSnakeMock({ canEat });
     return {
       rendererMock,
       snakeMock,
@@ -103,10 +107,14 @@ describe('Nibbles', () => {
       ['renderBoard', 'renderBoardObject'],
     );
   }
-  function createSnakeMock() {
+  function createSnakeMock({ canEat = false } = {}) {
     const result = jasmine.createSpyObj(
       'Snake',
-      ['move'],
+      {
+        move: undefined,
+        eat: undefined,
+        canEat,
+      },
     );
     result.direction = Snake.DIRECTION_RIGHT;
     return result;

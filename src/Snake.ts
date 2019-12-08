@@ -65,6 +65,15 @@ export default class Snake extends BoardObject {
     this._score += value;
   }
 
+  public eat() {
+    // TODO:
+  }
+
+  public canEat() {
+    // TODO:
+    return true;
+  }
+
   private _updateCoordinate() {
     const method = {
       [Snake.DIRECTION_UP]: this._moveUp,
