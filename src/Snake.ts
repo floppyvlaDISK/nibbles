@@ -1,9 +1,18 @@
-import BoardObject from './BoardObject.ts';
+import BoardObject from './BoardObject';
 import { ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from './utils/isArrowKey';
 
 // FIXME: Is snake a board object or a collection of board objects
 export default class Snake extends BoardObject {
-  constructor(x, y, width, height, color, direction) {
+  private _direction: string;
+
+  constructor(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    color: string,
+    direction: string,
+  ) {
     super(x, y, width, height, color);
     this._direction = direction;
 
@@ -13,12 +22,12 @@ export default class Snake extends BoardObject {
     this._moveLeft = this._moveLeft.bind(this);
   }
 
-  static DIRECTION_UP = 'up';
-  static DIRECTION_RIGHT = 'right';
-  static DIRECTION_DOWN = 'down';
-  static DIRECTION_LEFT = 'left';
+  public static DIRECTION_UP = 'up';
+  public static DIRECTION_RIGHT = 'right';
+  public static DIRECTION_DOWN = 'down';
+  public static DIRECTION_LEFT = 'left';
 
-  static directionFromKeyCode(value) {
+  public static directionFromKeyCode(value: number) {
     let result = {
       [ARROW_UP]: Snake.DIRECTION_UP,
       [ARROW_RIGHT]: Snake.DIRECTION_RIGHT,
@@ -41,11 +50,11 @@ export default class Snake extends BoardObject {
     this._direction = arg;
   }
 
-  move() {
+  public move() {
     this._updateCoordinate();
   }
 
-  _updateCoordinate() {
+  private _updateCoordinate() {
     const method = {
       [Snake.DIRECTION_UP]: this._moveUp,
       [Snake.DIRECTION_RIGHT]: this._moveRight,
@@ -60,19 +69,19 @@ export default class Snake extends BoardObject {
     method();
   }
 
-  _moveUp() {
+  private _moveUp() {
     this.y -= this.height;
   }
 
-  _moveRight() {
+  private _moveRight() {
     this.x += this.width;
   }
 
-  _moveDown() {
+  private _moveDown() {
     this.y += this.height;
   }
 
-  _moveLeft() {
+  private _moveLeft() {
     this.x -= this.width;
   }
 }
