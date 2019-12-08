@@ -96,4 +96,23 @@ describe('Snake', () => {
 
     expect(aSnake.score).toBe(23);
   });
+
+  describe('canEat()', () => {
+    [
+      {
+        title: 'true if snake coordinates contain target coordinates',
+        aSnake: new Snake(100, 100, 40, 40, 'red', Snake.DIRECTION_RIGHT, 10),
+        aTarget: new Target(100, 100, 40, 40, 'blue', 13),
+        expectedResult: true,
+      },
+      {
+        title: 'false if snake coordinates do not contain target coordinates',
+        aSnake: new Snake(100, 100, 40, 40, 'red', Snake.DIRECTION_RIGHT, 10),
+        aTarget: new Target(150, 150, 40, 40, 'blue', 13),
+        expectedResult: false,
+      }
+    ].forEach(testCase => it(testCase.title, () => {
+      expect(testCase.aSnake.canEat(testCase.aTarget)).toBe(testCase.expectedResult);
+    }));
+  });
 });

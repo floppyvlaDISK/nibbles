@@ -22,4 +22,8 @@ export default class Coordinates {
   set y(arg) {
     this._y = arg;
   }
+
+  public equals(other: Coordinates) {
+    return false;
+  }
 }

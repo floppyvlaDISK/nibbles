@@ -60,7 +60,7 @@ export default class Nibbles {
 
   private _updateBoardObjects() {
     this._snake.move();
-    if (this._snake.canEat(/* this._target */)) {
+    if (this._snake.canEat(this._target)) {
       this._snake.eat(this._target);
       // futher actions with this._target
     }

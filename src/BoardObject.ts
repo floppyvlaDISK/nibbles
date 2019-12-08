@@ -46,4 +46,8 @@ export default class BoardObject {
   get color() {
     return this._color;
   }
+
+  get coordinates() {
+    return this._coordinates;
+  }
 }

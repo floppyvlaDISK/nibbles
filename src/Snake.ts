@@ -66,9 +66,8 @@ export default class Snake extends BoardObject {
     this._increaseScoreBy(aTarget.value);
   }
 
-  public canEat() {
-    // TODO:
-    return true;
+  public canEat(aTarget: Target) {
+    return this.coordinates.equals(aTarget.coordinates);
   }
 
   private _increaseScoreBy(value: number) {
