@@ -1,7 +1,7 @@
 import { ARROW_UP } from '../src/utils/isArrowKey';
 import Nibbles from '../src/Nibbles';
 import Snake from '../src/Snake';
-import BoardObject from '../src/BoardObject';
+import Target from '../src/Target';
 import Renderer from '../src/Renderer';
 
 describe('Nibbles', () => {
@@ -97,7 +97,7 @@ describe('Nibbles', () => {
     return new Nibbles(
       rendererMock,
       snakeMock,
-      new BoardObject(0, 0, 0, 0, 'red'),
+      new Target(0, 0, 0, 0, 'red', 10),
       []
     );
   }
