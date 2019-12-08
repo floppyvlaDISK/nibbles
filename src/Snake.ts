@@ -4,6 +4,7 @@ import { ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from './utils/isArrowKe
 // FIXME: Is snake a board object or a collection of board objects
 export default class Snake extends BoardObject {
   private _direction: string;
+  private _score: number;
 
   constructor(
     x: number,
@@ -12,9 +13,11 @@ export default class Snake extends BoardObject {
     height: number,
     color: string,
     direction: string,
+    score: number,
   ) {
     super(x, y, width, height, color);
     this._direction = direction;
+    this._score = score;
 
     this._moveUp = this._moveUp.bind(this);
     this._moveRight = this._moveRight.bind(this);
@@ -36,7 +39,7 @@ export default class Snake extends BoardObject {
     }[value];
 
     if (!result) {
-      throw new RangeError(`No direction found from keyCode: ${value}`);
+      throw new RangeError(`Snake: no direction found from keyCode: ${value}`);
     }
 
     return result;
@@ -50,8 +53,16 @@ export default class Snake extends BoardObject {
     this._direction = arg;
   }
 
+  get score() {
+    return this._score;
+  }
+
   public move() {
     this._updateCoordinate();
+  }
+
+  public increaseScoreBy(value: number) {
+    this._score += value;
   }
 
   private _updateCoordinate() {
@@ -63,7 +74,7 @@ export default class Snake extends BoardObject {
     }[this._direction];
 
     if (!method) {
-        throw new RangeError(`No update method found for direction: ${this._direction}`);
+        throw new RangeError(`Snake: no update method found for direction: ${this._direction}`);
     }
 
     method();

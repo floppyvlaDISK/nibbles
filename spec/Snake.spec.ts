@@ -31,7 +31,7 @@ describe('Snake', () => {
     ];
     testCases.forEach(testCase => {
       it(testCase.title, () => {
-        const aSnake = new Snake(100, 100, 40, 40, 'red', testCase.direction);
+        const aSnake = new Snake(100, 100, 40, 40, 'red', testCase.direction, 0);
 
         aSnake.move();
 
@@ -41,7 +41,7 @@ describe('Snake', () => {
     });
 
     it('throws an error if direction has unknown value', () => {
-      const aSnake = new Snake(100, 100, 40, 40, 'red', 'up-right');
+      const aSnake = new Snake(100, 100, 40, 40, 'red', 'up-right', 0);
       const fn = () => aSnake.move();
 
       expect(fn).toThrow();
@@ -83,5 +83,15 @@ describe('Snake', () => {
 
       expect(fn).toThrow();
     });
+  });
+
+  it('increaseScoreBy()', () => {
+    const aSnake = new Snake(100, 100, 40, 40, 'red', Snake.DIRECTION_RIGHT, 10);
+
+    expect(aSnake.score).toBe(10);
+
+    aSnake.increaseScoreBy(13);
+
+    expect(aSnake.score).toBe(23);
   });
 });

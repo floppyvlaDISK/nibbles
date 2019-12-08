@@ -6,7 +6,7 @@ import Snake from './Snake';
 
 const container = document.getElementById('app-root');
 const aRenderer = new Renderer(container);
-const aSnake = new Snake(80, 80, 40, 40, 'green', Snake.DIRECTION_RIGHT);
+const aSnake = new Snake(80, 80, 40, 40, 'green', Snake.DIRECTION_RIGHT, 0);
 const target = new BoardObject(480, 480, 40, 40, 'red');
 const walls = [
   new BoardObject(0, 0, 800, 40, 'pink'),
