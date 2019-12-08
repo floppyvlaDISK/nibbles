@@ -10,6 +10,7 @@
     "@babel/preset-es2015": "^7.0.0-beta.53",
     "@types/jasmine": "^3.5.0",
     "@types/jsdom": "^12.2.4",
+    "@types/sinon": "^7.5.1",
     "babel-eslint": "^10.0.3",
     "canvas": "^2.6.0",
     "eslint": "^6.7.2",
@@ -17,6 +18,7 @@
     "jasmine-ts": "^0.3.0",
     "jsdom": "^15.2.1",
     "parcel-bundler": "^1.12.4",
+    "sinon": "^7.5.0",
     "ts-node": "^8.5.4",
     "typescript": "^3.7.3"
   },
