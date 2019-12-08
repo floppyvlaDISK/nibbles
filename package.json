@@ -8,6 +8,7 @@
     "@babel/core": "^7.7.4",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/preset-es2015": "^7.0.0-beta.53",
+    "@types/jasmine": "^3.5.0",
     "@types/jsdom": "^12.2.4",
     "babel-eslint": "^10.0.3",
     "canvas": "^2.6.0",
