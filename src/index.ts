@@ -13,8 +13,8 @@ const walls = [
   new BoardObject(760, 0, 40, 800, 'pink'),
   new BoardObject(0, 760, 800, 40, 'pink'),
   new BoardObject(0, 0, 40, 800, 'pink'),
-]
+];
 const aNibbles = new Nibbles(aRenderer, aSnake, target, walls);
-const aGameControls = new GameController(aNibbles);
+const aGameController = new GameController(aNibbles);
 
-aGameControls.exec();
+aGameController.exec();
