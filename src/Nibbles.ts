@@ -3,6 +3,7 @@ import Renderer from './Renderer';
 import BoardObject from './BoardObject';
 import Target from './Target';
 import randomWithin from './utils/randomWithin';
+import Coordinates from './Coordinates';
 
 export default class Nibbles {
   private _renderer: Renderer;
@@ -69,12 +70,25 @@ export default class Nibbles {
 
   private _setNextTargetPosition() {
     // TODO: 40 should be a const
-    // TODO: Should not overlap with the snake
+    // TODO: Should not overlap with the snake -- check
     // TODO: Should not be at the same position
     // TODO: Should not be on the wall
     // TODO: Should be placed in the middle of a cell
-    this._target.x = randomWithin(40, Renderer.WIDTH - 40);
-    this._target.y = randomWithin(40, Renderer.HEIGHT - 40);
+    let nextX;
+    let nextY;
+    while (
+      typeof nextX === 'undefined'
+      || typeof nextY === 'undefined'
+    ) {
+      nextX = randomWithin(40, Renderer.WIDTH - 40);
+      nextY = randomWithin(40, Renderer.HEIGHT - 40);
+      if (this._snake.coordinates.equals(new Coordinates(nextX, nextY))) {
+        nextX = undefined;
+        nextY = undefined;
+      }
+    }
+    this._target.x = nextX;
+    this._target.y = nextY;
   }
 
   private _trySetSnakeDirectionFromQueue() {

@@ -6,6 +6,7 @@ import Snake from '../src/Snake';
 import Target from '../src/Target';
 import Renderer from '../src/Renderer';
 import * as randomWithin from '../src/utils/randomWithin';
+import Coordinates from '../src/Coordinates';
 
 describe('Nibbles', () => {
   let sandbox = sinon.createSandbox();
@@ -70,7 +71,7 @@ describe('Nibbles', () => {
     it('re-positions the target if it\'s eaten by snake', () => {
       const { aNibbles, targetMock } = setup({ canEat: true });
       const nextX = 120;
-      const nextY = 180;
+      const nextY = 160;
       const randomWithinStub = sandbox.stub(randomWithin, 'default')
         .onCall(0)
         .returns(nextX)
@@ -82,6 +83,33 @@ describe('Nibbles', () => {
       expect(targetMock.x).toBe(nextX);
       expect(targetMock.y).toBe(nextY);
       expect(randomWithinStub.callCount).toBe(2);
+    });
+
+    it('does not overlap target with the snake on re-positioning', () => {
+      const badNextX = 120;
+      const badNextY = 160;
+      const goodNextX = 200;
+      const goodNextY = 240;
+      const { aNibbles, targetMock } = setup({
+        canEat: true,
+        snakeX: badNextX,
+        snakeY: badNextY,
+      });
+      const randomWithinStub = sandbox.stub(randomWithin, 'default')
+        .onCall(0)
+        .returns(badNextX)
+        .onCall(1)
+        .returns(badNextY)
+        .onCall(2)
+        .returns(goodNextX)
+        .onCall(3)
+        .returns(goodNextY);
+
+      aNibbles.start();
+
+      expect(targetMock.x).toBe(goodNextX);
+      expect(targetMock.y).toBe(goodNextY);
+      expect(randomWithinStub.callCount).toBe(4);
     });
   });
 
@@ -104,9 +132,9 @@ describe('Nibbles', () => {
     sandbox.restore();
   });
 
-  function setup({ canEat = false } = {}) {
+  function setup({ canEat = false, snakeX = 0, snakeY = 0 } = {}) {
     const rendererMock = createRendererMock();
-    const snakeMock = createSnakeMock({ canEat });
+    const snakeMock = createSnakeMock({ canEat, snakeX, snakeY });
     const targetMock = createTargetMock();
     return {
       rendererMock,
@@ -133,7 +161,11 @@ describe('Nibbles', () => {
       ['renderBoard', 'renderBoardObject'],
     );
   }
-  function createSnakeMock({ canEat = false } = {}) {
+  function createSnakeMock({
+    canEat = false,
+    snakeX = 0,
+    snakeY = 0,
+  } = {}) {
     const result = jasmine.createSpyObj(
       'Snake',
       {
@@ -143,6 +175,7 @@ describe('Nibbles', () => {
       },
     );
     result.direction = Snake.DIRECTION_RIGHT;
+    result.coordinates = new Coordinates(snakeX, snakeY);
     return result;
   }
   function createTargetMock() {
