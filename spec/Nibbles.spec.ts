@@ -1,10 +1,12 @@
-import Nibbles from '../src/Nibbles';
 import { ARROW_UP } from '../src/utils/isArrowKey';
+import Nibbles from '../src/Nibbles';
 import Snake from '../src/Snake';
+import Renderer from '../src/Renderer';
+import BoardObject from '../src/BoardObject';
 
 describe('Nibbles', () => {
-  let rendererMock;
-  let snakeMock;
+  let rendererMock: Renderer;
+  let snakeMock: Snake;
 
   beforeEach(() => {
     jasmine.clock().install();
@@ -60,15 +62,13 @@ describe('Nibbles', () => {
 
   afterEach(() => {
     jasmine.clock().uninstall();
-    rendererMock = undefined;
-    snakeMock = undefined;
   });
 
   function setupNibbles() {
     return new Nibbles(
       rendererMock,
       snakeMock,
-      null,
+      new BoardObject(0, 0, 0, 0, 'red'),
       []
     );
   }
@@ -86,7 +86,7 @@ describe('Nibbles', () => {
     result.direction = Snake.DIRECTION_RIGHT;
     return result;
   }
-  function testRenderCalls(callCount) {
+  function testRenderCalls(callCount: number) {
     expect(rendererMock.renderBoard).toHaveBeenCalledTimes(callCount);
     expect(rendererMock.renderBoardObject).toHaveBeenCalledTimes(callCount * 2);
   }
