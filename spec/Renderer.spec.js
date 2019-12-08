@@ -37,7 +37,7 @@ describe('Renderer', () => {
 
   it('renderBoardObject()', () => {
     const r = new Renderer(containerMock);
-    const aBoardObject = new BoardObject({ x: 250, y: 250, width: 40, height: 40, color: 'blue' });
+    const aBoardObject = new BoardObject(250, 250, 40, 40, 'blue');
 
     r.renderBoard();
     r.renderBoardObject(aBoardObject);
