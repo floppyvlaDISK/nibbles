@@ -1,5 +1,6 @@
-import Snake from "../src/Snake";
-import { ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from "../src/utils/isArrowKey";
+import Snake from '../src/Snake';
+import Target from '../src/Target';
+import { ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from '../src/utils/isArrowKey';
 
 describe('Snake', () => {
   describe('move()', () => {
@@ -85,12 +86,13 @@ describe('Snake', () => {
     });
   });
 
-  it('increaseScoreBy()', () => {
+  it('eat()', () => {
     const aSnake = new Snake(100, 100, 40, 40, 'red', Snake.DIRECTION_RIGHT, 10);
+    const aTarget = new Target(100, 100, 40, 40, 'blue', 13);
 
     expect(aSnake.score).toBe(10);
 
-    aSnake.increaseScoreBy(13);
+    aSnake.eat(aTarget);
 
     expect(aSnake.score).toBe(23);
   });

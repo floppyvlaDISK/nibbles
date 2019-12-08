@@ -1,5 +1,6 @@
 import BoardObject from './BoardObject';
 import { ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from './utils/isArrowKey';
+import Target from './Target';
 
 // FIXME: Is snake a board object or a collection of board objects
 export default class Snake extends BoardObject {
@@ -61,17 +62,17 @@ export default class Snake extends BoardObject {
     this._updateCoordinate();
   }
 
-  public increaseScoreBy(value: number) {
-    this._score += value;
-  }
-
-  public eat() {
-    // TODO:
+  public eat(aTarget: Target) {
+    this._increaseScoreBy(aTarget.value);
   }
 
   public canEat() {
     // TODO:
     return true;
+  }
+
+  private _increaseScoreBy(value: number) {
+    this._score += value;
   }
 
   private _updateCoordinate() {

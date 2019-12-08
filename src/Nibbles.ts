@@ -1,18 +1,19 @@
 import Snake from './Snake';
 import Renderer from './Renderer';
 import BoardObject from './BoardObject';
+import Target from './Target';
 
 export default class Nibbles {
   private _renderer: Renderer;
   private _snake: Snake;
-  private _target: BoardObject;
+  private _target: Target;
   private _walls: Array<BoardObject>;
   private _snakeDirectionsQueue: Array<string>;
 
   constructor(
     renderer: Renderer,
     snake: Snake,
-    target: BoardObject,
+    target: Target,
     walls: Array<BoardObject>,
   ) {
     this._renderer = renderer;
@@ -60,7 +61,7 @@ export default class Nibbles {
   private _updateBoardObjects() {
     this._snake.move();
     if (this._snake.canEat(/* this._target */)) {
-      this._snake.eat(/* this._target */);
+      this._snake.eat(this._target);
       // futher actions with this._target
     }
   }
