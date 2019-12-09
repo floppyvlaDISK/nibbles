@@ -85,30 +85,57 @@ describe('Nibbles', () => {
       expect(randomWithinStub.callCount).toBe(2);
     });
 
-    it('does not overlap target with the snake on re-positioning', () => {
-      const badNextX = 120;
-      const badNextY = 160;
-      const goodNextX = 200;
-      const goodNextY = 240;
+    it('does not overlap target with the snake on target re-positioning', () => {
+      const snakeX = 120;
+      const snakeY = 160;
+      const nextX = 200;
+      const nextY = 240;
       const { aNibbles, targetMock } = setup({
         canEat: true,
-        snakeX: badNextX,
-        snakeY: badNextY,
+        snakeX,
+        snakeY,
       });
       const randomWithinStub = sandbox.stub(randomWithin, 'default')
         .onCall(0)
-        .returns(badNextX)
+        .returns(snakeX)
         .onCall(1)
-        .returns(badNextY)
+        .returns(snakeY)
         .onCall(2)
-        .returns(goodNextX)
+        .returns(nextX)
         .onCall(3)
-        .returns(goodNextY);
+        .returns(nextY);
 
       aNibbles.start();
 
-      expect(targetMock.x).toBe(goodNextX);
-      expect(targetMock.y).toBe(goodNextY);
+      expect(targetMock.x).toBe(nextX);
+      expect(targetMock.y).toBe(nextY);
+      expect(randomWithinStub.callCount).toBe(4);
+    });
+
+    it('does not re-position target to the same coordinate it was before', () => {
+      const targetX = 120;
+      const targetY = 160;
+      const nextX = 200;
+      const nextY = 240;
+      const { aNibbles, targetMock } = setup({
+        canEat: true,
+        targetX,
+        targetY,
+      });
+      const randomWithinStub = sandbox.stub(randomWithin, 'default')
+        .onCall(0)
+        .returns(targetX)
+        .onCall(1)
+        .returns(targetY)
+        .onCall(2)
+        .returns(nextX)
+        .onCall(3)
+        .returns(nextY);
+
+      aNibbles.start();
+
+      expect(targetMock.x).toBe(nextX);
+      expect(targetMock.y).toBe(nextY);
       expect(randomWithinStub.callCount).toBe(4);
     });
   });
@@ -132,10 +159,16 @@ describe('Nibbles', () => {
     sandbox.restore();
   });
 
-  function setup({ canEat = false, snakeX = 0, snakeY = 0 } = {}) {
+  function setup({
+    canEat = false,
+    snakeX = 0,
+    snakeY = 0,
+    targetX = 80,
+    targetY = 80,
+  } = {}) {
     const rendererMock = createRendererMock();
     const snakeMock = createSnakeMock({ canEat, snakeX, snakeY });
-    const targetMock = createTargetMock();
+    const targetMock = createTargetMock({ targetX, targetY });
     return {
       rendererMock,
       snakeMock,
@@ -162,10 +195,14 @@ describe('Nibbles', () => {
     );
   }
   function createSnakeMock({
-    canEat = false,
-    snakeX = 0,
-    snakeY = 0,
-  } = {}) {
+    canEat,
+    snakeX,
+    snakeY
+  }: {
+    canEat: boolean,
+    snakeX: number,
+    snakeY: number
+  }) {
     const result = jasmine.createSpyObj(
       'Snake',
       {
@@ -178,13 +215,20 @@ describe('Nibbles', () => {
     result.coordinates = new Coordinates(snakeX, snakeY);
     return result;
   }
-  function createTargetMock() {
+  function createTargetMock({
+    targetX,
+    targetY
+  }: {
+    targetX: number,
+    targetY: number,
+  }) {
     const result = jasmine.createSpyObj(
       'Target',
       { value: 25 },
     );
-    result.x = 80;
-    result.y = 80;
+    result.coordinates = new Coordinates(targetX, targetY);
+    result.x = targetX;
+    result.y = targetY;
     return result;
   }
   function testRenderCalls(
