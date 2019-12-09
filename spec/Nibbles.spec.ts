@@ -139,6 +139,35 @@ describe('Nibbles', () => {
       expect(targetMock.y).toBe(nextY);
       expect(randomWithinStub.callCount).toBe(4);
     });
+
+    it('re-positions target right on top of the cell', () => {
+      const incorrectX = 100;
+      const incorrectY = 110;
+      const correctX = 120;
+      const correctY = 160;
+      const { aNibbles, targetMock } = setup({
+        snakeMockData: { canEat: true }
+      });
+      const randomWithinStub = sandbox.stub(randomWithin, 'default')
+        .onCall(0)
+        .returns(incorrectX)
+        .onCall(1)
+        .returns(correctY)
+        .onCall(2)
+        .returns(correctX)
+        .onCall(3)
+        .returns(incorrectY)
+        .onCall(4)
+        .returns(correctX)
+        .onCall(5)
+        .returns(correctY);
+
+      aNibbles.start();
+
+      expect(targetMock.x).toBe(correctX);
+      expect(targetMock.y).toBe(correctY);
+      expect(randomWithinStub.callCount).toBe(6);
+    });
   });
 
   describe('setSnakeDirectionFromKeyCode()', () => {

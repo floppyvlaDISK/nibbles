@@ -70,7 +70,6 @@ export default class Nibbles {
 
   private _setNextTargetPosition() {
     // TODO: 40 should be a const
-    // TODO: Should be placed in the middle of a cell
     let nextX;
     let nextY;
     while (
@@ -82,6 +81,8 @@ export default class Nibbles {
       if (
         this._snake.coordinates.equals(new Coordinates(nextX, nextY))
         || this._target.coordinates.equals(new Coordinates(nextX, nextY))
+        || !Number.isInteger(nextX / 40)
+        || !Number.isInteger(nextY / 40)
       ) {
         nextX = undefined;
         nextY = undefined;

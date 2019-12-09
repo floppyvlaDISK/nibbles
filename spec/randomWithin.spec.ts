@@ -10,7 +10,7 @@ describe('randomWithin', () => {
       const result = randomWithin(min, max);
       expect(result).toBeLessThanOrEqual(max);
       expect(result).toBeGreaterThanOrEqual(min);
-      expect(result - Math.round(result)).toBe(0);
+      expect(Number.isInteger(result)).toBe(true);
     });
   });
 })
