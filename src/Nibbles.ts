@@ -70,9 +70,6 @@ export default class Nibbles {
 
   private _setNextTargetPosition() {
     // TODO: 40 should be a const
-    // TODO: Should not overlap with the snake -- check
-    // TODO: Should not be at the same position -- check
-    // TODO: Should not be on the wall -- check
     // TODO: Should be placed in the middle of a cell
     let nextX;
     let nextY;

@@ -52,7 +52,9 @@ describe('Nibbles', () => {
 
 
     it('makes the snake eat the target if their positions on board intersects after snake move', () => {
-      const { aNibbles, snakeMock } = setup({ canEat: true });
+      const { aNibbles, snakeMock } = setup({
+        snakeMockData: { canEat: true }
+      });
 
       expect(snakeMock.canEat).toHaveBeenCalledTimes(0);
       expect(snakeMock.eat).toHaveBeenCalledTimes(0);
@@ -68,8 +70,10 @@ describe('Nibbles', () => {
       expect(snakeMock.eat).toHaveBeenCalledTimes(2);
     });
 
-    it('re-positions the target if it\'s eaten by snake', () => {
-      const { aNibbles, targetMock } = setup({ canEat: true });
+    it('re-positions target if it\'s eaten by snake', () => {
+      const { aNibbles, targetMock } = setup({
+        snakeMockData: { canEat: true },
+      });
       const nextX = 120;
       const nextY = 160;
       const randomWithinStub = sandbox.stub(randomWithin, 'default')
@@ -85,15 +89,13 @@ describe('Nibbles', () => {
       expect(randomWithinStub.callCount).toBe(2);
     });
 
-    it('does not overlap target with the snake on target re-positioning', () => {
+    it('does not overlap target with snake on target re-positioning', () => {
       const snakeX = 120;
       const snakeY = 160;
       const nextX = 200;
       const nextY = 240;
       const { aNibbles, targetMock } = setup({
-        canEat: true,
-        snakeX,
-        snakeY,
+        snakeMockData: { canEat: true, x: snakeX, y: snakeY },
       });
       const randomWithinStub = sandbox.stub(randomWithin, 'default')
         .onCall(0)
@@ -112,15 +114,14 @@ describe('Nibbles', () => {
       expect(randomWithinStub.callCount).toBe(4);
     });
 
-    it('does not re-position target to the same coordinate it was before', () => {
+    it('does not re-position target to same coordinate it was before', () => {
       const targetX = 120;
       const targetY = 160;
       const nextX = 200;
       const nextY = 240;
       const { aNibbles, targetMock } = setup({
-        canEat: true,
-        targetX,
-        targetY,
+        snakeMockData: { canEat: true },
+        targetMockData: { x: targetX, y: targetY },
       });
       const randomWithinStub = sandbox.stub(randomWithin, 'default')
         .onCall(0)
@@ -160,15 +161,12 @@ describe('Nibbles', () => {
   });
 
   function setup({
-    canEat = false,
-    snakeX = 0,
-    snakeY = 0,
-    targetX = 80,
-    targetY = 80,
+    snakeMockData = {},
+    targetMockData = {}
   } = {}) {
     const rendererMock = createRendererMock();
-    const snakeMock = createSnakeMock({ canEat, snakeX, snakeY });
-    const targetMock = createTargetMock({ targetX, targetY });
+    const snakeMock = createSnakeMock(snakeMockData);
+    const targetMock = createTargetMock(targetMockData);
     return {
       rendererMock,
       snakeMock,
@@ -195,13 +193,13 @@ describe('Nibbles', () => {
     );
   }
   function createSnakeMock({
-    canEat,
-    snakeX,
-    snakeY
+    canEat = false,
+    x = 0,
+    y = 0,
   }: {
-    canEat: boolean,
-    snakeX: number,
-    snakeY: number
+    canEat?: boolean,
+    x?: number,
+    y?: number
   }) {
     const result = jasmine.createSpyObj(
       'Snake',
@@ -212,23 +210,25 @@ describe('Nibbles', () => {
       },
     );
     result.direction = Snake.DIRECTION_RIGHT;
-    result.coordinates = new Coordinates(snakeX, snakeY);
+    result.coordinates = new Coordinates(x, y);
     return result;
   }
   function createTargetMock({
-    targetX,
-    targetY
+    x = 80,
+    y = 80,
+    value = 25,
   }: {
-    targetX: number,
-    targetY: number,
+    x?: number,
+    y?: number,
+    value?: number
   }) {
     const result = jasmine.createSpyObj(
       'Target',
-      { value: 25 },
+      { value: value },
     );
-    result.coordinates = new Coordinates(targetX, targetY);
-    result.x = targetX;
-    result.y = targetY;
+    result.coordinates = new Coordinates(x, y);
+    result.x = x;
+    result.y = y;
     return result;
   }
   function testRenderCalls(
