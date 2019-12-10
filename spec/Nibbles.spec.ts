@@ -31,7 +31,7 @@ describe('Nibbles', () => {
 
       testRenderCalls(rendererMock, 1);
 
-      jasmine.clock().tick(750 * 4);
+      jasmine.clock().tick(Nibbles.UPDATE_FREQUENCY_MS * 4);
 
       testRenderCalls(rendererMock, 5);
     });
@@ -45,7 +45,7 @@ describe('Nibbles', () => {
 
       expect(snakeMock.move).toHaveBeenCalledTimes(1);
 
-      jasmine.clock().tick(750);
+      jasmine.clock().tick(Nibbles.UPDATE_FREQUENCY_MS);
 
       expect(snakeMock.move).toHaveBeenCalledTimes(2);
     });
@@ -64,7 +64,7 @@ describe('Nibbles', () => {
       expect(snakeMock.canEat).toHaveBeenCalledTimes(1);
       expect(snakeMock.eat).toHaveBeenCalledTimes(1);
 
-      jasmine.clock().tick(750);
+      jasmine.clock().tick(Nibbles.UPDATE_FREQUENCY_MS);
 
       expect(snakeMock.canEat).toHaveBeenCalledTimes(2);
       expect(snakeMock.eat).toHaveBeenCalledTimes(2);
@@ -74,8 +74,8 @@ describe('Nibbles', () => {
       const { aNibbles, targetMock } = setup({
         snakeMockData: { canEat: true },
       });
-      const nextX = 120;
-      const nextY = 160;
+      const nextX = 3;
+      const nextY = 4;
       const randomWithinStub = sandbox.stub(randomWithin, 'default')
         .onCall(0)
         .returns(nextX)
@@ -90,10 +90,10 @@ describe('Nibbles', () => {
     });
 
     it('does not overlap target with snake on target re-positioning', () => {
-      const snakeX = 120;
-      const snakeY = 160;
-      const nextX = 200;
-      const nextY = 240;
+      const snakeX = 3;
+      const snakeY = 4;
+      const nextX = 5;
+      const nextY = 6;
       const { aNibbles, targetMock } = setup({
         snakeMockData: { canEat: true, x: snakeX, y: snakeY },
       });
@@ -115,10 +115,10 @@ describe('Nibbles', () => {
     });
 
     it('does not re-position target to same coordinate it was before', () => {
-      const targetX = 120;
-      const targetY = 160;
-      const nextX = 200;
-      const nextY = 240;
+      const targetX = 3;
+      const targetY = 4;
+      const nextX = 5;
+      const nextY = 6;
       const { aNibbles, targetMock } = setup({
         snakeMockData: { canEat: true },
         targetMockData: { x: targetX, y: targetY },
@@ -140,33 +140,8 @@ describe('Nibbles', () => {
       expect(randomWithinStub.callCount).toBe(4);
     });
 
-    it('re-positions target right on top of the cell', () => {
-      const incorrectX = 100;
-      const incorrectY = 110;
-      const correctX = 120;
-      const correctY = 160;
-      const { aNibbles, targetMock } = setup({
-        snakeMockData: { canEat: true }
-      });
-      const randomWithinStub = sandbox.stub(randomWithin, 'default')
-        .onCall(0)
-        .returns(incorrectX)
-        .onCall(1)
-        .returns(correctY)
-        .onCall(2)
-        .returns(correctX)
-        .onCall(3)
-        .returns(incorrectY)
-        .onCall(4)
-        .returns(correctX)
-        .onCall(5)
-        .returns(correctY);
-
-      aNibbles.start();
-
-      expect(targetMock.x).toBe(correctX);
-      expect(targetMock.y).toBe(correctY);
-      expect(randomWithinStub.callCount).toBe(6);
+    xit('does not re-position target on the wall', () => {
+      // TODO: Check randomWithin arguments
     });
   });
 
@@ -178,7 +153,7 @@ describe('Nibbles', () => {
 
       aNibbles.setSnakeDirectionFromKeyCode(ARROW_UP);
       aNibbles.start();
-      jasmine.clock().tick(750);
+      jasmine.clock().tick(Nibbles.UPDATE_FREQUENCY_MS);
 
       expect(snakeMock.direction).toBe(Snake.DIRECTION_UP);
     });
@@ -243,8 +218,8 @@ describe('Nibbles', () => {
     return result;
   }
   function createTargetMock({
-    x = 80,
-    y = 80,
+    x = 4,
+    y = 4,
     value = 25,
   }: {
     x?: number,

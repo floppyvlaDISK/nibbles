@@ -1,5 +1,6 @@
 import Renderer from '../src/Renderer';
 import BoardObject from '../src/BoardObject';
+import { BOARD_WIDTH, BOARD_HEIGHT, CELL_WIDTH, CELL_HEIGHT } from '../src/CONST';
 
 describe('Renderer', () => {
   let containerMock: jasmine.SpyObj<HTMLElement>;
@@ -32,19 +33,24 @@ describe('Renderer', () => {
 
     expect(contextMock.fillStyle).toBe('#FFE4E1');
     expect(contextMock.fillRect).toHaveBeenCalledTimes(1);
-    expect(contextMock.fillRect).toHaveBeenCalledWith(0, 0, 800, 800);
+    expect(contextMock.fillRect).toHaveBeenCalledWith(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
   });
 
   it('renderBoardObject()', () => {
     const r = new Renderer(containerMock);
-    const aBoardObject = new BoardObject(250, 250, 40, 40, 'blue');
+    const aBoardObject = new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, 'blue');
 
     r.renderBoard();
     r.renderBoardObject(aBoardObject);
 
     expect(contextMock.fillStyle).toBe('blue');
     expect(contextMock.fillRect).toHaveBeenCalledTimes(2);
-    expect(contextMock.fillRect.calls.argsFor(1)).toEqual([250, 250, 40, 40]);
+    expect(contextMock.fillRect.calls.argsFor(1)).toEqual([
+      3 * CELL_WIDTH,
+      3 * CELL_HEIGHT,
+      CELL_WIDTH,
+      CELL_HEIGHT,
+    ]);
   });
 
   function setupMocks() {

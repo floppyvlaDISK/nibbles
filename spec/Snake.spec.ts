@@ -1,6 +1,7 @@
 import Snake from '../src/Snake';
 import Target from '../src/Target';
 import { ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from '../src/utils/isArrowKey';
+import { CELL_WIDTH, CELL_HEIGHT } from '../src/CONST';
 
 describe('Snake', () => {
   describe('move()', () => {
@@ -8,31 +9,31 @@ describe('Snake', () => {
       {
         title: 'decreases y coordinate if direction is up',
         direction: Snake.DIRECTION_UP,
-        expectedY: 60,
-        expectedX: 100,
+        expectedY: 2,
+        expectedX: 3,
       },
       {
         title: 'increases x coordinate if direction is right',
         direction: Snake.DIRECTION_RIGHT,
-        expectedY: 100,
-        expectedX: 140,
+        expectedY: 3,
+        expectedX: 4,
       },
       {
         title: 'increases y coordinate if direction is down',
         direction: Snake.DIRECTION_DOWN,
-        expectedY: 140,
-        expectedX: 100,
+        expectedY: 4,
+        expectedX: 3,
       },
       {
         title: 'descreases x coordinate if direction is left',
         direction: Snake.DIRECTION_LEFT,
-        expectedY: 100,
-        expectedX: 60,
+        expectedY: 3,
+        expectedX: 2,
       }
     ];
     testCases.forEach(testCase => {
       it(testCase.title, () => {
-        const aSnake = new Snake(100, 100, 40, 40, 'red', testCase.direction, 0);
+        const aSnake = new Snake(3, 3, CELL_WIDTH, CELL_HEIGHT, 'red', testCase.direction, 0);
 
         aSnake.move();
 
@@ -42,7 +43,7 @@ describe('Snake', () => {
     });
 
     it('throws an error if direction has unknown value', () => {
-      const aSnake = new Snake(100, 100, 40, 40, 'red', 'up-right', 0);
+      const aSnake = new Snake(3, 3, CELL_WIDTH, CELL_HEIGHT, 'red', 'up-right', 0);
       const fn = () => aSnake.move();
 
       expect(fn).toThrow();
@@ -87,8 +88,8 @@ describe('Snake', () => {
   });
 
   it('eat()', () => {
-    const aSnake = new Snake(100, 100, 40, 40, 'red', Snake.DIRECTION_RIGHT, 10);
-    const aTarget = new Target(100, 100, 40, 40, 'blue', 13);
+    const aSnake = new Snake(3, 3, CELL_WIDTH, CELL_HEIGHT, 'red', Snake.DIRECTION_RIGHT, 10);
+    const aTarget = new Target(3, 3, CELL_WIDTH, CELL_HEIGHT, 'blue', 13);
 
     expect(aSnake.score).toBe(10);
 
@@ -101,14 +102,14 @@ describe('Snake', () => {
     [
       {
         title: 'true if snake coordinates contain target coordinates',
-        aSnake: new Snake(100, 100, 40, 40, 'red', Snake.DIRECTION_RIGHT, 10),
-        aTarget: new Target(100, 100, 40, 40, 'blue', 13),
+        aSnake: new Snake(3, 3, CELL_WIDTH, CELL_HEIGHT, 'red', Snake.DIRECTION_RIGHT, 10),
+        aTarget: new Target(3, 3, CELL_WIDTH, CELL_HEIGHT, 'blue', 13),
         expectedResult: true,
       },
       {
         title: 'false if snake coordinates do not contain target coordinates',
-        aSnake: new Snake(100, 100, 40, 40, 'red', Snake.DIRECTION_RIGHT, 10),
-        aTarget: new Target(150, 150, 40, 40, 'blue', 13),
+        aSnake: new Snake(3, 3, CELL_WIDTH, CELL_HEIGHT, 'red', Snake.DIRECTION_RIGHT, 10),
+        aTarget: new Target(4, 4, CELL_WIDTH, CELL_HEIGHT, 'blue', 13),
         expectedResult: false,
       }
     ].forEach(testCase => it(testCase.title, () => {
