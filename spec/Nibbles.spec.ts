@@ -70,23 +70,33 @@ describe('Nibbles', () => {
       expect(snakeMock.eat).toHaveBeenCalledTimes(2);
     });
 
-    it('re-positions target if it\'s eaten by snake', () => {
+    it('spawns target if it\'s eaten by snake', () => {
+      const nextX = 3;
+      const nextY = 4;
       const { aNibbles, targetMock } = setup({
         snakeMockData: { canEat: true },
       });
-      const nextX = 3;
-      const nextY = 4;
-      const randomWithinStub = sandbox.stub(randomWithin, 'default')
-        .onCall(0)
-        .returns(nextX)
-        .onCall(1)
-        .returns(nextY);
+      const randomWithinStub = stubRandomWithin([nextX, nextY]);
 
       aNibbles.start();
 
       expect(targetMock.x).toBe(nextX);
       expect(targetMock.y).toBe(nextY);
       expect(randomWithinStub.callCount).toBe(2);
+    });
+
+    it('does not spawn target on the wall', () => {
+      const nextX = 3;
+      const nextY = 4;
+      const { aNibbles } = setup({
+        snakeMockData: { canEat: true },
+      });
+      const randomWithinStub = stubRandomWithin([nextX, nextY]);
+
+      aNibbles.start();
+
+      expect(randomWithinStub.getCall(0).args).toEqual([1, 18]);
+      expect(randomWithinStub.getCall(1).args).toEqual([1, 18]);
     });
 
     it('does not overlap target with snake on target re-positioning', () => {
@@ -97,15 +107,9 @@ describe('Nibbles', () => {
       const { aNibbles, targetMock } = setup({
         snakeMockData: { canEat: true, x: snakeX, y: snakeY },
       });
-      const randomWithinStub = sandbox.stub(randomWithin, 'default')
-        .onCall(0)
-        .returns(snakeX)
-        .onCall(1)
-        .returns(snakeY)
-        .onCall(2)
-        .returns(nextX)
-        .onCall(3)
-        .returns(nextY);
+      const randomWithinStub = stubRandomWithin([
+        snakeX, snakeY, nextX, nextY
+      ]);
 
       aNibbles.start();
 
@@ -114,7 +118,7 @@ describe('Nibbles', () => {
       expect(randomWithinStub.callCount).toBe(4);
     });
 
-    it('does not re-position target to same coordinate it was before', () => {
+    it('does not spawn target to same coordinate it was before', () => {
       const targetX = 3;
       const targetY = 4;
       const nextX = 5;
@@ -123,25 +127,15 @@ describe('Nibbles', () => {
         snakeMockData: { canEat: true },
         targetMockData: { x: targetX, y: targetY },
       });
-      const randomWithinStub = sandbox.stub(randomWithin, 'default')
-        .onCall(0)
-        .returns(targetX)
-        .onCall(1)
-        .returns(targetY)
-        .onCall(2)
-        .returns(nextX)
-        .onCall(3)
-        .returns(nextY);
+      const randomWithinStub = stubRandomWithin([
+        targetX, targetY, nextX, nextY
+      ]);
 
       aNibbles.start();
 
       expect(targetMock.x).toBe(nextX);
       expect(targetMock.y).toBe(nextY);
       expect(randomWithinStub.callCount).toBe(4);
-    });
-
-    xit('does not re-position target on the wall', () => {
-      // TODO: Check randomWithin arguments
     });
   });
 
@@ -241,5 +235,12 @@ describe('Nibbles', () => {
   ) {
     expect(rendererMock.renderBoard).toHaveBeenCalledTimes(callCount);
     expect(rendererMock.renderBoardObject).toHaveBeenCalledTimes(callCount * 2);
+  }
+  function stubRandomWithin(argsList: Array<number>) {
+    const stub = sandbox.stub(randomWithin, 'default')
+    argsList.forEach((arg, index) => {
+      stub.onCall(index).returns(arg);
+    });
+    return stub;
   }
 });

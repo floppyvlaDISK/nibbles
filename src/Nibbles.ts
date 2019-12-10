@@ -66,29 +66,26 @@ export default class Nibbles {
     this._snake.move();
     if (this._snake.canEat(this._target)) {
       this._snake.eat(this._target);
-      this._setNextTargetPosition();
+      this._spawnTargetInNextPosition();
     }
   }
 
-  private _setNextTargetPosition() {
-    let nextX;
-    let nextY;
-    while (
-      typeof nextX === 'undefined'
-      || typeof nextY === 'undefined'
-    ) {
-      nextX = randomWithin(1, 18);
-      nextY = randomWithin(1, 18);
-      if (
-        this._snake.coordinates.equals(new Coordinates(nextX, nextY))
-        || this._target.coordinates.equals(new Coordinates(nextX, nextY))
-      ) {
-        nextX = undefined;
-        nextY = undefined;
+  private _spawnTargetInNextPosition() {
+    let result;
+    while (!result) {
+      result = new Coordinates(randomWithin(1, 18), randomWithin(1, 18));
+      if (this._overlapsWithBoardObjects(result)) {
+        result = undefined;
       }
     }
-    this._target.x = nextX;
-    this._target.y = nextY;
+    this._target.x = result.x;
+    this._target.y = result.y;
+  }
+
+  private _overlapsWithBoardObjects(aCoordinates: Coordinates) {
+    return this._getBoardObjects().some(
+      obj => obj.coordinates.equals(aCoordinates)
+    );
   }
 
   private _trySetSnakeDirectionFromQueue() {
