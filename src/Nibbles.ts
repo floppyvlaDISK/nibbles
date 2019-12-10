@@ -27,6 +27,8 @@ export default class Nibbles {
     this._performUpdate = this._performUpdate.bind(this);
   }
 
+  public static UPDATE_FREQUENCY_MS = 750;
+
   public render() {
     this._renderer.renderBoard();
     this._getBoardObjects().forEach(
@@ -36,7 +38,7 @@ export default class Nibbles {
 
   public start() {
     this._performUpdate();
-    setInterval(this._performUpdate, 750);
+    setInterval(this._performUpdate, Nibbles.UPDATE_FREQUENCY_MS);
   }
 
   public setSnakeDirectionFromKeyCode(value: number) {
@@ -69,20 +71,17 @@ export default class Nibbles {
   }
 
   private _setNextTargetPosition() {
-    // TODO: 40 should be a const
     let nextX;
     let nextY;
     while (
       typeof nextX === 'undefined'
       || typeof nextY === 'undefined'
     ) {
-      nextX = randomWithin(40, Renderer.WIDTH - 40);
-      nextY = randomWithin(40, Renderer.HEIGHT - 40);
+      nextX = randomWithin(1, 18);
+      nextY = randomWithin(1, 18);
       if (
         this._snake.coordinates.equals(new Coordinates(nextX, nextY))
         || this._target.coordinates.equals(new Coordinates(nextX, nextY))
-        || !Number.isInteger(nextX / 40)
-        || !Number.isInteger(nextY / 40)
       ) {
         nextX = undefined;
         nextY = undefined;

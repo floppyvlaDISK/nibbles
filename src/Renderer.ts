@@ -1,4 +1,5 @@
 import BoardObject from './BoardObject';
+import { BOARD_WIDTH, BOARD_HEIGHT } from './CONST';
 
 export default class Renderer {
   private _canvas: HTMLCanvasElement;
@@ -10,13 +11,10 @@ export default class Renderer {
     this._canvas = Renderer._createCanvas(container);
   }
 
-  public static WIDTH = 800;
-  public static HEIGHT = 800;
-
   private static _createCanvas(container: HTMLElement) {
     const canvas = document.createElement('canvas');
-    canvas.setAttribute('width', `${Renderer.WIDTH}px`);
-    canvas.setAttribute('height', `${Renderer.HEIGHT}px`);
+    canvas.setAttribute('width', `${BOARD_WIDTH}px`);
+    canvas.setAttribute('height', `${BOARD_HEIGHT}px`);
     container.appendChild(canvas);
     return canvas;
   }
@@ -32,14 +30,14 @@ export default class Renderer {
   public renderBoard() {
     // FIXME: Is board a board object itself?
     this.ctx.fillStyle = '#FFE4E1';
-    this.ctx.fillRect(0, 0, Renderer.WIDTH, Renderer.HEIGHT);
+    this.ctx.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
   }
 
   public renderBoardObject(aBoardObject: BoardObject) {
     this.ctx.fillStyle = aBoardObject.color;
     this.ctx.fillRect(
-      aBoardObject.x,
-      aBoardObject.y,
+      aBoardObject.x * aBoardObject.width,
+      aBoardObject.y * aBoardObject.height,
       aBoardObject.width,
       aBoardObject.height,
     );

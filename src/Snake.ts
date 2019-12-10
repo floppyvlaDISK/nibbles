@@ -90,18 +90,18 @@ export default class Snake extends BoardObject {
   }
 
   private _moveUp() {
-    this.y -= this.height;
+    this.y -= 1;
   }
 
   private _moveRight() {
-    this.x += this.width;
+    this.x += 1;
   }
 
   private _moveDown() {
-    this.y += this.height;
+    this.y += 1;
   }
 
   private _moveLeft() {
-    this.x -= this.width;
+    this.x -= 1;
   }
 }
