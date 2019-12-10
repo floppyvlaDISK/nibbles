@@ -62,6 +62,10 @@ export default class Snake extends BoardObject {
     this._updateCoordinate();
   }
 
+  public die() {
+    // TODO:
+  }
+
   public eat(aTarget: Target) {
     this._increaseScoreBy(aTarget.value);
   }

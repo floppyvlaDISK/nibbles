@@ -7,6 +7,8 @@ import Target from '../src/Target';
 import Renderer from '../src/Renderer';
 import * as randomWithin from '../src/utils/randomWithin';
 import Coordinates from '../src/Coordinates';
+import BoardObject from '../src/BoardObject';
+import { BOARD_WIDTH, CELL_HEIGHT, BOARD_HEIGHT, CELL_WIDTH } from '../src/CONST';
 
 describe('Nibbles', () => {
   let sandbox = sinon.createSandbox();
@@ -23,6 +25,7 @@ describe('Nibbles', () => {
     testRenderCalls(rendererMock, 1);
   });
 
+  // FIXME: Should all there tests be nested within start()?
   describe('start()', () => {
     it('renders board and objects', () => {
       const { aNibbles, rendererMock } = setup();
@@ -49,7 +52,6 @@ describe('Nibbles', () => {
 
       expect(snakeMock.move).toHaveBeenCalledTimes(2);
     });
-
 
     it('makes the snake eat the target if their positions on board intersects after snake move', () => {
       const { aNibbles, snakeMock } = setup({
@@ -137,6 +139,16 @@ describe('Nibbles', () => {
       expect(targetMock.y).toBe(nextY);
       expect(randomWithinStub.callCount).toBe(4);
     });
+
+    it('resets the game if snake has died', () => {
+      const { aNibbles, snakeMock } = setup({
+        snakeMockData: { x: 5, y: 0, direction: Snake.DIRECTION_LEFT },
+      });
+
+      aNibbles.start();
+
+      expect(snakeMock.die).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('setSnakeDirectionFromKeyCode()', () => {
@@ -181,7 +193,12 @@ describe('Nibbles', () => {
       rendererMock,
       snakeMock,
       targetMock,
-      [],
+      [
+        new BoardObject(0, 0, BOARD_WIDTH, CELL_HEIGHT, 'pink'),
+        new BoardObject(0, 19, BOARD_WIDTH, CELL_HEIGHT, 'pink'),
+        new BoardObject(19, 0, CELL_WIDTH, BOARD_HEIGHT, 'pink'),
+        new BoardObject(0, 0, CELL_WIDTH, BOARD_HEIGHT, 'pink'),
+      ],
     );
   }
   function createRendererMock() {
@@ -192,22 +209,25 @@ describe('Nibbles', () => {
   }
   function createSnakeMock({
     canEat = false,
-    x = 0,
-    y = 0,
+    x = 1,
+    y = 1,
+    direction = Snake.DIRECTION_RIGHT,
   }: {
     canEat?: boolean,
     x?: number,
-    y?: number
+    y?: number,
+    direction?: string,
   }) {
     const result = jasmine.createSpyObj(
       'Snake',
       {
         move: undefined,
+        die: undefined,
         eat: undefined,
         canEat,
       },
     );
-    result.direction = Snake.DIRECTION_RIGHT;
+    result.direction = direction;
     result.coordinates = new Coordinates(x, y);
     return result;
   }
@@ -234,7 +254,7 @@ describe('Nibbles', () => {
     callCount: number
   ) {
     expect(rendererMock.renderBoard).toHaveBeenCalledTimes(callCount);
-    expect(rendererMock.renderBoardObject).toHaveBeenCalledTimes(callCount * 2);
+    expect(rendererMock.renderBoardObject).toHaveBeenCalledTimes(callCount * 6);
   }
   function stubRandomWithin(argsList: Array<number>) {
     const stub = sandbox.stub(randomWithin, 'default')

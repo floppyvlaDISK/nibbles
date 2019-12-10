@@ -26,4 +26,8 @@ export default class Coordinates {
   public equals(other: Coordinates) {
     return this._x === other.x && this._y === other.y;
   }
+
+  public equalsPartially(other: Coordinates) {
+    return this._x === other.x || this._y === other.y;
+  }
 }

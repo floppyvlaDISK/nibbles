@@ -59,7 +59,16 @@ export default class Nibbles {
   private _performUpdate() {
     this._trySetSnakeDirectionFromQueue();
     this._updateBoardObjects();
-    this.render();
+    if (this._hasSnakeDied()) {
+      this._snake.die();
+      this._reset();
+    } else {
+      this.render();
+    }
+  }
+
+  private _reset() {
+    // TODO:
   }
 
   private _updateBoardObjects() {
@@ -74,7 +83,7 @@ export default class Nibbles {
     let result;
     while (!result) {
       result = new Coordinates(randomWithin(1, 18), randomWithin(1, 18));
-      if (this._overlapsWithBoardObjects(result)) {
+      if (this._isOccupied(result)) {
         result = undefined;
       }
     }
@@ -82,16 +91,23 @@ export default class Nibbles {
     this._target.y = result.y;
   }
 
-  private _overlapsWithBoardObjects(aCoordinates: Coordinates) {
-    return this._getBoardObjects().some(
-      obj => obj.coordinates.equals(aCoordinates)
-    );
-  }
 
   private _trySetSnakeDirectionFromQueue() {
     const nextDirection = this._snakeDirectionsQueue.shift();
     if (nextDirection) {
       this._snake.direction = nextDirection;
     }
+  }
+
+  private _isOccupied(aCoordinate: Coordinates) {
+    return [this._snake, this._target].some(
+      obj => obj.coordinates.equals(aCoordinate)
+    );
+  }
+
+  private _hasSnakeDied() {
+    return this._walls.some(
+      w => w.coordinates.equalsPartially(this._snake.coordinates)
+    );
   }
 }
