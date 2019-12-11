@@ -73,12 +73,9 @@ describe('Snake', () => {
         expectedDirection: Snake.DIRECTION_LEFT,
       },
     ];
-    testCases.forEach(testCase => {
-      it(testCase.title, () => {
-        expect(Snake.directionFromKeyCode(testCase.keyCode))
-          .toBe(testCase.expectedDirection);
-      });
-    });
+    testCases.forEach(t => it(t.title, () => {
+      expect(Snake.directionFromKeyCode(t.keyCode)).toBe(t.expectedDirection);
+    }));
 
     it('throws an error if keyCode is has unknown value', () => {
       const fn = () => Snake.directionFromKeyCode(122);
@@ -99,7 +96,7 @@ describe('Snake', () => {
   });
 
   describe('canEat()', () => {
-    [
+    const testCases = [
       {
         title: 'true if snake coordinates contain target coordinates',
         aSnake: new Snake(3, 3, CELL_WIDTH, CELL_HEIGHT, 'red', Snake.DIRECTION_RIGHT, 10),
@@ -112,8 +109,27 @@ describe('Snake', () => {
         aTarget: new Target(4, 4, CELL_WIDTH, CELL_HEIGHT, 'blue', 13),
         expectedResult: false,
       }
-    ].forEach(testCase => it(testCase.title, () => {
-      expect(testCase.aSnake.canEat(testCase.aTarget)).toBe(testCase.expectedResult);
+    ];
+    testCases.forEach(t => it(t.title, () => {
+      expect(t.aSnake.canEat(t.aTarget)).toBe(t.expectedResult);
     }));
+  });
+
+  describe('die()', () => {
+    it('sets coordinates to initial', () => {
+      const aSnake = new Snake(3, 4, CELL_WIDTH, CELL_HEIGHT, 'red', Snake.DIRECTION_RIGHT, 10);
+
+      for (let i = 0; i < 3; i++) {
+        aSnake.move();
+      }
+      aSnake.die();
+
+      expect(aSnake.x).toBe(3);
+      expect(aSnake.y).toBe(4);
+    });
+
+    xit('sets score to initial', () => {
+
+    });
   });
 });

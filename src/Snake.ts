@@ -1,11 +1,13 @@
 import BoardObject from './BoardObject';
 import { ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from './utils/isArrowKey';
 import Target from './Target';
+import Coordinates from './Coordinates';
 
 // FIXME: Is snake a board object or a collection of board objects
 export default class Snake extends BoardObject {
   private _direction: string;
   private _score: number;
+  private _initialCoordinates: Coordinates;
 
   constructor(
     x: number,
@@ -19,6 +21,7 @@ export default class Snake extends BoardObject {
     super(x, y, width, height, color);
     this._direction = direction;
     this._score = score;
+    this._initialCoordinates = new Coordinates(x, y);
 
     this._moveUp = this._moveUp.bind(this);
     this._moveRight = this._moveRight.bind(this);
@@ -63,7 +66,8 @@ export default class Snake extends BoardObject {
   }
 
   public die() {
-    // TODO:
+    this.x = this._initialCoordinates.x;
+    this.y = this._initialCoordinates.y;
   }
 
   public eat(aTarget: Target) {
