@@ -117,19 +117,28 @@ describe('Snake', () => {
 
   describe('die()', () => {
     it('sets coordinates to initial', () => {
-      const aSnake = new Snake(3, 4, CELL_WIDTH, CELL_HEIGHT, 'red', Snake.DIRECTION_RIGHT, 10);
+      const initialX = 3;
+      const initialY = 4
+      const aSnake = new Snake(initialX, initialY, CELL_WIDTH, CELL_HEIGHT, 'red', Snake.DIRECTION_RIGHT, 10);
 
       for (let i = 0; i < 3; i++) {
         aSnake.move();
       }
       aSnake.die();
 
-      expect(aSnake.x).toBe(3);
-      expect(aSnake.y).toBe(4);
+      expect(aSnake.x).toBe(initialX);
+      expect(aSnake.y).toBe(initialY);
     });
 
-    xit('sets score to initial', () => {
+    it('sets score to initial', () => {
+      const initialScore = 10;
+      const aSnake = new Snake(3, 4, CELL_WIDTH, CELL_HEIGHT, 'red', Snake.DIRECTION_RIGHT, initialScore);
+      const aTarget = new Target(3, 4, CELL_WIDTH, CELL_HEIGHT, 'red', 13);
 
+      aSnake.eat(aTarget);
+      aSnake.die();
+
+      expect(aSnake.score).toBe(initialScore);
     });
   });
 });

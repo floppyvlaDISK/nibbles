@@ -7,7 +7,9 @@ import Coordinates from './Coordinates';
 export default class Snake extends BoardObject {
   private _direction: string;
   private _score: number;
-  private _initialCoordinates: Coordinates;
+  private _initialX: number;
+  private _initialY: number;
+  private _initialScore: number;
 
   constructor(
     x: number,
@@ -21,7 +23,10 @@ export default class Snake extends BoardObject {
     super(x, y, width, height, color);
     this._direction = direction;
     this._score = score;
-    this._initialCoordinates = new Coordinates(x, y);
+
+    this._initialX = x;
+    this._initialY = y;
+    this._initialScore = score;
 
     this._moveUp = this._moveUp.bind(this);
     this._moveRight = this._moveRight.bind(this);
@@ -66,8 +71,9 @@ export default class Snake extends BoardObject {
   }
 
   public die() {
-    this.x = this._initialCoordinates.x;
-    this.y = this._initialCoordinates.y;
+    this.x = this._initialX;
+    this.y = this._initialY;
+    this._score = this._initialScore;
   }
 
   public eat(aTarget: Target) {
