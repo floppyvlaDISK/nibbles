@@ -11,6 +11,7 @@ export default class Nibbles {
   private _target: Target;
   private _walls: Array<BoardObject>;
   private _snakeDirectionsQueue: Array<string>;
+  private _intervalId: number | undefined;
 
   constructor(
     renderer: Renderer,
@@ -23,6 +24,7 @@ export default class Nibbles {
     this._target = target;
     this._walls = walls;
     this._snakeDirectionsQueue = [];
+    this._intervalId = undefined;
 
     this._performUpdate = this._performUpdate.bind(this);
   }
@@ -38,7 +40,7 @@ export default class Nibbles {
 
   public start() {
     this._performUpdate();
-    setInterval(this._performUpdate, Nibbles.UPDATE_FREQUENCY_MS);
+    this._intervalId = window.setInterval(this._performUpdate, Nibbles.UPDATE_FREQUENCY_MS);
   }
 
   public setSnakeDirectionFromKeyCode(value: number) {
@@ -62,13 +64,13 @@ export default class Nibbles {
     if (this._hasSnakeDied()) {
       this._snake.die();
       this._reset();
-    } else {
-      this.render();
     }
+    this.render();
   }
 
   private _reset() {
-    // TODO:
+    this._snakeDirectionsQueue = [];
+    window.clearInterval(this._intervalId);
   }
 
   private _updateBoardObjects() {
