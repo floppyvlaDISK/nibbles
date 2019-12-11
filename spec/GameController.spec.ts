@@ -9,31 +9,33 @@ describe('GameController', () => {
     nibblesMock = createNibblesStack();
   });
 
-  it('exec() renders nibbles', () => {
-    const controller = new GameController(nibblesMock);
+  describe('exec()', () => {
+    it('renders nibbles', () => {
+      const controller = new GameController(nibblesMock);
 
-    expect(nibblesMock.render).toHaveBeenCalledTimes(0);
+      expect(nibblesMock.render).toHaveBeenCalledTimes(0);
 
-    controller.exec();
+      controller.exec();
 
-    expect(nibblesMock.render).toHaveBeenCalledTimes(1);
-  });
+      expect(nibblesMock.render).toHaveBeenCalledTimes(1);
+    });
 
-  it('exec() sets up keydown event listener that starts nibbles on arrow keys', () => {
-    const controller = new GameController(nibblesMock);
+    it('sets up keydown event listener that starts nibbles on arrow keys', () => {
+      const controller = new GameController(nibblesMock);
 
-    fireKeybordEvent({ keyCode: ARROW_UP });
+      fireKeybordEvent({ keyCode: ARROW_UP });
 
-    expect(nibblesMock.start).toHaveBeenCalledTimes(0);
+      expect(nibblesMock.start).toHaveBeenCalledTimes(0);
 
-    controller.exec();
-    fireKeybordEvent({ keyCode: ARROW_UP });
+      controller.exec();
+      fireKeybordEvent({ keyCode: ARROW_UP });
 
-    expect(nibblesMock.start).toHaveBeenCalledTimes(1);
+      expect(nibblesMock.start).toHaveBeenCalledTimes(1);
 
-    fireKeybordEvent({ keyCode: ARROW_UP });
+      fireKeybordEvent({ keyCode: ARROW_UP });
 
-    expect(nibblesMock.start).toHaveBeenCalledTimes(1);
+      expect(nibblesMock.start).toHaveBeenCalledTimes(2);
+    });
   });
 
   it('updates snake direction on arrow key down', () => {

@@ -39,6 +39,9 @@ export default class Nibbles {
   }
 
   public start() {
+    if (this._intervalId) {
+      return;
+    }
     this._performUpdate();
     this._intervalId = window.setInterval(this._performUpdate, Nibbles.UPDATE_FREQUENCY_MS);
   }
@@ -71,6 +74,7 @@ export default class Nibbles {
   private _reset() {
     this._snakeDirectionsQueue = [];
     window.clearInterval(this._intervalId);
+    this._intervalId = undefined;
   }
 
   private _updateBoardObjects() {

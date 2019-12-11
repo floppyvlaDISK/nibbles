@@ -22,9 +22,7 @@ export default class GameController {
   private _handleKeyDown(event: KeyboardEvent) {
     if (isArrowKey(event.keyCode)) {
       this._setSnakeDirection(event.keyCode);
-      if (!this._hasStarted) {
-        this._startTheGame();
-      }
+      this._nibbles.start();
     }
   }
 
