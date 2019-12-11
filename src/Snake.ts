@@ -10,6 +10,7 @@ export default class Snake extends BoardObject {
   private _initialX: number;
   private _initialY: number;
   private _initialScore: number;
+  private _initialDirection: string;
 
   constructor(
     x: number,
@@ -27,6 +28,7 @@ export default class Snake extends BoardObject {
     this._initialX = x;
     this._initialY = y;
     this._initialScore = score;
+    this._initialDirection = direction;
 
     this._moveUp = this._moveUp.bind(this);
     this._moveRight = this._moveRight.bind(this);
@@ -74,6 +76,7 @@ export default class Snake extends BoardObject {
     this.x = this._initialX;
     this.y = this._initialY;
     this._score = this._initialScore;
+    this.direction = this._initialDirection;
   }
 
   public eat(aTarget: Target) {

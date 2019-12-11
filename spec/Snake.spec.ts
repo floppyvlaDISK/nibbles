@@ -140,5 +140,15 @@ describe('Snake', () => {
 
       expect(aSnake.score).toBe(initialScore);
     });
+
+    it('sets direction to initial', () => {
+      const initialDirection = Snake.DIRECTION_RIGHT;
+      const aSnake = new Snake(3, 4, CELL_WIDTH, CELL_HEIGHT, 'red', initialDirection, 10);
+
+      aSnake.direction = Snake.DIRECTION_DOWN;
+      aSnake.die();
+
+      expect(aSnake.direction).toBe(initialDirection);
+    });
   });
 });
