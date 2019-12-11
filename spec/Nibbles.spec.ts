@@ -140,7 +140,7 @@ describe('Nibbles', () => {
       expect(randomWithinStub.callCount).toBe(4);
     });
 
-    it('resets the game if snake has died', () => {
+    it('checks if snake died on wall collision', () => {
       const { aNibbles, snakeMock } = setup({
         snakeMockData: { x: 5, y: 0, direction: Snake.DIRECTION_LEFT },
       });
@@ -148,6 +148,17 @@ describe('Nibbles', () => {
       aNibbles.start();
 
       expect(snakeMock.die).toHaveBeenCalledTimes(1);
+    });
+
+    it('cancels following updates if snake has died', () => {
+      const { aNibbles, snakeMock } = setup({
+        snakeMockData: { x: 5, y: 0, direction: Snake.DIRECTION_LEFT },
+      });
+
+      aNibbles.start();
+      jasmine.clock().tick(Nibbles.UPDATE_FREQUENCY_MS * 5);
+
+      expect(snakeMock.move).toHaveBeenCalledTimes(1); // FIXME: Why 2?
     });
   });
 
