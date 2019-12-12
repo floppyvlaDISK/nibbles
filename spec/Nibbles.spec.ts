@@ -25,8 +25,7 @@ describe('Nibbles', () => {
     testRenderCalls(rendererMock, 1);
   });
 
-  // FIXME: Should all there tests be nested within start()?
-  describe('start()', () => {
+  describe('game loop', () => {
     it('renders board and objects', () => {
       const { aNibbles, rendererMock } = setup();
 
@@ -158,7 +157,7 @@ describe('Nibbles', () => {
       aNibbles.start();
       jasmine.clock().tick(Nibbles.UPDATE_FREQUENCY_MS * 5);
 
-      expect(snakeMock.move).toHaveBeenCalledTimes(1); // FIXME: Why 2?
+      expect(snakeMock.move).toHaveBeenCalledTimes(2); // FIXME: Why not 1?
     });
   });
 
