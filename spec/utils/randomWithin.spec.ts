@@ -1,4 +1,4 @@
-import randomWithin from '../src/utils/randomWithin';
+import randomWithin from '../../src/utils/randomWithin';
 
 describe('randomWithin', () => {
   [

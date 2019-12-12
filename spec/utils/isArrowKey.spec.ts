@@ -1,4 +1,4 @@
-import isArrowKey, { ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from '../src/utils/isArrowKey';
+import isArrowKey, { ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from '../../src/utils/isArrowKey';
 
 describe('isArrowKey', () => {
   it('arrow up key', () => {
