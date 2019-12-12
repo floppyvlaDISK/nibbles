@@ -6,7 +6,7 @@ describe('GameController', () => {
   let nibblesMock: jasmine.SpyObj<Nibbles>;
 
   beforeEach(() => {
-    nibblesMock = createNibblesStack();
+    nibblesMock = createNibblesMock();
   });
 
   describe('exec()', () => {
@@ -50,7 +50,7 @@ describe('GameController', () => {
     expect(nibblesMock.setSnakeDirectionFromKeyCode).toHaveBeenCalledWith(ARROW_UP);
   });
 
-  function createNibblesStack() {
+  function createNibblesMock() {
     return jasmine.createSpyObj(
       'Nibbles',
       ['render', 'start', 'setSnakeDirectionFromKeyCode']
