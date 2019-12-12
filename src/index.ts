@@ -5,6 +5,7 @@ import GameController from './GameController';
 import Snake from './Snake';
 import Target from './Target';
 import { CELL_WIDTH, CELL_HEIGHT, BOARD_WIDTH, BOARD_HEIGHT } from './CONST';
+import PubSub from './utils/PubSub';
 
 // FIXME: This is getting out of hand
 const container = document.getElementById('app-root');
@@ -18,7 +19,10 @@ const walls = [
   new BoardObject(19, 0, CELL_WIDTH, BOARD_HEIGHT, 'pink'),
   new BoardObject(0, 0, CELL_WIDTH, BOARD_HEIGHT, 'pink'),
 ];
-const aNibbles = new Nibbles(aRenderer, aSnake, target, walls);
+const aPubSub = new PubSub();
+const aNibbles = new Nibbles(aRenderer, aSnake, target, walls, aPubSub);
 const aGameController = new GameController(aNibbles);
+// const aScoreDashboard = new ScoreDashboard(container);
 
+// aPubSub.subscribe('SnakeScoreChanged', aScoreDashboard);
 aGameController.exec();

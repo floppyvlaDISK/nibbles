@@ -9,6 +9,7 @@ import * as randomWithin from '../src/utils/randomWithin';
 import Coordinates from '../src/Coordinates';
 import BoardObject from '../src/BoardObject';
 import { BOARD_WIDTH, CELL_HEIGHT, BOARD_HEIGHT, CELL_WIDTH } from '../src/CONST';
+import PubSub from '../src/utils/PubSub';
 
 describe('Nibbles', () => {
   let sandbox = sinon.createSandbox();
@@ -209,6 +210,7 @@ describe('Nibbles', () => {
         new BoardObject(19, 0, CELL_WIDTH, BOARD_HEIGHT, 'pink'),
         new BoardObject(0, 0, CELL_WIDTH, BOARD_HEIGHT, 'pink'),
       ],
+      new PubSub(),
     );
   }
   function createRendererMock() {

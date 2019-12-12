@@ -4,12 +4,14 @@ import BoardObject from './BoardObject';
 import Target from './Target';
 import randomWithin from './utils/randomWithin';
 import Coordinates from './Coordinates';
+import PubSub from './utils/PubSub';
 
 export default class Nibbles {
   private _renderer: Renderer;
   private _snake: Snake;
   private _target: Target;
   private _walls: Array<BoardObject>;
+  private _pubSub: PubSub;
   private _snakeDirectionsQueue: Array<string>;
   private _intervalId: number | undefined;
 
@@ -18,11 +20,13 @@ export default class Nibbles {
     snake: Snake,
     target: Target,
     walls: Array<BoardObject>,
+    pubSub: PubSub,
   ) {
     this._renderer = renderer;
     this._snake = snake;
     this._target = target;
     this._walls = walls;
+    this._pubSub = pubSub;
     this._snakeDirectionsQueue = [];
     this._intervalId = undefined;
 
