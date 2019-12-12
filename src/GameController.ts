@@ -29,9 +29,4 @@ export default class GameController {
   private _setSnakeDirection(keyCode: number) {
     this._nibbles.setSnakeDirectionFromKeyCode(keyCode);
   }
-
-  private _startTheGame() {
-    this._hasStarted = true;
-    this._nibbles.start();
-  }
 }
