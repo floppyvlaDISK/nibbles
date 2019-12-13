@@ -6,6 +6,8 @@ export default class ScoreDashboard {
       throw new TypeError('ScoreDashboard: container is not a valid HTMLElement');
     }
     this._scoreContent = this._createScoreElement(container);
+
+    this.render = this.render.bind(this);
   }
 
   toString() {
@@ -13,6 +15,7 @@ export default class ScoreDashboard {
   }
 
   render(value: number) {
+    console.log(value);
     this._scoreContent.textContent = `Score: ${value}`;
   }
 

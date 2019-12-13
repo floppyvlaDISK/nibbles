@@ -25,6 +25,6 @@ const aNibbles = new Nibbles(aRenderer, aSnake, target, walls, aPubSub);
 const aGameController = new GameController(aNibbles);
 const aScoreDashboard = new ScoreDashboard(container);
 
-aScoreDashboard.render(10);
-// aPubSub.subscribe('SnakeScoreChanged', aScoreDashboard);
+aScoreDashboard.render(aSnake.score);
+aPubSub.subscribe('SnakeScoreChanged', aScoreDashboard.render);
 aGameController.exec();
