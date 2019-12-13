@@ -8,9 +8,7 @@ import { CELL_WIDTH, CELL_HEIGHT, BOARD_WIDTH, BOARD_HEIGHT } from './CONST';
 import PubSub from './utils/PubSub';
 import ScoreDashboard from './ScoreDashboard';
 
-const container = document.getElementById('app-root');
-
-const aRenderer = new Renderer(container);
+const aRenderer = new Renderer(document.getElementById('nibbles'));
 const board = new BoardObject(0, 0, BOARD_WIDTH, BOARD_HEIGHT, '#FFE4E1');
 const aSnake = new Snake(2, 2, CELL_WIDTH, CELL_HEIGHT, 'green', Snake.DIRECTION_RIGHT, 0);
 const target = new Target(4, 4, CELL_WIDTH, CELL_HEIGHT, 'red', 25);
@@ -31,7 +29,7 @@ const aNibbles = new Nibbles(
   aPubSub
 );
 const aGameController = new GameController(aNibbles);
-const aScoreDashboard = new ScoreDashboard(container);
+const aScoreDashboard = new ScoreDashboard(document.getElementById('score-board'));
 
 aPubSub.subscribe('SnakeScoreChanged', aScoreDashboard.render);
 aScoreDashboard.render(aSnake.score);
