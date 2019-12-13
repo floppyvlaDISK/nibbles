@@ -4,7 +4,14 @@ import BoardObject from './BoardObject';
 import GameController from './GameController';
 import Snake from './Snake';
 import Target from './Target';
-import { CELL_WIDTH, CELL_HEIGHT, BOARD_WIDTH, BOARD_HEIGHT } from './CONST';
+import {
+  CELL_WIDTH,
+  CELL_HEIGHT,
+  BOARD_WIDTH,
+  BOARD_HEIGHT,
+  LAST_CELL_INDEX_BY_HEIGHT,
+  LAST_CELL_INDEX_BY_WIDTH
+} from './CONST';
 import PubSub from './utils/PubSub';
 import ScoreDashboard from './ScoreDashboard';
 
@@ -13,10 +20,9 @@ const board = new BoardObject(0, 0, BOARD_WIDTH, BOARD_HEIGHT, '#FFE4E1');
 const aSnake = new Snake(2, 2, CELL_WIDTH, CELL_HEIGHT, 'green', Snake.DIRECTION_RIGHT, 0);
 const target = new Target(4, 4, CELL_WIDTH, CELL_HEIGHT, 'red', 25);
 const walls = [
-  // FIXME: 19 - last cell index
   new BoardObject(0, 0, BOARD_WIDTH, CELL_HEIGHT, 'pink'),
-  new BoardObject(0, 19, BOARD_WIDTH, CELL_HEIGHT, 'pink'),
-  new BoardObject(19, 0, CELL_WIDTH, BOARD_HEIGHT, 'pink'),
+  new BoardObject(0, LAST_CELL_INDEX_BY_HEIGHT, BOARD_WIDTH, CELL_HEIGHT, 'pink'),
+  new BoardObject(LAST_CELL_INDEX_BY_WIDTH, 0, CELL_WIDTH, BOARD_HEIGHT, 'pink'),
   new BoardObject(0, 0, CELL_WIDTH, BOARD_HEIGHT, 'pink'),
 ];
 const aPubSub = new PubSub();

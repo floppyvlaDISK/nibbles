@@ -8,7 +8,14 @@ import Renderer from '../src/Renderer';
 import * as randomWithin from '../src/utils/randomWithin';
 import Coordinates from '../src/Coordinates';
 import BoardObject from '../src/BoardObject';
-import { BOARD_WIDTH, CELL_HEIGHT, BOARD_HEIGHT, CELL_WIDTH } from '../src/CONST';
+import {
+  BOARD_WIDTH,
+  CELL_HEIGHT,
+  BOARD_HEIGHT,
+  CELL_WIDTH,
+  LAST_CELL_INDEX_BY_HEIGHT,
+  LAST_CELL_INDEX_BY_WIDTH
+} from '../src/CONST';
 import PubSub from '../src/utils/PubSub';
 
 describe('Nibbles', () => {
@@ -232,8 +239,8 @@ describe('Nibbles', () => {
       targetMock,
       [
         new BoardObject(0, 0, BOARD_WIDTH, CELL_HEIGHT, 'pink'),
-        new BoardObject(0, 19, BOARD_WIDTH, CELL_HEIGHT, 'pink'),
-        new BoardObject(19, 0, CELL_WIDTH, BOARD_HEIGHT, 'pink'),
+        new BoardObject(0, LAST_CELL_INDEX_BY_HEIGHT, BOARD_WIDTH, CELL_HEIGHT, 'pink'),
+        new BoardObject(LAST_CELL_INDEX_BY_WIDTH, 0, CELL_WIDTH, BOARD_HEIGHT, 'pink'),
         new BoardObject(0, 0, CELL_WIDTH, BOARD_HEIGHT, 'pink'),
       ],
       pubSubMock,
