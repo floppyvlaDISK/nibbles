@@ -26,26 +26,15 @@ describe('Renderer', () => {
     expect(canvasMock.getContext).toHaveBeenCalledWith('2d');
   });
 
-  it('renderBoard()', () => {
-    const r = new Renderer(containerMock);
-
-    r.renderBoard();
-
-    expect(contextMock.fillStyle).toBe('#FFE4E1');
-    expect(contextMock.fillRect).toHaveBeenCalledTimes(1);
-    expect(contextMock.fillRect).toHaveBeenCalledWith(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
-  });
-
-  it('renderBoardObject()', () => {
+  it('render()', () => {
     const r = new Renderer(containerMock);
     const aBoardObject = new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, 'blue');
 
-    r.renderBoard();
-    r.renderBoardObject(aBoardObject);
+    r.render(aBoardObject);
 
     expect(contextMock.fillStyle).toBe('blue');
-    expect(contextMock.fillRect).toHaveBeenCalledTimes(2);
-    expect(contextMock.fillRect.calls.argsFor(1)).toEqual([
+    expect(contextMock.fillRect).toHaveBeenCalledTimes(1);
+    expect(contextMock.fillRect.calls.argsFor(0)).toEqual([
       3 * CELL_WIDTH,
       3 * CELL_HEIGHT,
       CELL_WIDTH,

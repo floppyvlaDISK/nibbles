@@ -227,6 +227,7 @@ describe('Nibbles', () => {
   ) {
     return new Nibbles(
       rendererMock,
+      new BoardObject(0, 0, BOARD_WIDTH, CELL_HEIGHT, 'pink'),
       snakeMock,
       targetMock,
       [
@@ -241,7 +242,7 @@ describe('Nibbles', () => {
   function createRendererMock() {
     return jasmine.createSpyObj(
       'Renderer',
-      ['renderBoard', 'renderBoardObject'],
+      ['render'],
     );
   }
   function createSnakeMock({
@@ -299,8 +300,7 @@ describe('Nibbles', () => {
     rendererMock: jasmine.SpyObj<Renderer>,
     callCount: number
   ) {
-    expect(rendererMock.renderBoard).toHaveBeenCalledTimes(callCount);
-    expect(rendererMock.renderBoardObject).toHaveBeenCalledTimes(callCount * 6);
+    expect(rendererMock.render).toHaveBeenCalledTimes(callCount * 7);
   }
   function stubRandomWithin(argsList: Array<number>) {
     const stub = sandbox.stub(randomWithin, 'default')

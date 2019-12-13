@@ -15,7 +15,6 @@ export default class ScoreDashboard {
   }
 
   render(value: number) {
-    console.log(value);
     this._scoreContent.textContent = `Score: ${value}`;
   }
 

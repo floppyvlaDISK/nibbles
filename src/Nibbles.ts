@@ -8,6 +8,7 @@ import PubSub from './utils/PubSub';
 
 export default class Nibbles {
   private _renderer: Renderer;
+  private _board: BoardObject;
   private _snake: Snake;
   private _target: Target;
   private _walls: Array<BoardObject>;
@@ -17,12 +18,14 @@ export default class Nibbles {
 
   constructor(
     renderer: Renderer,
+    board: BoardObject,
     snake: Snake,
     target: Target,
     walls: Array<BoardObject>,
     pubSub: PubSub,
   ) {
     this._renderer = renderer;
+    this._board = board;
     this._snake = snake;
     this._target = target;
     this._walls = walls;
@@ -36,9 +39,8 @@ export default class Nibbles {
   public static UPDATE_FREQUENCY_MS = 750;
 
   public render() {
-    this._renderer.renderBoard();
     this._getBoardObjects().forEach(
-      obj => this._renderer.renderBoardObject(obj)
+      obj => this._renderer.render(obj)
     );
   }
 
@@ -59,6 +61,7 @@ export default class Nibbles {
 
   private _getBoardObjects() {
     return [
+      this._board,
       this._target,
       ...this._walls,
       this._snake,

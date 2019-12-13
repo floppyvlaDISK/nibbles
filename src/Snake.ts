@@ -1,7 +1,6 @@
 import BoardObject from './BoardObject';
 import { ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from './utils/isArrowKey';
 import Target from './Target';
-import Coordinates from './Coordinates';
 
 // FIXME: Is snake a board object or a collection of board objects
 export default class Snake extends BoardObject {

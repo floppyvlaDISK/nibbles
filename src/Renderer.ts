@@ -27,13 +27,7 @@ export default class Renderer {
     return result;
   }
 
-  public renderBoard() {
-    // FIXME: Is board a board object itself?
-    this.ctx.fillStyle = '#FFE4E1';
-    this.ctx.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
-  }
-
-  public renderBoardObject(aBoardObject: BoardObject) {
+  public render(aBoardObject: BoardObject) {
     this.ctx.fillStyle = aBoardObject.color;
     this.ctx.fillRect(
       aBoardObject.x * aBoardObject.width,
