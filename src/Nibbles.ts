@@ -67,26 +67,30 @@ export default class Nibbles {
 
   private _performUpdate() {
     this._trySetSnakeDirectionFromQueue();
-    this._updateBoardObjects();
-    if (this._hasSnakeDied()) {
-      this._snake.die();
-      this._reset();
+    this._snake.move();
+    if (this._snake.canEat(this._target)) {
+      this._handleSnakeEatsTheTarget();
+    }
+    if (this._willSnakeDie()) {
+      this._handleSnakeDies();
     }
     this.render();
+  }
+
+  private _handleSnakeEatsTheTarget() {
+    this._snake.eat(this._target);
+    this._spawnTargetInNextPosition();
+  }
+
+  private _handleSnakeDies() {
+    this._snake.die();
+    this._reset();
   }
 
   private _reset() {
     this._snakeDirectionsQueue = [];
     window.clearInterval(this._intervalId);
     this._intervalId = undefined;
-  }
-
-  private _updateBoardObjects() {
-    this._snake.move();
-    if (this._snake.canEat(this._target)) {
-      this._snake.eat(this._target);
-      this._spawnTargetInNextPosition();
-    }
   }
 
   private _spawnTargetInNextPosition() {
@@ -115,7 +119,7 @@ export default class Nibbles {
     );
   }
 
-  private _hasSnakeDied() {
+  private _willSnakeDie() {
     return this._walls.some(
       w => w.coordinates.equalsPartially(this._snake.coordinates)
     );

@@ -9,7 +9,7 @@ export default class PubSub {
   }
 
   public publish(eventName: string, ...args: Array<any>) {
-    if(this._listeners[eventName]) {
+    if (this._listeners[eventName]) {
       this._listeners[eventName].forEach(cb => cb(...args));
     }
   }

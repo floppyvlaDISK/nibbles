@@ -101,7 +101,7 @@ describe('Nibbles', () => {
       expect(randomWithinStub.getCall(1).args).toEqual([1, 18]);
     });
 
-    it('does not overlap target with snake on target re-positioning', () => {
+    it('does not overlap target with snake on target spawning', () => {
       const snakeX = 3;
       const snakeY = 4;
       const nextX = 5;
@@ -140,7 +140,7 @@ describe('Nibbles', () => {
       expect(randomWithinStub.callCount).toBe(4);
     });
 
-    it('checks if snake died on wall collision', () => {
+    it('checks if snake will die from wall collision', () => {
       const { aNibbles, snakeMock } = setup({
         snakeMockData: { x: 5, y: 0, direction: Snake.DIRECTION_LEFT },
       });
