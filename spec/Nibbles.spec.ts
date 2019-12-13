@@ -161,7 +161,7 @@ describe('Nibbles', () => {
       expect(snakeMock.move).toHaveBeenCalledTimes(2); // FIXME: Why not 1?
     });
 
-    it('fires "SnakeScoreChanged" event after snake has eaten the target', () => {
+    it('publishes "SnakeScoreChanged" event after snake has eaten the target', () => {
       const { aNibbles, pubSubMock } = setup({
         snakeMockData: { canEat: true, score: 25 },
       });
@@ -172,8 +172,15 @@ describe('Nibbles', () => {
       expect(pubSubMock.publish).toHaveBeenCalledWith('SnakeScoreChanged', 25);
     });
 
-    it('fires "SnakeScoreChanged" event after snakes has died', () => {
+    it('publishes "SnakeScoreChanged" event after snakes has died', () => {
+      const { aNibbles, pubSubMock } = setup({
+        snakeMockData: { x: 5, y: 0, direction: Snake.DIRECTION_LEFT, score: 0 },
+      });
 
+      aNibbles.start();
+
+      expect(pubSubMock.publish).toHaveBeenCalledTimes(1);
+      expect(pubSubMock.publish).toHaveBeenCalledWith('SnakeScoreChanged', 0);
     });
   });
 
