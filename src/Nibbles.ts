@@ -80,6 +80,7 @@ export default class Nibbles {
   private _handleSnakeEatsTheTarget() {
     this._snake.eat(this._target);
     this._spawnTargetInNextPosition();
+    this._pubSub.publish('SnakeScoreChanged', this._snake.score);
   }
 
   private _handleSnakeDies() {

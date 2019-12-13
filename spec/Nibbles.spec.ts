@@ -160,6 +160,21 @@ describe('Nibbles', () => {
 
       expect(snakeMock.move).toHaveBeenCalledTimes(2); // FIXME: Why not 1?
     });
+
+    it('fires "SnakeScoreChanged" event after snake has eaten the target', () => {
+      const { aNibbles, pubSubMock } = setup({
+        snakeMockData: { canEat: true, score: 25 },
+      });
+
+      aNibbles.start();
+
+      expect(pubSubMock.publish).toHaveBeenCalledTimes(1);
+      expect(pubSubMock.publish).toHaveBeenCalledWith('SnakeScoreChanged', 25);
+    });
+
+    it('fires "SnakeScoreChanged" event after snakes has died', () => {
+
+    });
   });
 
   describe('setSnakeDirectionFromKeyCode()', () => {
@@ -188,17 +203,20 @@ describe('Nibbles', () => {
     const rendererMock = createRendererMock();
     const snakeMock = createSnakeMock(snakeMockData);
     const targetMock = createTargetMock(targetMockData);
+    const pubSubMock = createPubSubMock();
     return {
       rendererMock,
       snakeMock,
       targetMock,
-      aNibbles: setupNibbles(rendererMock, snakeMock, targetMock),
+      pubSubMock,
+      aNibbles: setupNibbles(rendererMock, snakeMock, targetMock, pubSubMock),
     };
   }
   function setupNibbles(
     rendererMock: jasmine.SpyObj<Renderer>,
     snakeMock: jasmine.SpyObj<Snake>,
     targetMock: jasmine.SpyObj<Target>,
+    pubSubMock: jasmine.SpyObj<PubSub>,
   ) {
     return new Nibbles(
       rendererMock,
@@ -210,7 +228,7 @@ describe('Nibbles', () => {
         new BoardObject(19, 0, CELL_WIDTH, BOARD_HEIGHT, 'pink'),
         new BoardObject(0, 0, CELL_WIDTH, BOARD_HEIGHT, 'pink'),
       ],
-      new PubSub(),
+      pubSubMock,
     );
   }
   function createRendererMock() {
@@ -224,11 +242,13 @@ describe('Nibbles', () => {
     x = 1,
     y = 1,
     direction = Snake.DIRECTION_RIGHT,
+    score = 25,
   }: {
     canEat?: boolean,
     x?: number,
     y?: number,
     direction?: string,
+    score?: number,
   }) {
     const result = jasmine.createSpyObj(
       'Snake',
@@ -239,6 +259,7 @@ describe('Nibbles', () => {
         canEat,
       },
     );
+    result.score = score;
     result.direction = direction;
     result.coordinates = new Coordinates(x, y);
     return result;
@@ -260,6 +281,12 @@ describe('Nibbles', () => {
     result.x = x;
     result.y = y;
     return result;
+  }
+  function createPubSubMock() {
+    return jasmine.createSpyObj(
+      'pubSub',
+      ['publish']
+    );
   }
   function testRenderCalls(
     rendererMock: jasmine.SpyObj<Renderer>,
