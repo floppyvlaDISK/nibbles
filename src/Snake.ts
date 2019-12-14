@@ -3,6 +3,7 @@ import { ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from './utils/isArrowKe
 import Target from './Target';
 import LinkedList from './utils/LinkedList';
 
+// FIXME: create SnakeBody class
 export default class Snake {
   private _direction: string;
   private _initialDirection: string;
@@ -23,10 +24,9 @@ export default class Snake {
     this._initialScore = score;
 
     this._body = new LinkedList();
-    this._body.insert(head);
+    this._body.insert(head.copy());
     this._initialBody = new LinkedList();
-    this._initialBody.insert(head);
-
+    this._initialBody.insert(head.copy());
 
     this._moveUp = this._moveUp.bind(this);
     this._moveRight = this._moveRight.bind(this);
@@ -66,6 +66,10 @@ export default class Snake {
     return this._score;
   }
 
+  get body() {
+    return this._body;
+  }
+
   public move() {
     this._updateHeadCoordinate();
     this._adjustRestToHead();
@@ -82,7 +86,7 @@ export default class Snake {
   }
 
   public canEat(aTarget: Target) {
-    return this._body.head.equals(aTarget.coordinates);
+    return this._body.head.coordinates.equals(aTarget.coordinates);
   }
 
   private _increaseScoreBy(value: number) {
@@ -107,6 +111,9 @@ export default class Snake {
   private _adjustRestToHead() {
     let prev: BoardObject;
     this._body.forEach((obj: BoardObject) => {
+      if (!obj) {
+        throw new TypeError('_adjustRestToHead()');
+      }
       if (obj !== this._body.head) {
         obj.x = prev.x;
         obj.y = prev.y;

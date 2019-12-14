@@ -19,6 +19,16 @@ export default class BoardObject {
     this._color = color;
   }
 
+  public copy() {
+    return new BoardObject(
+      this.x,
+      this.y,
+      this.width,
+      this.height,
+      this.color,
+    );
+  }
+
   get x() {
     return this._coordinates.x;
   }

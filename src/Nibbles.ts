@@ -39,8 +39,13 @@ export default class Nibbles {
   public static UPDATE_FREQUENCY_MS = 750;
 
   public render() {
-    this._getBoardObjects().forEach(
-      obj => this._renderer.render(obj)
+    [
+      this._board,
+      this._target,
+      ...this._walls,
+    ].forEach(obj => this._renderer.render(obj));
+    this._snake.body.forEach(
+      (obj: BoardObject) => this._renderer.render(obj)
     );
   }
 
@@ -57,15 +62,6 @@ export default class Nibbles {
     if (latest !== Snake.directionFromKeyCode(value)) {
       this._snakeDirectionsQueue.push(Snake.directionFromKeyCode(value));
     }
-  }
-
-  private _getBoardObjects() {
-    return [
-      this._board,
-      this._target,
-      ...this._walls,
-      this._snake,
-    ];
   }
 
   private _performUpdate() {
@@ -119,14 +115,20 @@ export default class Nibbles {
   }
 
   private _isOccupied(aCoordinate: Coordinates) {
-    return [this._snake, this._target].some(
-      obj => obj.coordinates.equals(aCoordinate)
+    if (this._target.coordinates.equals(aCoordinate)) {
+      return true;
+    }
+    let result = false;
+    this._snake.body.forEach(
+      (obj: BoardObject) => {
+        result = obj.coordinates.equals(aCoordinate) || result;
+      }
     );
   }
 
   private _willSnakeDie() {
     return this._walls.some(
-      w => w.coordinates.equalsPartially(this._snake.coordinates)
+      w => w.coordinates.equalsPartially(this._snake.body.head.coordinates)
     );
   }
 }
