@@ -1,10 +1,10 @@
 export default class LinkedListNode {
   private _content: any;
-  private _nextIndex: number;
+  private _nextKey: string | null;
 
-  constructor(content: any, nextIndex: number) {
+  constructor(content: any, nextKey: string | null) {
     this._content = content;
-    this._nextIndex = nextIndex;
+    this._nextKey = nextKey;
   }
 
   get content() {
@@ -15,7 +15,11 @@ export default class LinkedListNode {
     this._content = arg;
   }
 
-  get nextIndex() {
-    return this._nextIndex;
+  get nextKey() {
+    return this._nextKey;
+  }
+
+  set nextKey(arg: string | null) {
+    this._nextKey = arg;
   }
 }

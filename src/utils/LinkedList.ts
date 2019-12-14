@@ -1,36 +1,61 @@
 import LinkedListNode from './LinkedListNode';
+import randomString from './randomString';
 
+// FIXME: Refactor
 export default class LinkedList {
-  private _nodes: Array<LinkedListNode> = [];
-  private _tailIndex: number = 0;
-
-  constructor() {
-    this._nodes = [];
-    this._tailIndex = 0;
-  }
+  private _nodes: Map<string, LinkedListNode> = new Map();
+  private _tailKey: string | null = null;
+  private _headKey: string | null = null;
+  private _currKey: string | null = null;
 
   public insert(content: any) {
-    this._nodes.push(new LinkedListNode(content, this._tailIndex + 1));
-    this._tailIndex = this._tailIndex + 1;
+    const newNodeKey = randomString();
+
+    const tail = this._getTail();
+    if (tail) {
+      tail.nextKey = newNodeKey;
+    }
+
+    this._tailKey = newNodeKey;
+
+    if (!this._headKey) {
+      this._headKey = newNodeKey;
+      this._currKey = this._headKey;
+    }
+
+    this._nodes.set(
+      newNodeKey,
+      new LinkedListNode(content, null)
+    );
   }
 
   public forEach(fn: Function) {
-    let index = 0; // FIXME: Assuming 0 is always the head
-    while (this._nodes[index]) {
-      fn(this._nodes[index].content);
-      index = this._nodes[index].nextIndex;
+    this._currKey = this._headKey;
+    while (this._currKey) {
+      const node = this._nodes.get(this._currKey);
+      if (!(node instanceof LinkedListNode)) {
+        break;
+      }
+      fn(node.content);
+      this._currKey = node.nextKey;
     }
   }
 
-  get tailIndex() {
-    return this._tailIndex;
+  public next() {
+    if (!this._currKey) {
+      return undefined;
+    }
+    const node = this._nodes.get(this._currKey);
+    if (!(node instanceof LinkedListNode)) {
+      return undefined;
+    }
+    this._currKey = node.nextKey;
+    return node.content;
   }
 
-  get nodes() {
-    return [...this._nodes];
+  private _getTail() {
+    return this._tailKey == null
+      ? null
+      : this._nodes.get(this._tailKey);
   }
 }
-
-/*
-  head -> part -> part -> part -> part
-*/
