@@ -5,6 +5,7 @@ import { CELL_WIDTH, CELL_HEIGHT } from '../src/CONST';
 import BoardObject from '../src/BoardObject';
 
 describe('Snake', () => {
+  // TODO: Test how snake updates all body parts
   describe('move()', () => {
     const testCases = [
       {
@@ -38,8 +39,8 @@ describe('Snake', () => {
 
         aSnake.move();
 
-        expect(aSnake.y).toBe(testCase.expectedY);
-        expect(aSnake.x).toBe(testCase.expectedX);
+        expect(aSnake.body.head.y).toBe(testCase.expectedY);
+        expect(aSnake.body.head.x).toBe(testCase.expectedX);
       });
     });
 
@@ -127,8 +128,8 @@ describe('Snake', () => {
       }
       aSnake.die();
 
-      expect(aSnake.x).toBe(initialX);
-      expect(aSnake.y).toBe(initialY);
+      expect(aSnake.body.head.x).toBe(initialX);
+      expect(aSnake.body.head.y).toBe(initialY);
     });
 
     it('sets score to initial', () => {

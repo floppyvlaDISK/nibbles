@@ -62,7 +62,8 @@ describe('Nibbles', () => {
 
     it('makes the snake eat the target if their positions on board intersects after snake move', () => {
       const { aNibbles, snakeMock } = setup({
-        snakeMockData: { canEat: true }
+        snakeMockData: { x: 1, y: 1, direction: Snake.DIRECTION_RIGHT },
+        targetMockData: { x: 2, y: 1 },
       });
 
       expect(snakeMock.canEat).toHaveBeenCalledTimes(0);
@@ -72,18 +73,14 @@ describe('Nibbles', () => {
 
       expect(snakeMock.canEat).toHaveBeenCalledTimes(1);
       expect(snakeMock.eat).toHaveBeenCalledTimes(1);
-
-      jasmine.clock().tick(Nibbles.UPDATE_FREQUENCY_MS);
-
-      expect(snakeMock.canEat).toHaveBeenCalledTimes(2);
-      expect(snakeMock.eat).toHaveBeenCalledTimes(2);
     });
 
     it('spawns target if it\'s eaten by snake', () => {
       const nextX = 3;
       const nextY = 4;
       const { aNibbles, targetMock } = setup({
-        snakeMockData: { canEat: true },
+        snakeMockData: { x: 1, y: 1, direction: Snake.DIRECTION_RIGHT },
+        targetMockData: { x: 2, y: 1 },
       });
       const randomWithinStub = stubRandomWithin([nextX, nextY]);
 
@@ -98,7 +95,8 @@ describe('Nibbles', () => {
       const nextX = 3;
       const nextY = 4;
       const { aNibbles } = setup({
-        snakeMockData: { canEat: true },
+        snakeMockData: { x: 1, y: 1, direction: Snake.DIRECTION_RIGHT },
+        targetMockData: { x: 2, y: 1 },
       });
       const randomWithinStub = stubRandomWithin([nextX, nextY]);
 
@@ -109,12 +107,13 @@ describe('Nibbles', () => {
     });
 
     it('does not overlap target with snake on target spawning', () => {
-      const snakeX = 3;
-      const snakeY = 4;
+      const snakeX = 2;
+      const snakeY = 1;
       const nextX = 5;
       const nextY = 6;
       const { aNibbles, targetMock } = setup({
-        snakeMockData: { canEat: true, x: snakeX, y: snakeY },
+        snakeMockData: { x: 1, y: 1, direction: Snake.DIRECTION_RIGHT },
+        targetMockData: { x: 2, y: 1 },
       });
       const randomWithinStub = stubRandomWithin([
         snakeX, snakeY, nextX, nextY
@@ -128,12 +127,12 @@ describe('Nibbles', () => {
     });
 
     it('does not spawn target to same coordinate it was before', () => {
-      const targetX = 3;
-      const targetY = 4;
+      const targetX = 2;
+      const targetY = 1;
       const nextX = 5;
       const nextY = 6;
       const { aNibbles, targetMock } = setup({
-        snakeMockData: { canEat: true },
+        snakeMockData: { x: 1, y: 1, direction: Snake.DIRECTION_RIGHT },
         targetMockData: { x: targetX, y: targetY },
       });
       const randomWithinStub = stubRandomWithin([
@@ -149,7 +148,7 @@ describe('Nibbles', () => {
 
     it('checks if snake will die from wall collision', () => {
       const { aNibbles, snakeMock } = setup({
-        snakeMockData: { x: 5, y: 0, direction: Snake.DIRECTION_LEFT },
+        snakeMockData: { x: 5, y: 1, direction: Snake.DIRECTION_UP },
       });
 
       aNibbles.start();
@@ -159,7 +158,7 @@ describe('Nibbles', () => {
 
     it('cancels following updates if snake has died', () => {
       const { aNibbles, snakeMock } = setup({
-        snakeMockData: { x: 5, y: 0, direction: Snake.DIRECTION_LEFT },
+        snakeMockData: { x: 5, y: 1, direction: Snake.DIRECTION_UP },
       });
 
       aNibbles.start();
@@ -170,7 +169,8 @@ describe('Nibbles', () => {
 
     it('publishes "SnakeScoreChanged" event after snake has eaten the target', () => {
       const { aNibbles, pubSubMock } = setup({
-        snakeMockData: { canEat: true, score: 25 },
+        snakeMockData: { x: 1, y: 1, direction: Snake.DIRECTION_RIGHT, score: 0 },
+        targetMockData: { x: 2, y: 1, score: 25 },
       });
 
       aNibbles.start();
@@ -181,19 +181,21 @@ describe('Nibbles', () => {
 
     it('publishes "SnakeScoreChanged" event after snakes has died', () => {
       const { aNibbles, pubSubMock } = setup({
-        snakeMockData: { x: 5, y: 0, direction: Snake.DIRECTION_LEFT, score: 0 },
+        snakeMockData: { x: 5, y: 1, direction: Snake.DIRECTION_UP, score: 10 },
       });
 
       aNibbles.start();
 
       expect(pubSubMock.publish).toHaveBeenCalledTimes(1);
-      expect(pubSubMock.publish).toHaveBeenCalledWith('SnakeScoreChanged', 0);
+      expect(pubSubMock.publish).toHaveBeenCalledWith('SnakeScoreChanged', 10);
     });
   });
 
   describe('setSnakeDirectionFromKeyCode()', () => {
-    it('queues snake direction change to be set on performing update', () => {
-      const { aNibbles, snakeMock } = setup();
+    it('queues snake direction change to be set when performing update', () => {
+      const { aNibbles, snakeMock } = setup({
+        snakeMockData: { x: 5, y: 5, direction: Snake.DIRECTION_RIGHT }
+      });
 
       expect(snakeMock.direction).toBe(Snake.DIRECTION_RIGHT);
 
@@ -223,14 +225,20 @@ describe('Nibbles', () => {
       snakeMock,
       targetMock,
       pubSubMock,
-      aNibbles: setupNibbles(rendererMock, snakeMock, targetMock, pubSubMock),
+      aNibbles: setupNibbles(
+        rendererMock,
+        snakeMock,
+        targetMock,
+        pubSubMock
+      ),
     };
   }
+  // FIXME: Put createMock functions into some util file?
   function setupNibbles(
     rendererMock: jasmine.SpyObj<Renderer>,
-    snakeMock: jasmine.SpyObj<Snake>,
-    targetMock: jasmine.SpyObj<Target>,
-    pubSubMock: jasmine.SpyObj<PubSub>,
+    snakeMock: Snake,
+    targetMock: Target,
+    pubSubMock: PubSub,
   ) {
     return new Nibbles(
       rendererMock,
@@ -253,7 +261,6 @@ describe('Nibbles', () => {
     );
   }
   function createSnakeMock({
-    canEat = false,
     x = 1,
     y = 1,
     direction = Snake.DIRECTION_RIGHT,
@@ -265,18 +272,15 @@ describe('Nibbles', () => {
     direction?: string,
     score?: number,
   }) {
-    const result = jasmine.createSpyObj(
-      'Snake',
-      {
-        move: undefined,
-        die: undefined,
-        eat: undefined,
-        canEat,
-      },
+    const result = new Snake(
+      new BoardObject(x, y, CELL_WIDTH, CELL_HEIGHT, 'green'),
+      direction,
+      score,
     );
-    result.score = score;
-    result.direction = direction;
-    result.coordinates = new Coordinates(x, y);
+    spyOn(result, 'move').and.callThrough();
+    spyOn(result, 'die').and.callThrough();
+    spyOn(result, 'eat').and.callThrough();
+    spyOn(result, 'canEat').and.callThrough();
     return result;
   }
   function createTargetMock({
@@ -288,20 +292,14 @@ describe('Nibbles', () => {
     y?: number,
     value?: number
   }) {
-    const result = jasmine.createSpyObj(
-      'Target',
-      { value: value },
-    );
-    result.coordinates = new Coordinates(x, y);
-    result.x = x;
-    result.y = y;
+    const result = new Target(x, y, CELL_WIDTH, CELL_HEIGHT, 'red', value);
+    spyOnProperty(result, 'value').and.callThrough();
     return result;
   }
   function createPubSubMock() {
-    return jasmine.createSpyObj(
-      'pubSub',
-      ['publish']
-    );
+    const result = new PubSub();
+    spyOn(result, 'publish');
+    return result;
   }
   function testRenderCalls(
     rendererMock: jasmine.SpyObj<Renderer>,
