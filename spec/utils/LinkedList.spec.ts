@@ -24,4 +24,13 @@ describe('LinkedList', () => {
     expect(spy.calls.argsFor(0)).toEqual(['1']);
     expect(spy.calls.argsFor(1)).toEqual(['2']);
   });
+
+  it('head()', () => {
+    const aLinkedList = new LinkedList();
+
+    aLinkedList.insert('1');
+    aLinkedList.insert('2');
+
+    expect(aLinkedList.head).toBe('1');
+  });
 });

@@ -34,12 +34,17 @@ export default class LinkedList {
     return node.content;
   }
 
-  private _getTail() {
-    return this._tailKey && this._nodes.get(this._tailKey);
+  get head() {
+    const node = this._getNodeBy(this._headKey);
+    return node instanceof LinkedListNode ? node.content : undefined;
+  }
+
+  private _getNodeBy(key: string | null) {
+    return key && this._nodes.get(key);
   }
 
   private _updateTail(newNodeKey: string) {
-    const tail = this._getTail();
+    const tail = this._getNodeBy(this._tailKey)
     if (tail) {
       tail.nextKey = newNodeKey;
     }
