@@ -1,7 +1,7 @@
 import LinkedList from '../../src/utils/LinkedList';
 
 describe('LinkedList', () => {
-  it('insert() and next()', () => {
+  it('next()', () => {
     const aLinkedList = new LinkedList();
 
     aLinkedList.insert('1');

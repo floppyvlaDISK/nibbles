@@ -1,7 +1,6 @@
 import LinkedListNode from './LinkedListNode';
 import randomString from './randomString';
 
-// FIXME: Refactor
 export default class LinkedList {
   private _nodes: Map<string, LinkedListNode> = new Map();
   private _tailKey: string | null = null;
@@ -10,34 +9,16 @@ export default class LinkedList {
 
   public insert(content: any) {
     const newNodeKey = randomString();
-
-    const tail = this._getTail();
-    if (tail) {
-      tail.nextKey = newNodeKey;
-    }
-
-    this._tailKey = newNodeKey;
-
-    if (!this._headKey) {
-      this._headKey = newNodeKey;
-      this._currKey = this._headKey;
-    }
-
-    this._nodes.set(
-      newNodeKey,
-      new LinkedListNode(content, null)
-    );
+    this._updateTail(newNodeKey);
+    this._updateHead(newNodeKey);
+    this._resetCurr();
+    this._addNode(content, newNodeKey);
   }
 
   public forEach(fn: Function) {
-    this._currKey = this._headKey;
+    this._resetCurr();
     while (this._currKey) {
-      const node = this._nodes.get(this._currKey);
-      if (!(node instanceof LinkedListNode)) {
-        break;
-      }
-      fn(node.content);
-      this._currKey = node.nextKey;
+      fn(this.next());
     }
   }
 
@@ -54,8 +35,28 @@ export default class LinkedList {
   }
 
   private _getTail() {
-    return this._tailKey == null
-      ? null
-      : this._nodes.get(this._tailKey);
+    return this._tailKey && this._nodes.get(this._tailKey);
+  }
+
+  private _updateTail(newNodeKey: string) {
+    const tail = this._getTail();
+    if (tail) {
+      tail.nextKey = newNodeKey;
+    }
+    this._tailKey = newNodeKey;
+  }
+
+  private _updateHead(newNodeKey: string) {
+    if (!this._headKey) {
+      this._headKey = newNodeKey;
+    }
+  }
+
+  private _addNode(content: any, key: string) {
+    this._nodes.set(key, new LinkedListNode(content, null));
+  }
+
+  private _resetCurr() {
+    this._currKey = this._headKey;
   }
 }
