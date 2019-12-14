@@ -14,4 +14,17 @@ describe('LinkedList', () => {
     expect(aLinkedList.nodes[1].content).toBe('2');
     expect(aLinkedList.nodes[1].nextIndex).toBe(2);
   });
+
+  it('forEach()', () => {
+    const aLinkedList = new LinkedList();
+    const spy = jasmine.createSpy();
+
+    aLinkedList.insert('1');
+    aLinkedList.insert('2');
+    aLinkedList.forEach(spy);
+
+    expect(spy).toHaveBeenCalledTimes(2);
+    expect(spy.calls.argsFor(0)).toEqual(['1']);
+    expect(spy.calls.argsFor(1)).toEqual(['2']);
+  });
 });

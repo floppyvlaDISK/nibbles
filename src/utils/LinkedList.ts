@@ -15,7 +15,11 @@ export default class LinkedList {
   }
 
   public forEach(fn: Function) {
-    // TODO:
+    let index = 0; // FIXME: Assuming 0 is always the head
+    while (this._nodes[index]) {
+      fn(this._nodes[index].content);
+      index = this._nodes[index].nextIndex;
+    }
   }
 
   get tailIndex() {
