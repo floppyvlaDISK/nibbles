@@ -1,33 +1,32 @@
 import BoardObject from './BoardObject';
 import { ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from './utils/isArrowKey';
 import Target from './Target';
+import LinkedList from './utils/LinkedList';
 
-// FIXME: Is snake a board object or a collection of board objects
-export default class Snake extends BoardObject {
+export default class Snake {
   private _direction: string;
-  private _score: number;
-  private _initialX: number;
-  private _initialY: number;
-  private _initialScore: number;
   private _initialDirection: string;
+  private _score: number;
+  private _initialScore: number;
+  private _body: LinkedList;
+  private _initialBody: LinkedList;
 
   constructor(
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    color: string,
+    head: BoardObject,
     direction: string,
     score: number,
   ) {
-    super(x, y, width, height, color);
     this._direction = direction;
-    this._score = score;
-
-    this._initialX = x;
-    this._initialY = y;
-    this._initialScore = score;
     this._initialDirection = direction;
+
+    this._score = score;
+    this._initialScore = score;
+
+    this._body = new LinkedList();
+    this._body.insert(head);
+    this._initialBody = new LinkedList();
+    this._initialBody.insert(head);
+
 
     this._moveUp = this._moveUp.bind(this);
     this._moveRight = this._moveRight.bind(this);
@@ -68,12 +67,12 @@ export default class Snake extends BoardObject {
   }
 
   public move() {
-    this._updateCoordinate();
+    this._updateHeadCoordinate();
+    this._adjustRestToHead();
   }
 
   public die() {
-    this.x = this._initialX;
-    this.y = this._initialY;
+    this._body = this._initialBody;
     this._score = this._initialScore;
     this.direction = this._initialDirection;
   }
@@ -83,14 +82,14 @@ export default class Snake extends BoardObject {
   }
 
   public canEat(aTarget: Target) {
-    return this.coordinates.equals(aTarget.coordinates);
+    return this._body.head.equals(aTarget.coordinates);
   }
 
   private _increaseScoreBy(value: number) {
     this._score += value;
   }
 
-  private _updateCoordinate() {
+  private _updateHeadCoordinate() {
     const method = {
       [Snake.DIRECTION_UP]: this._moveUp,
       [Snake.DIRECTION_RIGHT]: this._moveRight,
@@ -99,25 +98,36 @@ export default class Snake extends BoardObject {
     }[this._direction];
 
     if (!method) {
-        throw new RangeError(`Snake: no update method found for direction: ${this._direction}`);
+      throw new RangeError(`Snake: no update method found for direction: ${this._direction}`);
     }
 
     method();
   }
 
+  private _adjustRestToHead() {
+    let prev: BoardObject;
+    this._body.forEach((obj: BoardObject) => {
+      if (obj !== this._body.head) {
+        obj.x = prev.x;
+        obj.y = prev.y;
+      }
+      prev = obj;
+    });
+  }
+
   private _moveUp() {
-    this.y -= 1;
+    this._body.head.y -= 1;
   }
 
   private _moveRight() {
-    this.x += 1;
+    this._body.head.x += 1;
   }
 
   private _moveDown() {
-    this.y += 1;
+    this._body.head.y += 1;
   }
 
   private _moveLeft() {
-    this.x -= 1;
+    this._body.head.x -= 1;
   }
 }
