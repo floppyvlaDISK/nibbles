@@ -10,7 +10,7 @@ export default class Snake {
   private _score: number;
   private _initialScore: number;
   private _body: LinkedList;
-  private _initialBody: LinkedList;
+  private _head: BoardObject;
 
   constructor(
     head: BoardObject,
@@ -23,10 +23,8 @@ export default class Snake {
     this._score = score;
     this._initialScore = score;
 
-    this._body = new LinkedList();
-    this._body.insert(head.copy());
-    this._initialBody = new LinkedList();
-    this._initialBody.insert(head.copy());
+    this._head = head;
+    this._body = this._initialBody;
 
     this._moveUp = this._moveUp.bind(this);
     this._moveRight = this._moveRight.bind(this);
@@ -87,6 +85,12 @@ export default class Snake {
 
   public canEat(aTarget: Target) {
     return this._body.head.coordinates.equals(aTarget.coordinates);
+  }
+
+  private get _initialBody() {
+    const result = new LinkedList();
+    result.insert(this._head.copy());
+    return result;
   }
 
   private _increaseScoreBy(value: number) {
