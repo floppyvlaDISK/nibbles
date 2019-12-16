@@ -33,4 +33,24 @@ describe('LinkedList', () => {
 
     expect(aLinkedList.head).toBe('1');
   });
+
+  it('tail()', () => {
+    const aLinkedList = new LinkedList();
+
+    aLinkedList.insert('1');
+    aLinkedList.insert('2');
+    aLinkedList.insert('3');
+
+    expect(aLinkedList.tail).toBe('3');
+  });
+
+  it('length()', () => {
+    const aLinkedList = new LinkedList();
+
+    aLinkedList.insert('1');
+    aLinkedList.insert('2');
+    aLinkedList.insert('3');
+
+    expect(aLinkedList.length).toBe(3);
+  });
 });

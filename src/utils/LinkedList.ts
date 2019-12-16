@@ -35,7 +35,19 @@ export default class LinkedList {
   }
 
   get head() {
-    const node = this._getNodeBy(this._headKey);
+    return this._getNodeContentBy(this._headKey);
+  }
+
+  get tail() {
+    return this._getNodeContentBy(this._tailKey);
+  }
+
+  get length() {
+    return this._nodes.size;
+  }
+
+  private _getNodeContentBy(key: string | null) {
+    const node = this._getNodeBy(key);
     return node instanceof LinkedListNode ? node.content : undefined;
   }
 
