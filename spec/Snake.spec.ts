@@ -5,7 +5,6 @@ import { CELL_WIDTH, CELL_HEIGHT } from '../src/CONST';
 import BoardObject from '../src/BoardObject';
 
 describe('Snake', () => {
-  // TODO: Test how snake updates all body parts
   describe('move()', () => {
     const testCases = [
       {
@@ -34,13 +33,37 @@ describe('Snake', () => {
       }
     ];
     testCases.forEach(testCase => {
-      it(testCase.title, () => {
-        const aSnake = new Snake(new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, 'red'), testCase.direction, 0);
+      it(`head - ${testCase.title}`, () => {
+        const aSnake = new Snake(
+          new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, 'red'),
+          testCase.direction,
+          0
+        );
 
         aSnake.move();
 
         expect(aSnake.body.head.y).toBe(testCase.expectedY);
         expect(aSnake.body.head.x).toBe(testCase.expectedX);
+      });
+
+      it(`rest of body - ${testCase.title}`, () => {
+        const aSnake = new Snake(
+          new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, 'red'),
+          testCase.direction,
+          0,
+        );
+        const aTarget = new Target(3, 3, CELL_WIDTH, CELL_HEIGHT, 'blue', 25);
+
+        aSnake.eat(aTarget);
+        aSnake.move();
+
+        expect(aSnake.body.tail.x).toBe(3);
+        expect(aSnake.body.tail.y).toBe(3);
+
+        aSnake.move();
+
+        expect(aSnake.body.tail.x).toBe(testCase.expectedX);
+        expect(aSnake.body.tail.y).toBe(testCase.expectedY);
       });
     });
 
@@ -86,15 +109,36 @@ describe('Snake', () => {
     });
   });
 
-  it('eat()', () => {
-    const aSnake = new Snake(new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, 'red'), Snake.DIRECTION_RIGHT, 10);
-    const aTarget = new Target(3, 3, CELL_WIDTH, CELL_HEIGHT, 'blue', 13);
+  describe('eat()', () => {
+    it('increases the score by target\'s value', () => {
+      const aSnake = new Snake(
+        new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, 'red'),
+        Snake.DIRECTION_RIGHT,
+        10
+      );
+      const aTarget = new Target(3, 3, CELL_WIDTH, CELL_HEIGHT, 'blue', 13);
 
-    expect(aSnake.score).toBe(10);
+      expect(aSnake.score).toBe(10);
 
-    aSnake.eat(aTarget);
+      aSnake.eat(aTarget);
 
-    expect(aSnake.score).toBe(23);
+      expect(aSnake.score).toBe(23);
+    });
+
+    it('grows new body part', () => {
+      const aSnake = new Snake(
+        new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, 'red'),
+        Snake.DIRECTION_RIGHT,
+        10
+      );
+      const aTarget = new Target(3, 3, CELL_WIDTH, CELL_HEIGHT, 'blue', 13);
+
+      expect(aSnake.body.length).toBe(1);
+
+      aSnake.eat(aTarget);
+
+      expect(aSnake.body.length).toBe(2);
+    });
   });
 
   describe('canEat()', () => {

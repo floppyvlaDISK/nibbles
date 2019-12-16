@@ -2,6 +2,7 @@ import BoardObject from './BoardObject';
 import { ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from './utils/isArrowKey';
 import Target from './Target';
 import LinkedList from './utils/LinkedList';
+import { CELL_WIDTH, CELL_HEIGHT } from './CONST';
 
 // FIXME: create SnakeBody class
 export default class Snake {
@@ -69,8 +70,8 @@ export default class Snake {
   }
 
   public move() {
+    this._updateBodyPartsCoordinates();
     this._updateHeadCoordinate();
-    this._adjustRestToHead();
   }
 
   public die() {
@@ -81,6 +82,7 @@ export default class Snake {
 
   public eat(aTarget: Target) {
     this._increaseScoreBy(aTarget.value);
+    this._growBodyPart();
   }
 
   public canEat(aTarget: Target) {
@@ -91,6 +93,18 @@ export default class Snake {
     const result = new LinkedList();
     result.insert(this._head.copy());
     return result;
+  }
+
+  private _growBodyPart() {
+    this._body.insert(
+      new BoardObject(
+        this._body.tail.x,
+        this._body.tail.y,
+        CELL_WIDTH,
+        CELL_HEIGHT,
+        this._head.color
+      )
+    );
   }
 
   private _increaseScoreBy(value: number) {
@@ -112,19 +126,22 @@ export default class Snake {
     method();
   }
 
-  private _adjustRestToHead() {
+  private _updateBodyPartsCoordinates() {
     let prev: BoardObject;
     this._body.forEach((obj: BoardObject) => {
       if (!obj) {
-        throw new TypeError('_adjustRestToHead()');
+        throw new TypeError('_updateBodyPartsCoordinates()');
       }
+      const prevOriginal = obj.copy();
       if (obj !== this._body.head) {
         obj.x = prev.x;
         obj.y = prev.y;
       }
-      prev = obj;
+      prev = prevOriginal;
     });
   }
+
+  // FIXME: Snake should not be able to do 180
 
   private _moveUp() {
     this._body.head.y -= 1;
