@@ -10,11 +10,11 @@ export default class ScoreDashboard {
     this.render = this.render.bind(this);
   }
 
-  toString() {
+  public toString() {
     return this._scoreContent.textContent;
   }
 
-  render(value: number) {
+  public render(value: number) {
     this._scoreContent.textContent = `Score: ${value}`;
   }
 
