@@ -58,6 +58,9 @@ export default class Snake {
   }
 
   set direction(arg) {
+    if (this._isOpposite(arg)) {
+      return;
+    }
     this._direction = arg;
   }
 
@@ -93,6 +96,21 @@ export default class Snake {
     const result = new LinkedList();
     result.insert(this._head.copy());
     return result;
+  }
+
+  private _isOpposite(direction: string) {
+    let result = {
+      [Snake.DIRECTION_LEFT]: Snake.DIRECTION_RIGHT,
+      [Snake.DIRECTION_RIGHT]: Snake.DIRECTION_LEFT,
+      [Snake.DIRECTION_UP]: Snake.DIRECTION_DOWN,
+      [Snake.DIRECTION_DOWN]: Snake.DIRECTION_UP,
+    }[this._direction];
+
+    if (!result) {
+      throw new RangeError(`Snake: invalid direction value: ${direction}`);
+    }
+
+    return result === direction;
   }
 
   private _growBodyPart() {
@@ -140,8 +158,6 @@ export default class Snake {
       prev = prevOriginal;
     });
   }
-
-  // FIXME: Snake should not be able to do 180
 
   private _moveUp() {
     this._body.head.y -= 1;

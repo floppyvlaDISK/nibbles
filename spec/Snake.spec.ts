@@ -75,6 +75,42 @@ describe('Snake', () => {
     });
   });
 
+  describe('direction setter', () => {
+    const testCases = [
+      {
+        title: 'cannot set direction to right if current direction was left',
+        prevDirection: Snake.DIRECTION_LEFT,
+        nextDirection: Snake.DIRECTION_RIGHT,
+      },
+      {
+        title: 'cannot set direction to left if current direction was right',
+        prevDirection: Snake.DIRECTION_RIGHT,
+        nextDirection: Snake.DIRECTION_LEFT,
+      },
+      {
+        title: 'cannot set direction to up if current direction is down',
+        prevDirection: Snake.DIRECTION_DOWN,
+        nextDirection: Snake.DIRECTION_UP,
+      },
+      {
+        title: 'cannot set direction to down if current direction is up',
+        prevDirection: Snake.DIRECTION_UP,
+        nextDirection: Snake.DIRECTION_DOWN,
+      }
+    ];
+    testCases.forEach(t => it(t.title, () => {
+      const aSnake = new Snake(
+        new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, 'red'),
+        t.prevDirection,
+        0,
+      );
+
+      aSnake.direction = t.nextDirection;
+
+      expect(aSnake.direction).toBe(t.prevDirection);
+    }));
+  })
+
   describe('directionFromKeyCode()', () => {
     const testCases = [
       {
