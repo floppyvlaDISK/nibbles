@@ -25,11 +25,6 @@ export default class Snake {
     this._initialScore = score;
 
     this._xxxbody = new SnakeBody(head);
-
-    this._moveUp = this._moveUp.bind(this);
-    this._moveRight = this._moveRight.bind(this);
-    this._moveDown = this._moveDown.bind(this);
-    this._moveLeft = this._moveLeft.bind(this);
   }
 
   public static DIRECTION_UP = 'up';
@@ -72,8 +67,7 @@ export default class Snake {
   }
 
   public move() {
-    this._updateBodyPartsCoordinates();
-    this._updateHeadCoordinate();
+    this._xxxbody.move(this._direction);
   }
 
   public die() {
@@ -129,51 +123,5 @@ export default class Snake {
 
   private _increaseScoreBy(value: number) {
     this._score += value;
-  }
-
-  private _updateHeadCoordinate() {
-    const method = {
-      [Snake.DIRECTION_UP]: this._moveUp,
-      [Snake.DIRECTION_RIGHT]: this._moveRight,
-      [Snake.DIRECTION_DOWN]: this._moveDown,
-      [Snake.DIRECTION_LEFT]: this._moveLeft,
-    }[this._direction];
-
-    if (!method) {
-      throw new RangeError(`Snake: no update method found for direction: ${this._direction}`);
-    }
-
-    method();
-  }
-
-  private _updateBodyPartsCoordinates() {
-    let prev: BoardObject;
-    this._xxxbody.body.forEach((obj: BoardObject) => {
-      if (!obj) {
-        throw new TypeError('_updateBodyPartsCoordinates()');
-      }
-      const prevOriginal = obj.copy();
-      if (obj !== this._xxxbody.body.head) {
-        obj.x = prev.x;
-        obj.y = prev.y;
-      }
-      prev = prevOriginal;
-    });
-  }
-
-  private _moveUp() {
-    this._xxxbody.body.head.y -= 1;
-  }
-
-  private _moveRight() {
-    this._xxxbody.body.head.x += 1;
-  }
-
-  private _moveDown() {
-    this._xxxbody.body.head.y += 1;
-  }
-
-  private _moveLeft() {
-    this._xxxbody.body.head.x -= 1;
   }
 }
