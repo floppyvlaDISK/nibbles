@@ -3,6 +3,7 @@ import { ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from './utils/isArrowKe
 import Target from './Target';
 import LinkedList from './utils/LinkedList';
 import { CELL_WIDTH, CELL_HEIGHT } from './CONST';
+import SnakeBody from './SnakeBody';
 
 // FIXME: create SnakeBody class
 export default class Snake {
@@ -11,7 +12,7 @@ export default class Snake {
   private _score: number;
   private _initialScore: number;
   private _body: LinkedList<BoardObject>;
-  private _head: BoardObject;
+  private _xxxbody: SnakeBody;
 
   constructor(
     head: BoardObject,
@@ -24,7 +25,8 @@ export default class Snake {
     this._score = score;
     this._initialScore = score;
 
-    this._head = head;
+    this._xxxbody = new SnakeBody(head);
+
     this._body = this._initialBody;
 
     this._moveUp = this._moveUp.bind(this);
@@ -106,9 +108,7 @@ export default class Snake {
   }
 
   private get _initialBody() {
-    const result = new LinkedList<BoardObject>();
-    result.insert(this._head.copy());
-    return result;
+    return this._xxxbody.initialBody;
   }
 
   private _isOpposite(direction: string) {
@@ -129,7 +129,7 @@ export default class Snake {
         -1,
         CELL_WIDTH,
         CELL_HEIGHT,
-        this._head.color
+        this._xxxbody.body.head.color
       )
     );
   }
