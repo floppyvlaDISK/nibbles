@@ -19,7 +19,7 @@ const aRenderer = new Renderer(document.getElementById('nibbles'));
 const board = new BoardObject(0, 0, BOARD_WIDTH, BOARD_HEIGHT, '#FFE4E1');
 const aSnake = new Snake(
   new BoardObject(2, 2, CELL_WIDTH, CELL_HEIGHT, 'green'),
-  Snake.DIRECTION_RIGHT,
+  undefined,
   0
 );
 const target = new Target(4, 4, CELL_WIDTH, CELL_HEIGHT, 'red', 25);

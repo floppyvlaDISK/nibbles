@@ -6,7 +6,7 @@ import { CELL_WIDTH, CELL_HEIGHT } from './CONST';
 
 // FIXME: create SnakeBody class
 export default class Snake {
-  private _direction: string;
+  private _direction: string | undefined;
   private _initialDirection: string;
   private _score: number;
   private _initialScore: number;
@@ -118,10 +118,6 @@ export default class Snake {
       [Snake.DIRECTION_UP]: Snake.DIRECTION_DOWN,
       [Snake.DIRECTION_DOWN]: Snake.DIRECTION_UP,
     }[this._direction];
-
-    if (!result) {
-      throw new RangeError(`Snake: invalid direction value: ${direction}`);
-    }
 
     return result === direction;
   }
