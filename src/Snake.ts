@@ -1,17 +1,14 @@
 import BoardObject from './BoardObject';
 import { ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from './utils/isArrowKey';
 import Target from './Target';
-import LinkedList from './utils/LinkedList';
-import { CELL_WIDTH, CELL_HEIGHT } from './CONST';
 import SnakeBody from './SnakeBody';
 
-// FIXME: create SnakeBody class
 export default class Snake {
   private _direction: string | undefined;
   private _initialDirection: string;
   private _score: number;
   private _initialScore: number;
-  private _xxxbody: SnakeBody;
+  private _snakeBody: SnakeBody;
 
   constructor(
     head: BoardObject,
@@ -24,7 +21,7 @@ export default class Snake {
     this._score = score;
     this._initialScore = score;
 
-    this._xxxbody = new SnakeBody(head);
+    this._snakeBody = new SnakeBody(head);
   }
 
   public static DIRECTION_UP = 'up';
@@ -63,39 +60,30 @@ export default class Snake {
   }
 
   get body() {
-    return this._xxxbody.body;
+    return this._snakeBody.body;
   }
 
   public move() {
-    this._xxxbody.move(this._direction);
+    this._snakeBody.move(this._direction);
   }
 
   public die() {
-    this._xxxbody.reset();
+    this._snakeBody.reset();
     this._score = this._initialScore;
     this.direction = this._initialDirection;
   }
 
   public eat(aTarget: Target) {
     this._increaseScoreBy(aTarget.value);
-    this._growBodyPart();
+    this._snakeBody.growBodyPart();
   }
 
   public canEat(aTarget: Target) {
-    return this._xxxbody.body.head.coordinates.equals(aTarget.coordinates);
+    return this._snakeBody.canEat(aTarget);
   }
 
   public hasEatenItself() {
-    let result = false;
-    this._xxxbody.body.forEach((obj: BoardObject) => {
-      if (
-        obj !== this._xxxbody.body.head
-        && obj.coordinates.equals(this._xxxbody.body.head.coordinates)
-      ) {
-        result = true;
-      }
-    });
-    return result;
+    return this._snakeBody.hasEatenItself();
   }
 
   private _isOpposite(direction: string) {
@@ -107,18 +95,6 @@ export default class Snake {
     }[this._direction];
 
     return result === direction;
-  }
-
-  private _growBodyPart() {
-    this._xxxbody.body.insert(
-      new BoardObject(
-        -1,
-        -1,
-        CELL_WIDTH,
-        CELL_HEIGHT,
-        this._xxxbody.body.head.color
-      )
-    );
   }
 
   private _increaseScoreBy(value: number) {

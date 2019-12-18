@@ -1,6 +1,8 @@
 import BoardObject from './BoardObject';
 import LinkedList from './utils/LinkedList';
 import Snake from './Snake';
+import { CELL_WIDTH, CELL_HEIGHT } from './CONST';
+import Target from './Target';
 
 export default class SnakeBody {
   private _head: BoardObject;
@@ -35,6 +37,35 @@ export default class SnakeBody {
   public move(direction: string | undefined) {
     this._updateBodyPartsCoordinates();
     this._updateHeadCoordinate(direction);
+  }
+
+  public canEat(aTarget: Target) {
+    return this._body.head.coordinates.equals(aTarget.coordinates);
+  }
+
+  public hasEatenItself() {
+    let result = false;
+    this._body.forEach((obj: BoardObject) => {
+      if (
+        obj !== this._body.head
+        && obj.coordinates.equals(this._body.head.coordinates)
+      ) {
+        result = true;
+      }
+    });
+    return result;
+  }
+
+  public growBodyPart() {
+    this._body.insert(
+      new BoardObject(
+        -1,
+        -1,
+        CELL_WIDTH,
+        CELL_HEIGHT,
+        this._body.head.color
+      )
+    );
   }
 
   private _updateBodyPartsCoordinates() {
