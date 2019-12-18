@@ -92,6 +92,19 @@ export default class Snake {
     return this._body.head.coordinates.equals(aTarget.coordinates);
   }
 
+  public hasEatenItself() {
+    let result = false;
+    this._body.forEach((obj: BoardObject) => {
+      if (
+        obj !== this._body.head
+        && obj.coordinates.equals(this._body.head.coordinates)
+      ) {
+        result = true;
+      }
+    });
+    return result;
+  }
+
   private get _initialBody() {
     const result = new LinkedList();
     result.insert(this._head.copy());

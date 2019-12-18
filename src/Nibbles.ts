@@ -127,16 +127,12 @@ export default class Nibbles {
   }
 
   private _shouldSnakeDie() {
-    return this._hasSnakeCrushedIntoWall() || this._hasSnakeEatenItself();
+    return this._hasSnakeCollidedWithTheWall() || this._snake.hasEatenItself();
   }
 
-  private _hasSnakeCrushedIntoWall() {
+  private _hasSnakeCollidedWithTheWall() {
     return this._walls.some(
       w => w.coordinates.equalsPartially(this._snake.body.head.coordinates)
     );
-  }
-
-  private _hasSnakeEatenItself() {
-    return false;
   }
 }

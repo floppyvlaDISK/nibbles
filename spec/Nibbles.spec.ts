@@ -146,12 +146,37 @@ describe('Nibbles', () => {
       expect(randomWithinStub.callCount).toBe(4);
     });
 
-    it('checks if snake will die from wall collision', () => {
+    it('checks if snake should die because of collision with the wall', () => {
       const { aNibbles, snakeMock } = setup({
         snakeMockData: { x: 5, y: 1, direction: Snake.DIRECTION_UP },
       });
 
       aNibbles.start();
+
+      expect(snakeMock.die).toHaveBeenCalledTimes(1);
+    });
+
+    it('checks if snake should die because of eating itself', () => {
+      const { aNibbles, snakeMock } = setup({
+        snakeMockData: {
+          x: 3, y: 3, direction: Snake.DIRECTION_DOWN,
+        },
+      });
+      snakeMock.body.insert(
+        new BoardObject(4, 3, CELL_WIDTH, CELL_HEIGHT, 'green')
+      );
+      snakeMock.body.insert(
+        new BoardObject(4, 4, CELL_WIDTH, CELL_HEIGHT, 'green')
+      );
+      snakeMock.body.insert(
+        new BoardObject(3, 4, CELL_WIDTH, CELL_HEIGHT, 'green')
+      );
+      snakeMock.body.insert(
+        new BoardObject(2, 4, CELL_WIDTH, CELL_HEIGHT, 'green')
+      );
+
+      aNibbles.start();
+      jasmine.clock().tick(Nibbles.UPDATE_FREQUENCY_MS);
 
       expect(snakeMock.die).toHaveBeenCalledTimes(1);
     });
