@@ -1,8 +1,8 @@
-export default class LinkedListNode {
-  private _content: any;
+export default class LinkedListNode<T> {
+  private _content: T;
   private _nextKey: string | null;
 
-  constructor(content: any, nextKey: string | null) {
+  constructor(content: T, nextKey: string | null) {
     this._content = content;
     this._nextKey = nextKey;
   }
@@ -11,7 +11,7 @@ export default class LinkedListNode {
     return this._content;
   }
 
-  set content(arg) {
+  set content(arg: T) {
     this._content = arg;
   }
 

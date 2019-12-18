@@ -1,13 +1,13 @@
 import LinkedListNode from './LinkedListNode';
 import randomString from './randomString';
 
-export default class LinkedList {
-  private _nodes: Map<string, LinkedListNode> = new Map();
+export default class LinkedList<T> {
+  private _nodes: Map<string, LinkedListNode<T>> = new Map();
   private _tailKey: string | null = null;
   private _headKey: string | null = null;
   private _currKey: string | null = null;
 
-  public insert(content: any) {
+  public insert(content: T) {
     const newNodeKey = randomString();
     this._updateTail(newNodeKey);
     this._updateHead(newNodeKey);
@@ -69,7 +69,7 @@ export default class LinkedList {
     }
   }
 
-  private _addNode(content: any, key: string) {
+  private _addNode(content: T, key: string) {
     this._nodes.set(key, new LinkedListNode(content, null));
   }
 

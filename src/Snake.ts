@@ -10,7 +10,7 @@ export default class Snake {
   private _initialDirection: string;
   private _score: number;
   private _initialScore: number;
-  private _body: LinkedList;
+  private _body: LinkedList<BoardObject>;
   private _head: BoardObject;
 
   constructor(
@@ -106,7 +106,7 @@ export default class Snake {
   }
 
   private get _initialBody() {
-    const result = new LinkedList();
+    const result = new LinkedList<BoardObject>();
     result.insert(this._head.copy());
     return result;
   }
