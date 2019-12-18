@@ -197,6 +197,46 @@ describe('Snake', () => {
     }));
   });
 
+  describe('hasEatenItself()', () => {
+    const testCases = [
+      {
+        title: 'true if some of snake\'s body part has the same coordinate as head',
+        head: new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, 'red'),
+        direction: Snake.DIRECTION_DOWN,
+        bodyParts: [
+          new BoardObject(4, 3, CELL_WIDTH, CELL_HEIGHT, 'red'),
+          new BoardObject(4, 4, CELL_WIDTH, CELL_HEIGHT, 'red'),
+          new BoardObject(3, 4, CELL_WIDTH, CELL_HEIGHT, 'red'),
+          new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, 'red'),
+        ],
+        expectedResult: true,
+      },
+      {
+        title: 'false otherwise',
+        head: new BoardObject(5, 5, CELL_WIDTH, CELL_HEIGHT, 'red'),
+        direction: Snake.DIRECTION_RIGHT,
+        bodyParts: [
+          new BoardObject(4, 5, CELL_WIDTH, CELL_HEIGHT, 'red'),
+          new BoardObject(3, 5, CELL_WIDTH, CELL_HEIGHT, 'red'),
+          new BoardObject(2, 5, CELL_WIDTH, CELL_HEIGHT, 'red'),
+        ],
+        expectedResult: false,
+      },
+    ];
+    testCases.forEach(t => it(t.title, () => {
+      const aSnake = new Snake(t.head, t.direction, 0);
+      for (let bodyPart of t.bodyParts) {
+        aSnake.body.insert(bodyPart);
+      }
+
+      expect(aSnake.hasEatenItself()).toBe(t.expectedResult);
+    }));
+
+    xit('handles case when snake has just eaten a target and grown a body part', () => {
+
+    });
+  });
+
   describe('die()', () => {
     it('sets coordinates to initial', () => {
       const initialX = 3;
