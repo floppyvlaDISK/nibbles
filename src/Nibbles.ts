@@ -70,7 +70,7 @@ export default class Nibbles {
     if (this._snake.canEat(this._target)) {
       this._handleSnakeEatsTheTarget();
     }
-    if (this._willSnakeDie()) {
+    if (this._shouldSnakeDie()) {
       this._handleSnakeDies();
     }
     this.render();
@@ -126,9 +126,17 @@ export default class Nibbles {
     );
   }
 
-  private _willSnakeDie() {
+  private _shouldSnakeDie() {
+    return this._hasSnakeCrushedIntoWall() || this._hasSnakeEatenItself();
+  }
+
+  private _hasSnakeCrushedIntoWall() {
     return this._walls.some(
       w => w.coordinates.equalsPartially(this._snake.body.head.coordinates)
     );
+  }
+
+  private _hasSnakeEatenItself() {
+    return false;
   }
 }
