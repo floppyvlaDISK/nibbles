@@ -21,4 +21,8 @@ export default class SnakeBody {
     result.insert(this._head.copy());
     return result;
   }
+
+  public reset() {
+    this._body = this.initialBody;
+  }
 }

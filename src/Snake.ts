@@ -11,7 +11,6 @@ export default class Snake {
   private _initialDirection: string;
   private _score: number;
   private _initialScore: number;
-  private _body: LinkedList<BoardObject>;
   private _xxxbody: SnakeBody;
 
   constructor(
@@ -26,8 +25,6 @@ export default class Snake {
     this._initialScore = score;
 
     this._xxxbody = new SnakeBody(head);
-
-    this._body = this._initialBody;
 
     this._moveUp = this._moveUp.bind(this);
     this._moveRight = this._moveRight.bind(this);
@@ -71,7 +68,7 @@ export default class Snake {
   }
 
   get body() {
-    return this._body;
+    return this._xxxbody.body;
   }
 
   public move() {
@@ -80,7 +77,7 @@ export default class Snake {
   }
 
   public die() {
-    this._body = this._initialBody;
+    this._xxxbody.reset();
     this._score = this._initialScore;
     this.direction = this._initialDirection;
   }
@@ -91,24 +88,20 @@ export default class Snake {
   }
 
   public canEat(aTarget: Target) {
-    return this._body.head.coordinates.equals(aTarget.coordinates);
+    return this._xxxbody.body.head.coordinates.equals(aTarget.coordinates);
   }
 
   public hasEatenItself() {
     let result = false;
-    this._body.forEach((obj: BoardObject) => {
+    this._xxxbody.body.forEach((obj: BoardObject) => {
       if (
-        obj !== this._body.head
-        && obj.coordinates.equals(this._body.head.coordinates)
+        obj !== this._xxxbody.body.head
+        && obj.coordinates.equals(this._xxxbody.body.head.coordinates)
       ) {
         result = true;
       }
     });
     return result;
-  }
-
-  private get _initialBody() {
-    return this._xxxbody.initialBody;
   }
 
   private _isOpposite(direction: string) {
@@ -123,7 +116,7 @@ export default class Snake {
   }
 
   private _growBodyPart() {
-    this._body.insert(
+    this._xxxbody.body.insert(
       new BoardObject(
         -1,
         -1,
@@ -155,12 +148,12 @@ export default class Snake {
 
   private _updateBodyPartsCoordinates() {
     let prev: BoardObject;
-    this._body.forEach((obj: BoardObject) => {
+    this._xxxbody.body.forEach((obj: BoardObject) => {
       if (!obj) {
         throw new TypeError('_updateBodyPartsCoordinates()');
       }
       const prevOriginal = obj.copy();
-      if (obj !== this._body.head) {
+      if (obj !== this._xxxbody.body.head) {
         obj.x = prev.x;
         obj.y = prev.y;
       }
@@ -169,18 +162,18 @@ export default class Snake {
   }
 
   private _moveUp() {
-    this._body.head.y -= 1;
+    this._xxxbody.body.head.y -= 1;
   }
 
   private _moveRight() {
-    this._body.head.x += 1;
+    this._xxxbody.body.head.x += 1;
   }
 
   private _moveDown() {
-    this._body.head.y += 1;
+    this._xxxbody.body.head.y += 1;
   }
 
   private _moveLeft() {
-    this._body.head.x -= 1;
+    this._xxxbody.body.head.x -= 1;
   }
 }
