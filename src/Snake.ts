@@ -129,8 +129,8 @@ export default class Snake {
   private _growBodyPart() {
     this._body.insert(
       new BoardObject(
-        this._body.tail.x,
-        this._body.tail.y,
+        -1,
+        -1,
         CELL_WIDTH,
         CELL_HEIGHT,
         this._head.color

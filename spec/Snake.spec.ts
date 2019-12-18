@@ -200,7 +200,7 @@ describe('Snake', () => {
   describe('hasEatenItself()', () => {
     const testCases = [
       {
-        title: 'true if some of snake\'s body part has the same coordinate as head',
+        title: 'is true if some snake\'s body part has the same coordinate as head',
         head: new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, 'red'),
         direction: Snake.DIRECTION_DOWN,
         bodyParts: [
@@ -212,7 +212,7 @@ describe('Snake', () => {
         expectedResult: true,
       },
       {
-        title: 'false otherwise',
+        title: 'is false if none of snake\'s body parts have the same coordinate as head',
         head: new BoardObject(5, 5, CELL_WIDTH, CELL_HEIGHT, 'red'),
         direction: Snake.DIRECTION_RIGHT,
         bodyParts: [
@@ -232,8 +232,17 @@ describe('Snake', () => {
       expect(aSnake.hasEatenItself()).toBe(t.expectedResult);
     }));
 
-    xit('handles case when snake has just eaten a target and grown a body part', () => {
+    it('is false when snake has just eaten a target and grown a body part', () => {
+      const aSnake = new Snake(
+        new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, 'red'),
+        Snake.DIRECTION_RIGHT,
+        0
+      );
+      const aTarget = new Target(3, 3, CELL_WIDTH, CELL_HEIGHT, 'blue', 25);
 
+      aSnake.eat(aTarget);
+
+      expect(aSnake.hasEatenItself()).toBe(false);
     });
   });
 
