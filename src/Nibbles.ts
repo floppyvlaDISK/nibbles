@@ -36,7 +36,7 @@ export default class Nibbles {
     this._performUpdate = this._performUpdate.bind(this);
   }
 
-  public static UPDATE_FREQUENCY_MS = 750;
+  public static UPDATE_FREQUENCY_MS = 250;
 
   public render() {
     [
