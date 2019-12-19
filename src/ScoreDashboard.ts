@@ -1,21 +1,21 @@
 export default class ScoreDashboard {
-  private _scoreContent: HTMLElement;
+  private _scoreElement: HTMLElement;
 
   constructor(container: HTMLElement | null) {
     if (!container) {
       throw new TypeError('ScoreDashboard: container is not a valid HTMLElement');
     }
-    this._scoreContent = this._createScoreElement(container);
+    this._scoreElement = this._createScoreElement(container);
 
     this.render = this.render.bind(this);
   }
 
   public toString() {
-    return this._scoreContent.textContent;
+    return this._scoreElement.textContent;
   }
 
   public render(value: number) {
-    this._scoreContent.textContent = `Score: ${value}`;
+    this._scoreElement.textContent = `Score: ${value}`;
   }
 
   private _createScoreElement(container: HTMLElement) {

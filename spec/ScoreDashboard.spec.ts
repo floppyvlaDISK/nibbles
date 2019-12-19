@@ -7,7 +7,7 @@ describe('ScoreDashboard', () => {
     containerMock = createContainerMock();
   });
 
-  it('creates score content element on instantiation', () => {
+  it('creates score element on instantiation', () => {
     new ScoreDashboard(containerMock);
 
     expect(containerMock.appendChild).toHaveBeenCalledTimes(1);
@@ -18,7 +18,7 @@ describe('ScoreDashboard', () => {
     expect(fn).toThrow();
   });
 
-  it('render() updates score content element', () => {
+  it('render() updates score element content', () => {
     const dashboard = new ScoreDashboard(containerMock);
 
     dashboard.render(10);
