@@ -18,20 +18,14 @@ describe('Renderer', () => {
     expect(containerMock.appendChild).toHaveBeenCalledWith(canvasMock);
   });
 
-  it('gets context', () => {
-    const r = new Renderer(containerMock);
-
-    expect(r.ctx).toEqual(contextMock);
-    expect(canvasMock.getContext).toHaveBeenCalledTimes(1);
-    expect(canvasMock.getContext).toHaveBeenCalledWith('2d');
-  });
-
   it('render()', () => {
     const r = new Renderer(containerMock);
     const aBoardObject = new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, 'blue');
 
     r.render(aBoardObject);
 
+    expect(canvasMock.getContext).toHaveBeenCalledTimes(2);
+    expect(canvasMock.getContext).toHaveBeenCalledWith('2d');
     expect(contextMock.fillStyle).toBe('blue');
     expect(contextMock.fillRect).toHaveBeenCalledTimes(1);
     expect(contextMock.fillRect.calls.argsFor(0)).toEqual([
