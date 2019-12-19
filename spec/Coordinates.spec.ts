@@ -1,4 +1,4 @@
-import Coordinates from '../src/Coordinates';
+import Coordinates from '../src/utils/Coordinates';
 
 describe('Coordinates', () => {
   describe('equals', () => {

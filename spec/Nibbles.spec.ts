@@ -6,7 +6,6 @@ import Snake from '../src/Snake';
 import Target from '../src/Target';
 import Renderer from '../src/Renderer';
 import * as randomWithin from '../src/utils/randomWithin';
-import Coordinates from '../src/Coordinates';
 import BoardObject from '../src/BoardObject';
 import {
   BOARD_WIDTH,

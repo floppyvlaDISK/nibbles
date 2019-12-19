@@ -1,4 +1,4 @@
-import Coordinates from './Coordinates';
+import Coordinates from './utils/Coordinates';
 
 export default class BoardObject {
   private _coordinates: Coordinates;

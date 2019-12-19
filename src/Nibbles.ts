@@ -3,7 +3,7 @@ import Renderer from './Renderer';
 import BoardObject from './BoardObject';
 import Target from './Target';
 import randomWithin from './utils/randomWithin';
-import Coordinates from './Coordinates';
+import Coordinates from './utils/Coordinates';
 import PubSub from './utils/PubSub';
 
 export default class Nibbles {
