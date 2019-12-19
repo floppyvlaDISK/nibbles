@@ -50,7 +50,7 @@ export default class Nibbles {
   }
 
   public start() {
-    if (this._intervalId) {
+    if (this._hasStarted()) {
       return;
     }
     this._performUpdate();
@@ -62,6 +62,10 @@ export default class Nibbles {
     if (latest !== Snake.directionFromKeyCode(value)) {
       this._snakeDirectionsQueue.push(Snake.directionFromKeyCode(value));
     }
+  }
+
+  private _hasStarted() {
+    return !!this._intervalId;
   }
 
   private _performUpdate() {
