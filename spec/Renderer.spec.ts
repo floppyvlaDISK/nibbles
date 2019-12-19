@@ -1,6 +1,6 @@
 import Renderer from '../src/Renderer';
 import BoardObject from '../src/BoardObject';
-import { BOARD_WIDTH, BOARD_HEIGHT, CELL_WIDTH, CELL_HEIGHT } from '../src/CONST';
+import { CELL_WIDTH, CELL_HEIGHT } from '../src/CONST';
 
 describe('Renderer', () => {
   let containerMock: jasmine.SpyObj<HTMLElement>;
