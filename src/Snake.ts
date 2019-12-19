@@ -4,8 +4,6 @@ import Target from './Target';
 import SnakeBody from './SnakeBody';
 
 export default class Snake {
-  private _direction: string | undefined;
-  private _initialDirection: string;
   private _score: number;
   private _initialScore: number;
   private _snakeBody: SnakeBody;
@@ -15,12 +13,8 @@ export default class Snake {
     direction: string,
     score: number,
   ) {
-    this._direction = direction;
-    this._initialDirection = direction;
-
     this._score = score;
     this._initialScore = score;
-
     this._snakeBody = new SnakeBody(head, direction);
   }
 
@@ -45,14 +39,11 @@ export default class Snake {
   }
 
   get direction() {
-    return this._direction;
+    return this._snakeBody.direction;
   }
 
-  set direction(arg) {
-    if (this._isOpposite(arg)) {
-      return;
-    }
-    this._direction = arg;
+  set direction(arg: string) {
+    this._snakeBody.direction = arg;
   }
 
   get score() {
@@ -70,7 +61,6 @@ export default class Snake {
   public die() {
     this._snakeBody.reset();
     this._score = this._initialScore;
-    this.direction = this._initialDirection;
   }
 
   public eat(aTarget: Target) {
@@ -84,17 +74,6 @@ export default class Snake {
 
   public hasEatenItself() {
     return this._snakeBody.hasEatenItself();
-  }
-
-  private _isOpposite(direction: string) {
-    let result = {
-      [Snake.DIRECTION_LEFT]: Snake.DIRECTION_RIGHT,
-      [Snake.DIRECTION_RIGHT]: Snake.DIRECTION_LEFT,
-      [Snake.DIRECTION_UP]: Snake.DIRECTION_DOWN,
-      [Snake.DIRECTION_DOWN]: Snake.DIRECTION_UP,
-    }[this._direction];
-
-    return result === direction;
   }
 
   private _increaseScoreBy(value: number) {

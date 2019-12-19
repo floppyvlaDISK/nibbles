@@ -4,18 +4,21 @@ import Snake from './Snake';
 import { CELL_WIDTH, CELL_HEIGHT } from './CONST';
 import Target from './Target';
 
+// FIXME: Should I underscore this class to signal that it's an internal one?
 export default class SnakeBody {
   private _head: BoardObject;
   private _body: LinkedList<BoardObject>;
   private _direction: string | undefined;
+  private _initialDirection: string | undefined;
 
   constructor(
     head: BoardObject,
     direction: string | undefined // FIXME: Can I solve this without undefined?
   ) {
     this._head = head.copy();
-    this._body = this.initialBody;
+    this._body = this._initialBody;
     this._direction = direction;
+    this._initialDirection = direction;
 
     this._moveUp = this._moveUp.bind(this);
     this._moveRight = this._moveRight.bind(this);
@@ -39,7 +42,8 @@ export default class SnakeBody {
   }
 
   public reset() {
-    this._body = this.initialBody;
+    this._body = this._initialBody;
+    this._direction = this._initialDirection;
   }
 
   public move() {
@@ -76,7 +80,7 @@ export default class SnakeBody {
     );
   }
 
-  private get initialBody() {
+  private get _initialBody() {
     const result = new LinkedList<BoardObject>();
     result.insert(this._head.copy());
     return result;
