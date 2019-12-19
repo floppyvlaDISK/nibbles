@@ -3,11 +3,9 @@ import Nibbles from './Nibbles';
 
 export default class GameController {
   private _nibbles: Nibbles;
-  private _hasStarted: boolean;
 
   constructor(nibbles: Nibbles) {
     this._nibbles = nibbles;
-    this._hasStarted = false;
   }
 
   public exec() {
