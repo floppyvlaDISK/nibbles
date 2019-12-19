@@ -2,20 +2,19 @@ import BoardObject from './BoardObject';
 import { ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from './utils/isArrowKey';
 import Target from './Target';
 import SnakeBody from './SnakeBody';
+import SnakeScore from './SnakeScore';
 
 export default class Snake {
-  private _score: number;
-  private _initialScore: number;
   private _snakeBody: SnakeBody;
+  private _snakeScore: SnakeScore;
 
   constructor(
     head: BoardObject,
     direction: string,
     score: number,
   ) {
-    this._score = score;
-    this._initialScore = score;
     this._snakeBody = new SnakeBody(head, direction);
+    this._snakeScore = new SnakeScore(score);
   }
 
   public static DIRECTION_UP = 'up';
@@ -47,7 +46,7 @@ export default class Snake {
   }
 
   get score() {
-    return this._score;
+    return this._snakeScore.score;
   }
 
   get body() {
@@ -60,11 +59,11 @@ export default class Snake {
 
   public die() {
     this._snakeBody.reset();
-    this._score = this._initialScore;
+    this._snakeScore.reset();
   }
 
   public eat(aTarget: Target) {
-    this._increaseScoreBy(aTarget.value);
+    this._snakeScore.increaseBy(aTarget.value);
     this._snakeBody.growBodyPart();
   }
 
@@ -74,9 +73,5 @@ export default class Snake {
 
   public hasEatenItself() {
     return this._snakeBody.hasEatenItself();
-  }
-
-  private _increaseScoreBy(value: number) {
-    this._score += value;
   }
 }
