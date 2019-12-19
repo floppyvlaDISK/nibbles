@@ -53,6 +53,14 @@ export default class Snake {
     return this._snakeBody.body;
   }
 
+  get headCoordinates() {
+    return this._snakeBody.body.head.coordinates;
+  }
+
+  public forEachBodyPart(fn: Function) {
+    this._snakeBody.body.forEach(fn);
+  }
+
   public move() {
     this._snakeBody.move();
   }

@@ -44,7 +44,7 @@ export default class Nibbles {
       this._target,
       ...this._walls,
     ].forEach(obj => this._renderer.render(obj));
-    this._snake.body.forEach(
+    this._snake.forEachBodyPart(
       (obj: BoardObject) => this._renderer.render(obj)
     );
   }
@@ -123,7 +123,7 @@ export default class Nibbles {
       return true;
     }
     let result = false;
-    this._snake.body.forEach(
+    this._snake.forEachBodyPart(
       (obj: BoardObject) => {
         result = obj.coordinates.equals(aCoordinate) || result;
       }
@@ -136,7 +136,7 @@ export default class Nibbles {
 
   private _hasSnakeCollidedWithTheWall() {
     return this._walls.some(
-      w => w.coordinates.equalsPartially(this._snake.body.head.coordinates)
+      w => w.coordinates.equalsPartially(this._snake.headCoordinates)
     );
   }
 }
