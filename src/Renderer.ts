@@ -11,14 +11,32 @@ export default class Renderer {
     this._canvas = Renderer._createCanvas(container);
   }
 
-  public render(aBoardObject: BoardObject) {
-    this._ctx.fillStyle = aBoardObject.color;
+  public render(obj: BoardObject) {
+    this._ctx.fillStyle = obj.color;
     this._ctx.fillRect(
-      aBoardObject.x * aBoardObject.width,
-      aBoardObject.y * aBoardObject.height,
-      aBoardObject.width,
-      aBoardObject.height,
+      obj.x * obj.width,
+      obj.y * obj.height,
+      obj.width,
+      obj.height,
     );
+  }
+
+  public renderImage(obj: BoardObject) {
+    const anImage = new Image();
+    anImage.onload = () => {
+      this._ctx.drawImage(
+        anImage,
+        0,
+        192,
+        64,
+        64,
+        obj.x * obj.width,
+        obj.y * obj.height,
+        obj.width,
+        obj.height
+      );
+    }
+    anImage.src = 'snake-sprite.png';
   }
 
   private static _createCanvas(container: HTMLElement) {

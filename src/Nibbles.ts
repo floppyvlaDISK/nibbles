@@ -5,6 +5,12 @@ import Target from './Target';
 import randomWithin from './utils/randomWithin';
 import Coordinates from './utils/Coordinates';
 import PubSub from './utils/PubSub';
+import {
+  CELL_WIDTH,
+  CELL_HEIGHT,
+  LAST_CELL_INDEX_BY_WIDTH,
+  LAST_CELL_INDEX_BY_HEIGHT
+} from './CONST';
 
 export default class Nibbles {
   private _renderer: Renderer;
@@ -38,6 +44,7 @@ export default class Nibbles {
 
   public static UPDATE_FREQUENCY_MS = 100;
 
+  // FIXME: Separate rendering into a separate class
   public render() {
     [
       this._board,
@@ -46,6 +53,9 @@ export default class Nibbles {
     ].forEach(obj => this._renderer.render(obj));
     this._snake.forEachBodyPart(
       (obj: BoardObject) => this._renderer.render(obj)
+    );
+    this._renderer.renderImage(
+      this._snake.body.head,
     );
   }
 
