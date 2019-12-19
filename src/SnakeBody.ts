@@ -7,12 +7,15 @@ import Target from './Target';
 export default class SnakeBody {
   private _head: BoardObject;
   private _body: LinkedList<BoardObject>;
+  private _direction: string | undefined;
 
   constructor(
     head: BoardObject,
+    direction: string | undefined // FIXME: Can I solve this without undefined?
   ) {
     this._head = head.copy();
     this._body = this.initialBody;
+    this._direction = direction;
 
     this._moveUp = this._moveUp.bind(this);
     this._moveRight = this._moveRight.bind(this);
@@ -24,19 +27,24 @@ export default class SnakeBody {
     return this._body;
   }
 
-  get initialBody() {
-    const result = new LinkedList<BoardObject>();
-    result.insert(this._head.copy());
-    return result;
+  get direction() {
+    return this._direction;
+  }
+
+  set direction(arg: string) {
+    if (this._isOpposite(arg)) {
+      return;
+    }
+    this._direction = arg;
   }
 
   public reset() {
     this._body = this.initialBody;
   }
 
-  public move(direction: string | undefined) {
+  public move() {
     this._updateBodyPartsCoordinates();
-    this._updateHeadCoordinate(direction);
+    this._updateHeadCoordinate();
   }
 
   public canEat(aTarget: Target) {
@@ -68,6 +76,12 @@ export default class SnakeBody {
     );
   }
 
+  private get initialBody() {
+    const result = new LinkedList<BoardObject>();
+    result.insert(this._head.copy());
+    return result;
+  }
+
   private _updateBodyPartsCoordinates() {
     let prev: BoardObject;
     this._body.forEach((obj: BoardObject) => {
@@ -83,17 +97,16 @@ export default class SnakeBody {
     });
   }
 
-  // TODO: Move direction to SnakeBody
-  private _updateHeadCoordinate(direction: string | undefined) {
+  private _updateHeadCoordinate() {
     const method = {
       [Snake.DIRECTION_UP]: this._moveUp,
       [Snake.DIRECTION_RIGHT]: this._moveRight,
       [Snake.DIRECTION_DOWN]: this._moveDown,
       [Snake.DIRECTION_LEFT]: this._moveLeft,
-    }[direction];
+    }[this._direction];
 
     if (!method) {
-      throw new RangeError(`Snake: no update method found for direction: ${direction}`);
+      throw new RangeError(`Snake: no update method found for direction: ${this._direction}`);
     }
 
     method();
@@ -113,5 +126,16 @@ export default class SnakeBody {
 
   private _moveLeft() {
     this._body.head.x -= 1;
+  }
+
+  private _isOpposite(direction: string) {
+    let result = {
+      [Snake.DIRECTION_LEFT]: Snake.DIRECTION_RIGHT,
+      [Snake.DIRECTION_RIGHT]: Snake.DIRECTION_LEFT,
+      [Snake.DIRECTION_UP]: Snake.DIRECTION_DOWN,
+      [Snake.DIRECTION_DOWN]: Snake.DIRECTION_UP,
+    }[this._direction];
+
+    return result === direction;
   }
 }

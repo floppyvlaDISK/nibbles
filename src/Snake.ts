@@ -21,7 +21,7 @@ export default class Snake {
     this._score = score;
     this._initialScore = score;
 
-    this._snakeBody = new SnakeBody(head);
+    this._snakeBody = new SnakeBody(head, direction);
   }
 
   public static DIRECTION_UP = 'up';
@@ -64,7 +64,7 @@ export default class Snake {
   }
 
   public move() {
-    this._snakeBody.move(this._direction);
+    this._snakeBody.move();
   }
 
   public die() {
