@@ -1,5 +1,6 @@
 import BoardObject from './BoardObject';
 import { BOARD_WIDTH, BOARD_HEIGHT } from './CONST';
+import BoardImageObject from './BoardImageObject';
 
 export default class Renderer {
   private _canvas: HTMLCanvasElement;
@@ -21,22 +22,18 @@ export default class Renderer {
     );
   }
 
-  public renderImage(obj: BoardObject) {
-    const anImage = new Image();
-    anImage.onload = () => {
-      this._ctx.drawImage(
-        anImage,
-        0,
-        192,
-        64,
-        64,
-        obj.x * obj.width,
-        obj.y * obj.height,
-        obj.width,
-        obj.height
-      );
-    }
-    anImage.src = 'snake-sprite.png';
+  public renderImage(obj: BoardImageObject) {
+    this._ctx.drawImage(
+      obj.image,
+      obj.sourceX,
+      obj.sourceY,
+      obj.sourceWidth,
+      obj.sourceHeight,
+      obj.x * obj.width,
+      obj.y * obj.height,
+      obj.width,
+      obj.height
+    );
   }
 
   private static _createCanvas(container: HTMLElement) {
