@@ -5,15 +5,11 @@ import Target from './Target';
 import randomWithin from './utils/randomWithin';
 import Coordinates from './utils/Coordinates';
 import PubSub from './utils/PubSub';
-import {
-  CELL_WIDTH,
-  CELL_HEIGHT,
-  LAST_CELL_INDEX_BY_WIDTH,
-  LAST_CELL_INDEX_BY_HEIGHT
-} from './CONST';
+import TargetRenderer from './TargetRenderer';
 
 export default class Nibbles {
   private _renderer: Renderer;
+  private _targetRenderer: TargetRenderer;
   private _board: BoardObject;
   private _snake: Snake;
   private _target: Target;
@@ -29,8 +25,10 @@ export default class Nibbles {
     target: Target,
     walls: Array<BoardObject>,
     pubSub: PubSub,
+    targetRenderer: TargetRenderer,
   ) {
     this._renderer = renderer;
+    this._targetRenderer = targetRenderer;
     this._board = board;
     this._snake = snake;
     this._target = target;
@@ -44,18 +42,13 @@ export default class Nibbles {
 
   public static UPDATE_FREQUENCY_MS = 100;
 
-  // FIXME: Separate rendering into a separate class
   public render() {
-    [
-      this._board,
-      this._target,
-      ...this._walls,
-    ].forEach(obj => this._renderer.render(obj));
+    [this._board, ...this._walls].forEach(
+      obj => this._renderer.render(obj)
+    );
+    this._targetRenderer.render(this._target);
     this._snake.forEachBodyPart(
       (obj: BoardObject) => this._renderer.render(obj)
-    );
-    this._renderer.renderImage(
-      this._snake.body.head,
     );
   }
 
@@ -112,6 +105,7 @@ export default class Nibbles {
     let result;
     while (!result) {
       result = new Coordinates(randomWithin(1, 18), randomWithin(1, 18));
+      // FIXME: Sometimes the target spawn on the snake body part
       if (this._isOccupied(result)) {
         result = undefined;
       }

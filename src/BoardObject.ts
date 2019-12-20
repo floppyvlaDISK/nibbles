@@ -11,7 +11,7 @@ export default class BoardObject {
     y: number,
     width: number,
     height: number,
-    color: string,
+    color: string, // FIXME: Does every board object need a color?
   ) {
     this._coordinates = new Coordinates(x, y);
     this._width = width;
