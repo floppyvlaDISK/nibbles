@@ -16,6 +16,7 @@ import {
   LAST_CELL_INDEX_BY_WIDTH
 } from '../src/CONST';
 import PubSub from '../src/utils/PubSub';
+import TargetRenderer from '../src/TargetRenderer';
 
 describe('Nibbles', () => {
   let sandbox = sinon.createSandbox();
@@ -276,12 +277,13 @@ describe('Nibbles', () => {
         new BoardObject(0, 0, CELL_WIDTH, BOARD_HEIGHT, 'pink'),
       ],
       pubSubMock,
+      new TargetRenderer(rendererMock),
     );
   }
   function createRendererMock() {
     return jasmine.createSpyObj(
       'Renderer',
-      ['render'],
+      ['render', 'renderImage'],
     );
   }
   function createSnakeMock({
@@ -329,7 +331,9 @@ describe('Nibbles', () => {
     rendererMock: jasmine.SpyObj<Renderer>,
     callCount: number
   ) {
-    expect(rendererMock.render).toHaveBeenCalledTimes(callCount * 7);
+    expect(rendererMock.render).toHaveBeenCalledTimes(callCount * 6);
+    // FIXME:
+    // expect(rendererMock.renderImage).toHaveBeenCalledTimes(callCount);
   }
   function stubRandomWithin(argsList: Array<number>) {
     const stub = sandbox.stub(randomWithin, 'default')
