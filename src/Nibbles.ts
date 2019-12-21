@@ -6,10 +6,12 @@ import randomWithin from './utils/randomWithin';
 import Coordinates from './utils/Coordinates';
 import PubSub from './utils/PubSub';
 import TargetRenderer from './TargetRenderer';
+import SnakeRenderer from './SnakeRenderer';
 
 export default class Nibbles {
   private _renderer: Renderer;
   private _targetRenderer: TargetRenderer;
+  private _snakeRenderer: SnakeRenderer;
   private _board: BoardObject;
   private _snake: Snake;
   private _target: Target;
@@ -26,9 +28,11 @@ export default class Nibbles {
     walls: Array<BoardObject>,
     pubSub: PubSub,
     targetRenderer: TargetRenderer,
+    snakeRenderer: SnakeRenderer,
   ) {
     this._renderer = renderer;
     this._targetRenderer = targetRenderer;
+    this._snakeRenderer = snakeRenderer;
     this._board = board;
     this._snake = snake;
     this._target = target;
@@ -47,9 +51,7 @@ export default class Nibbles {
       obj => this._renderer.render(obj)
     );
     this._targetRenderer.render(this._target);
-    this._snake.forEachBodyPart(
-      (obj: BoardObject) => this._renderer.render(obj)
-    );
+    this._snakeRenderer.render(this._snake);
   }
 
   public start() {

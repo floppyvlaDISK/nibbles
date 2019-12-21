@@ -15,11 +15,13 @@ import {
 import PubSub from './utils/PubSub';
 import ScoreDashboard from './ScoreDashboard';
 import TargetRenderer from './TargetRenderer';
+import SnakeRenderer from './SnakeRenderer';
 
 // FIXME: Create setup files for nibbles and scoredashboard
 
 const aRenderer = new Renderer(document.getElementById('nibbles'));
 const aTargetRenderer = new TargetRenderer(aRenderer);
+const aSnakeRenderer = new SnakeRenderer(aRenderer);
 const board = new BoardObject(0, 0, BOARD_WIDTH, BOARD_HEIGHT, '#FFE4E1');
 const aSnake = new Snake(
   new BoardObject(2, 2, CELL_WIDTH, CELL_HEIGHT, 'green'),
@@ -41,7 +43,8 @@ const aNibbles = new Nibbles(
   target,
   walls,
   aPubSub,
-  aTargetRenderer
+  aTargetRenderer,
+  aSnakeRenderer,
 );
 const aGameController = new GameController(aNibbles);
 const aScoreDashboard = new ScoreDashboard(document.getElementById('score-board'));
