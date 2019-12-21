@@ -1,6 +1,7 @@
 import Renderer from './Renderer';
 import Target from './Target';
 import BoardImageObject from './BoardImageObject';
+import { SNAKE_SPRITE_URL } from './CONST';
 
 export default class TargetRenderer {
   private _baseRenderer: Renderer;
@@ -18,9 +19,9 @@ export default class TargetRenderer {
   }
 
   public render(obj: Target) {
-    this._waitForImageToLoad().then(() =>
+    this._waitForImageToLoad().then(() => {
       this._baseRenderer.renderImage(this._transformTarget(obj))
-    );
+    });
   }
 
   private _loadSprite() {
@@ -28,7 +29,7 @@ export default class TargetRenderer {
     this._image.onload = () => {
       this._hasImageLoaded = true;
     };
-    this._image.src = 'snake-sprite.png';
+    this._image.src = SNAKE_SPRITE_URL;
   }
 
   private _waitForImageToLoad() {

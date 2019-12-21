@@ -17,6 +17,7 @@ import {
 } from '../src/CONST';
 import PubSub from '../src/utils/PubSub';
 import TargetRenderer from '../src/TargetRenderer';
+import { flushPromise } from './support/helpers/testingUtils';
 
 describe('Nibbles', () => {
   let sandbox = sinon.createSandbox();
@@ -25,23 +26,26 @@ describe('Nibbles', () => {
     jasmine.clock().install();
   });
 
-  it('render()', () => {
+  it('render()', async () => {
     const { aNibbles, rendererMock } = setup();
 
     aNibbles.render();
+    await waitForSpiteToLoad();
 
     testRenderCalls(rendererMock, 1);
   });
 
   describe('game loop', () => {
-    it('renders board and objects', () => {
+    it('renders board and objects', async () => {
       const { aNibbles, rendererMock } = setup();
 
       aNibbles.start();
+      await waitForSpiteToLoad();
 
       testRenderCalls(rendererMock, 1);
 
       jasmine.clock().tick(Nibbles.UPDATE_FREQUENCY_MS * 4);
+      await flushPromise();
 
       testRenderCalls(rendererMock, 5);
     });
@@ -332,8 +336,7 @@ describe('Nibbles', () => {
     callCount: number
   ) {
     expect(rendererMock.render).toHaveBeenCalledTimes(callCount * 6);
-    // FIXME:
-    // expect(rendererMock.renderImage).toHaveBeenCalledTimes(callCount);
+    expect(rendererMock.renderImage).toHaveBeenCalledTimes(callCount);
   }
   function stubRandomWithin(argsList: Array<number>) {
     const stub = sandbox.stub(randomWithin, 'default')
@@ -341,5 +344,9 @@ describe('Nibbles', () => {
       stub.onCall(index).returns(arg);
     });
     return stub;
+  }
+  async function waitForSpiteToLoad() {
+    jasmine.clock().tick(50);
+    await flushPromise();
   }
 });

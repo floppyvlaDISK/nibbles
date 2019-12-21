@@ -1,5 +1,5 @@
 import jsdom from 'jsdom';
-import Canvas from 'canvas';
+import { Image } from './domMocks';
 
 const { window } = new jsdom.JSDOM('<!doctype html><html><body></body></html>');
 const globalAny: any = global;
@@ -7,4 +7,4 @@ const globalAny: any = global;
 globalAny.window = window;
 globalAny.document = window.document;
 globalAny.KeyboardEvent = window.KeyboardEvent;
-globalAny.Image = Canvas.Image;
+globalAny.Image = Image;
