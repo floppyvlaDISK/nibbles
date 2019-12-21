@@ -1,6 +1,6 @@
 import Renderer from './Renderer';
 import ImageLoader from './ImageLoader';
-import { SNAKE_SPRITE_URL } from './constants/common';
+import { SNAKE_SPRITE_URL, SNAKE_TILE_HEIGHT, SNAKE_TILE_WIDTH } from './constants/snakeSprite';
 import Snake from './Snake';
 import BoardObject from './BoardObject';
 import BoardImageObject from './BoardImageObject';
@@ -28,8 +28,8 @@ export default class SnakeRenderer {
       this._imageLoader.image,
       0,
       192,
-      64,
-      64,
+      SNAKE_TILE_WIDTH,
+      SNAKE_TILE_HEIGHT,
       obj.x,
       obj.y,
       obj.width,

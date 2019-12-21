@@ -2,16 +2,18 @@ import Renderer from './Renderer';
 import ImageLoader from './ImageLoader';
 import Target from './Target';
 import BoardImageObject from './BoardImageObject';
-import { SNAKE_SPRITE_URL } from './constants/common';
+import {
+  SNAKE_SPRITE_URL,
+  SNAKE_TILE_WIDTH,
+  SNAKE_TILE_HEIGHT
+} from './constants/snakeSprite';
 
 export default class TargetRenderer {
   private _baseRenderer: Renderer;
   private _imageLoader: ImageLoader;
 
-  private static SOURCE_X = 0;
-  private static SOURCE_Y = 192;
-  private static SOURCE_WIDTH = 64;
-  private static SOURCE_HEIGHT = 64;
+  private static TARGET_TILE_X = 0;
+  private static TARGET_TILE_Y = 192;
 
   constructor(renderer: Renderer) {
     this._baseRenderer = renderer;
@@ -28,10 +30,10 @@ export default class TargetRenderer {
   private _transformTarget(obj: Target) {
     return new BoardImageObject(
       this._imageLoader.image,
-      TargetRenderer.SOURCE_X,
-      TargetRenderer.SOURCE_Y,
-      TargetRenderer.SOURCE_WIDTH,
-      TargetRenderer.SOURCE_HEIGHT,
+      TargetRenderer.TARGET_TILE_X,
+      TargetRenderer.TARGET_TILE_Y,
+      SNAKE_TILE_WIDTH,
+      SNAKE_TILE_HEIGHT,
       obj.x,
       obj.y,
       obj.width,
