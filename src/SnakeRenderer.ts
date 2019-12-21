@@ -1,6 +1,6 @@
 import Renderer from './Renderer';
 import ImageLoader from './ImageLoader';
-import { SNAKE_SPRITE_URL } from './CONST';
+import { SNAKE_SPRITE_URL } from './constants/common';
 import Snake from './Snake';
 import BoardObject from './BoardObject';
 import BoardImageObject from './BoardImageObject';

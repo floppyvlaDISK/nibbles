@@ -1,7 +1,7 @@
 import TargetRenderer from '../src/TargetRenderer';
 import Renderer from '../src/Renderer';
 import Target from '../src/Target';
-import { CELL_WIDTH, CELL_HEIGHT } from '../src/CONST';
+import { CELL_WIDTH, CELL_HEIGHT } from '../src/constants/common';
 import { flushPromise } from './support/helpers/testingUtils';
 
 describe('TargetRenderer', () => {

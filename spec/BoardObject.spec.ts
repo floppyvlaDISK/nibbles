@@ -1,5 +1,5 @@
 import BoardObject from '../src/BoardObject';
-import { CELL_WIDTH, CELL_HEIGHT } from '../src/CONST';
+import { CELL_WIDTH, CELL_HEIGHT } from '../src/constants/common';
 
 describe('BoardObject', () => {
   it('copy()', () => {

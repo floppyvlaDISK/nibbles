@@ -1,5 +1,5 @@
 import BoardObject from './BoardObject';
-import { BOARD_WIDTH, BOARD_HEIGHT } from './CONST';
+import { BOARD_WIDTH, BOARD_HEIGHT } from './constants/common';
 import BoardImageObject from './BoardImageObject';
 
 export default class Renderer {

@@ -11,7 +11,7 @@ import {
   BOARD_HEIGHT,
   LAST_CELL_INDEX_BY_HEIGHT,
   LAST_CELL_INDEX_BY_WIDTH
-} from './CONST';
+} from './constants/common';
 import PubSub from './utils/PubSub';
 import ScoreDashboard from './ScoreDashboard';
 import TargetRenderer from './TargetRenderer';

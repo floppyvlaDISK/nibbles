@@ -1,7 +1,7 @@
 import BoardObject from './BoardObject';
 import LinkedList from './utils/LinkedList';
 import Snake from './Snake';
-import { CELL_WIDTH, CELL_HEIGHT } from './CONST';
+import { CELL_WIDTH, CELL_HEIGHT } from './constants/common';
 import Target from './Target';
 
 // FIXME: Should I underscore this class to signal that it's an internal one?

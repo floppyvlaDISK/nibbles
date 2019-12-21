@@ -14,7 +14,7 @@ import {
   CELL_WIDTH,
   LAST_CELL_INDEX_BY_HEIGHT,
   LAST_CELL_INDEX_BY_WIDTH
-} from '../src/CONST';
+} from '../src/constants/common';
 import PubSub from '../src/utils/PubSub';
 import TargetRenderer from '../src/TargetRenderer';
 import { flushPromise } from './support/helpers/testingUtils';

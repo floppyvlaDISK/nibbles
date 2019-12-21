@@ -1,7 +1,7 @@
 import Snake from '../src/Snake';
 import Target from '../src/Target';
 import { ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from '../src/utils/isArrowKey';
-import { CELL_WIDTH, CELL_HEIGHT } from '../src/CONST';
+import { CELL_WIDTH, CELL_HEIGHT } from '../src/constants/common';
 import BoardObject from '../src/BoardObject';
 
 describe('Snake', () => {

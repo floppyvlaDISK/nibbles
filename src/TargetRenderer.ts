@@ -2,7 +2,7 @@ import Renderer from './Renderer';
 import ImageLoader from './ImageLoader';
 import Target from './Target';
 import BoardImageObject from './BoardImageObject';
-import { SNAKE_SPRITE_URL } from './CONST';
+import { SNAKE_SPRITE_URL } from './constants/common';
 
 export default class TargetRenderer {
   private _baseRenderer: Renderer;
