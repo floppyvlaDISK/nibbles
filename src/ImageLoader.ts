@@ -1,11 +1,9 @@
 export default class ImageLoader {
   private _image: HTMLImageElement;
-  private _imageSrc: string;
   private _hasImageLoaded: boolean = false;
 
-  constructor(spriteSrc: string) {
-    this._imageSrc = spriteSrc;
-    this._loadImage();
+  constructor(imageSrc: string) {
+    this._loadImage(imageSrc);
   }
 
   get image() {
@@ -25,11 +23,11 @@ export default class ImageLoader {
     });
   }
 
-  private _loadImage() {
+  private _loadImage(imageSrc: string) {
     this._image = new Image();
     this._image.onload = () => {
       this._hasImageLoaded = true;
     };
-    this._image.src = this._imageSrc;
+    this._image.src = imageSrc;
   }
 }
