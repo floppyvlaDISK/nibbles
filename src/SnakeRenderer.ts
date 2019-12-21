@@ -11,7 +11,6 @@ export default class SnakeRenderer {
 
   constructor(renderer: Renderer) {
     this._baseRenderer = renderer;
-    // TODO: I could load image once instead of twice if I were to pass this as parameter
     this._imageLoader = new ImageLoader(SNAKE_SPRITE_URL);
   }
 
@@ -26,8 +25,8 @@ export default class SnakeRenderer {
   private _transformSnakeBodyPart(obj: BoardObject) {
     return new BoardImageObject(
       this._imageLoader.image,
-      0,
-      192,
+      this._calculateTileX(obj),
+      this._calculateTileY(obj),
       SNAKE_TILE_WIDTH,
       SNAKE_TILE_HEIGHT,
       obj.x,
@@ -35,5 +34,13 @@ export default class SnakeRenderer {
       obj.width,
       obj.height,
     );
+  }
+
+  private _calculateTileX(obj: BoardObject) {
+    return 0;
+  }
+
+  private _calculateTileY(obj: BoardObject) {
+    return 192;
   }
 }

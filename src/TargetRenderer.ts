@@ -17,7 +17,6 @@ export default class TargetRenderer {
 
   constructor(renderer: Renderer) {
     this._baseRenderer = renderer;
-    // TODO: I could load image once instead of twice if I were to pass this as parameter
     this._imageLoader = new ImageLoader(SNAKE_SPRITE_URL);
   }
 
