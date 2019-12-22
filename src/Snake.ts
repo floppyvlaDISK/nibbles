@@ -61,6 +61,15 @@ export default class Snake {
     this._snakeBody.body.forEach(fn);
   }
 
+  // TODO: Test
+  public bodyPartsToArray() {
+    const result: Array<BoardObject> = [];
+    this._snakeBody.body.forEach((obj: BoardObject) => {
+      result.push(obj);
+    });
+    return result;
+  }
+
   public move() {
     this._snakeBody.move();
   }

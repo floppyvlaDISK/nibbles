@@ -24,14 +24,14 @@ import {
   BODY_VERTICAL_TILE_Y,
   BODY_LEFT_TO_UP_TURN_TILE_X,
   BODY_LEFT_TO_UP_TURN_TILE_Y,
-  BODY_UP_TO_RIGHT_TURN_TILE_X,
-  BODY_UP_TO_RIGHT_TURN_TILE_Y,
-  BODY_RIGHT_TO_DOWN_TURN_TILE_X,
-  BODY_RIGHT_TO_DOWN_TURN_TILE_Y,
   BODY_DOWN_TO_LEFT_TURN_TILE_X,
   BODY_DOWN_TO_LEFT_TURN_TILE_Y,
   HEAD_RIGHT_TILE_X,
-  HEAD_RIGHT_TILE_Y
+  HEAD_RIGHT_TILE_Y,
+  BODY_UP_TO_RIGHT_TURN_TILE_X,
+  BODY_UP_TO_RIGHT_TURN_TILE_Y,
+  BODY_RIGHT_TO_DOWN_TURN_TILE_X,
+  BODY_RIGHT_TO_DOWN_TURN_TILE_Y
 } from './constants/snakeSprite';
 import Snake from './Snake';
 import BoardObject from './BoardObject';
@@ -50,34 +50,51 @@ export default class SnakeRenderer {
 
   public render() {
     this._imageLoader.waitForImageToLoad().then(() => {
-      this._snake.forEachBodyPart((obj: BoardObject) => {
-        this._baseRenderer.renderImage(this._transformSnakeBodyPart(obj));
-      });
+      const bodyPartsArr: Array<BoardObject> = this._snake.bodyPartsToArray();
+      bodyPartsArr.forEach(
+        (obj: BoardObject, index: number) => {
+          this._baseRenderer.renderImage(
+            this._transformSnakeBodyPart(
+              obj,
+              bodyPartsArr[index - 1],
+              bodyPartsArr[index + 1],
+            )
+          );
+        }
+      )
     });
   }
 
-  private _transformSnakeBodyPart(obj: BoardObject) {
-    const { x, y } = this._calculateTileCoordinates(obj);
+  private _transformSnakeBodyPart(
+    curr: BoardObject,
+    prev: BoardObject,
+    next: BoardObject,
+  ) {
+    const { x, y } = this._calculateTileCoordinates(curr, prev, next);
     return new BoardImageObject(
       this._imageLoader.image,
       x,
       y,
       SNAKE_TILE_WIDTH,
       SNAKE_TILE_HEIGHT,
-      obj.x,
-      obj.y,
-      obj.width,
-      obj.height,
+      curr.x,
+      curr.y,
+      curr.width,
+      curr.height,
     );
   }
 
-  private _calculateTileCoordinates(obj: BoardObject) {
-    if (this._snake.body.head === obj) {
+  private _calculateTileCoordinates(
+    curr: BoardObject,
+    prev: BoardObject,
+    next: BoardObject,
+  ) {
+    if (this._snake.body.head === curr) {
       return this._calculateHeadTileCoordinates();
-    } else if (this._snake.body.tail === obj) {
+    } else if (this._snake.body.tail === curr) {
       return this._calculateTailTileCoordinates();
     } else {
-      return this._calculateBodyTileCoordinates(obj);
+      return this._calculateBodyTileCoordinates(curr, prev, next);
     }
   }
 
@@ -111,6 +128,7 @@ export default class SnakeRenderer {
     }
   }
 
+  // FIXME: Tail should be calculated based on prev body part, not direction
   private _calculateTailTileCoordinates() {
     switch (this._snake.direction) {
       case Snake.DIRECTION_UP:
@@ -141,10 +159,112 @@ export default class SnakeRenderer {
     }
   }
 
-  private _calculateBodyTileCoordinates(obj: BoardObject) {
+  private _calculateBodyTileCoordinates(
+    curr: BoardObject,
+    prev: BoardObject,
+    next: BoardObject,
+  ) {
+    if (isHorizontal()) {
+      return {
+        x: BODY_HORIZONTAL_TILE_X,
+        y: BODY_HORIZONTAL_TILE_Y,
+      };
+    }
+    if (isVertical()) {
+      return {
+        x: BODY_VERTICAL_TILE_X,
+        y: BODY_VERTICAL_TILE_Y,
+      };
+    }
+    if (isLeftToUpTurn() || isDownToRightTurn()) {
+      return {
+        x: BODY_LEFT_TO_UP_TURN_TILE_X,
+        y: BODY_LEFT_TO_UP_TURN_TILE_Y,
+      };
+    }
+    if (isUpToRightTurn() || isLeftToDownTurn()) {
+      return {
+        x: BODY_UP_TO_RIGHT_TURN_TILE_X,
+        y: BODY_UP_TO_RIGHT_TURN_TILE_Y,
+      };
+    }
+    if (isRightToDownTurn() || isUpToLeftTurn()) {
+      return {
+        x: BODY_RIGHT_TO_DOWN_TURN_TILE_X,
+        y: BODY_RIGHT_TO_DOWN_TURN_TILE_Y,
+      };
+    }
+    if (isDownToLeftTurn() || isRightToUpTurn()) {
+      return {
+        x: BODY_DOWN_TO_LEFT_TURN_TILE_X,
+        y: BODY_DOWN_TO_LEFT_TURN_TILE_Y,
+      };
+    }
+    // happens for newly grown body part
     return {
-      x: BODY_DOWN_TO_LEFT_TURN_TILE_X,
-      y: BODY_DOWN_TO_LEFT_TURN_TILE_Y,
+      x: -1,
+      y: -1,
     };
+
+    function isHorizontal() {
+      return (
+        ((curr.x === prev.x + 1) && (curr.x === next.x - 1))
+        || ((curr.x === prev.x - 1) && (curr.x === next.x + 1))
+      );
+    }
+    function isVertical() {
+      return (
+        ((curr.y === prev.y + 1) && (curr.y === next.y - 1))
+        || ((curr.y === prev.y - 1) && (curr.y === next.y + 1))
+      );
+    }
+    function isLeftToUpTurn() {
+      return (curr.x === next.x - 1)
+        && (curr.y === next.y)
+        && (curr.x === prev.x)
+        && (curr.y === prev.y + 1);
+    }
+    function isUpToRightTurn() {
+      return (curr.x === next.x)
+         && (curr.y === next.y - 1)
+         && (curr.x === prev.x - 1)
+         && (curr.y === prev.y);
+    }
+    function isRightToDownTurn() {
+      return (curr.x === next.x + 1)
+        && (curr.y === next.y)
+        && (curr.x === prev.x)
+        && (curr.y === prev.y - 1);
+    }
+    function isLeftToDownTurn() {
+      return (curr.x === next.x - 1)
+        && (curr.y === next.y)
+        && (curr.x === prev.x)
+        && (curr.y === prev.y - 1);
+    }
+    function isDownToLeftTurn() {
+      return (curr.x === next.x)
+        && (curr.y === next.y + 1)
+        && (curr.x === prev.x + 1)
+        && (curr.y === prev.y);
+    }
+    function isUpToLeftTurn() {
+      return (curr.x === next.x)
+        && (curr.y === next.y - 1)
+        && (curr.x === prev.x + 1)
+        && (curr.y === prev.y);
+    }
+    function isRightToUpTurn() {
+      return (curr.x === next.x + 1)
+        && (curr.y === next.y)
+        && (curr.x === prev.x)
+        && (curr.y === prev.y + 1);
+    }
+    function isDownToRightTurn() {
+      return (curr.x === next.x)
+        && (curr.y === next.y + 1)
+        && (curr.x === prev.x - 1)
+        && (curr.y === prev.y);
+    }
   }
 }
