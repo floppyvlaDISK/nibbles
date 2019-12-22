@@ -20,15 +20,15 @@ import SnakeRenderer from './SnakeRenderer';
 // FIXME: Create setup files for nibbles and scoredashboard
 
 const aRenderer = new Renderer(document.getElementById('nibbles'));
-const aTargetRenderer = new TargetRenderer(aRenderer);
 const board = new BoardObject(0, 0, BOARD_WIDTH, BOARD_HEIGHT, '#FFE4E1');
 const aSnake = new Snake(
   new BoardObject(2, 2, CELL_WIDTH, CELL_HEIGHT, 'green'),
   undefined,
   0
 );
+const aTarget = new Target(4, 4, CELL_WIDTH, CELL_HEIGHT, 'red', 25);
 const aSnakeRenderer = new SnakeRenderer(aRenderer, aSnake);
-const target = new Target(4, 4, CELL_WIDTH, CELL_HEIGHT, 'red', 25);
+const aTargetRenderer = new TargetRenderer(aRenderer, aTarget);
 const walls = [
   new BoardObject(0, 0, BOARD_WIDTH, CELL_HEIGHT, 'pink'),
   new BoardObject(0, LAST_CELL_INDEX_BY_HEIGHT, BOARD_WIDTH, CELL_HEIGHT, 'pink'),
@@ -40,7 +40,7 @@ const aNibbles = new Nibbles(
   aRenderer,
   board,
   aSnake,
-  target,
+  aTarget,
   walls,
   aPubSub,
   aTargetRenderer,

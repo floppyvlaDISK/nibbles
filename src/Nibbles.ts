@@ -50,8 +50,8 @@ export default class Nibbles {
     [this._board, ...this._walls].forEach(
       obj => this._renderer.render(obj)
     );
-    this._targetRenderer.render(this._target);
-    this._snakeRenderer.render(this._snake);
+    this._targetRenderer.render();
+    this._snakeRenderer.render();
   }
 
   public start() {

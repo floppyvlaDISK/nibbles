@@ -13,30 +13,31 @@ import {
 export default class TargetRenderer {
   private _baseRenderer: Renderer;
   private _imageLoader: ImageLoader;
+  private _target: Target;
 
-  constructor(renderer: Renderer) {
+  constructor(renderer: Renderer, target: Target) {
     this._baseRenderer = renderer;
+    this._target = target;
     this._imageLoader = new ImageLoader(SNAKE_SPRITE_URL);
   }
 
-  // TODO: move obj to constructor
-  public render(obj: Target) {
+  public render() {
     this._imageLoader.waitForImageToLoad().then(() => {
-      this._baseRenderer.renderImage(this._transformTarget(obj))
+      this._baseRenderer.renderImage(this._transformTarget())
     });
   }
 
-  private _transformTarget(obj: Target) {
+  private _transformTarget() {
     return new BoardImageObject(
       this._imageLoader.image,
       TARGET_TILE_X,
       TARGET_TILE_Y,
       SNAKE_TILE_WIDTH,
       SNAKE_TILE_HEIGHT,
-      obj.x,
-      obj.y,
-      obj.width,
-      obj.height
+      this._target.x,
+      this._target.y,
+      this._target.width,
+      this._target.height
     );
   }
 }
