@@ -40,23 +40,24 @@ import BoardImageObject from './BoardImageObject';
 export default class SnakeRenderer {
   private _baseRenderer: Renderer;
   private _imageLoader: ImageLoader;
+  private _snake: Snake;
 
-  constructor(renderer: Renderer) {
+  constructor(renderer: Renderer, snake: Snake) {
     this._baseRenderer = renderer;
+    this._snake = snake;
     this._imageLoader = new ImageLoader(SNAKE_SPRITE_URL);
   }
 
-  // TODO: Move Snake to constructor
-  public render(aSnake: Snake) {
+  public render() {
     this._imageLoader.waitForImageToLoad().then(() => {
-      aSnake.forEachBodyPart((obj: BoardObject) => {
-        this._baseRenderer.renderImage(this._transformSnakeBodyPart(obj, aSnake));
+      this._snake.forEachBodyPart((obj: BoardObject) => {
+        this._baseRenderer.renderImage(this._transformSnakeBodyPart(obj));
       });
     });
   }
 
-  private _transformSnakeBodyPart(obj: BoardObject, aSnake: Snake) {
-    const { x, y } = this._calculateTileCoordinates(obj, aSnake);
+  private _transformSnakeBodyPart(obj: BoardObject) {
+    const { x, y } = this._calculateTileCoordinates(obj);
     return new BoardImageObject(
       this._imageLoader.image,
       x,
@@ -70,18 +71,18 @@ export default class SnakeRenderer {
     );
   }
 
-  private _calculateTileCoordinates(obj: BoardObject, aSnake: Snake) {
-    if (aSnake.body.head === obj) {
-      return this._calculateHeadTileCoordinates(aSnake);
-    } else if (aSnake.body.tail === obj) {
-      return this._calculateTailTileCoordinates(aSnake);
+  private _calculateTileCoordinates(obj: BoardObject) {
+    if (this._snake.body.head === obj) {
+      return this._calculateHeadTileCoordinates();
+    } else if (this._snake.body.tail === obj) {
+      return this._calculateTailTileCoordinates();
     } else {
-      return this._calculateBodyTileCoordinates(obj, aSnake);
+      return this._calculateBodyTileCoordinates(obj);
     }
   }
 
-  private _calculateHeadTileCoordinates(aSnake: Snake) {
-    switch (aSnake.direction) {
+  private _calculateHeadTileCoordinates() {
+    switch (this._snake.direction) {
       case Snake.DIRECTION_UP:
         return {
           x: HEAD_UP_TILE_X,
@@ -110,8 +111,8 @@ export default class SnakeRenderer {
     }
   }
 
-  private _calculateTailTileCoordinates(aSnake: Snake) {
-    switch (aSnake.direction) {
+  private _calculateTailTileCoordinates() {
+    switch (this._snake.direction) {
       case Snake.DIRECTION_UP:
         return {
           x: TAIL_DOWN_TILE_X,
@@ -140,7 +141,7 @@ export default class SnakeRenderer {
     }
   }
 
-  private _calculateBodyTileCoordinates(obj: BoardObject, aSnake: Snake) {
+  private _calculateBodyTileCoordinates(obj: BoardObject) {
     return {
       x: BODY_DOWN_TO_LEFT_TURN_TILE_X,
       y: BODY_DOWN_TO_LEFT_TURN_TILE_Y,

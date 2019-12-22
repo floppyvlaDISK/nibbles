@@ -19,6 +19,7 @@ export default class TargetRenderer {
     this._imageLoader = new ImageLoader(SNAKE_SPRITE_URL);
   }
 
+  // TODO: move obj to constructor
   public render(obj: Target) {
     this._imageLoader.waitForImageToLoad().then(() => {
       this._baseRenderer.renderImage(this._transformTarget(obj))
