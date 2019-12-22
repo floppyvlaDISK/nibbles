@@ -29,7 +29,9 @@ import {
   BODY_RIGHT_TO_DOWN_TURN_TILE_X,
   BODY_RIGHT_TO_DOWN_TURN_TILE_Y,
   BODY_DOWN_TO_LEFT_TURN_TILE_X,
-  BODY_DOWN_TO_LEFT_TURN_TILE_Y
+  BODY_DOWN_TO_LEFT_TURN_TILE_Y,
+  HEAD_RIGHT_TILE_X,
+  HEAD_RIGHT_TILE_Y
 } from './constants/snakeSprite';
 import Snake from './Snake';
 import BoardObject from './BoardObject';
@@ -44,19 +46,21 @@ export default class SnakeRenderer {
     this._imageLoader = new ImageLoader(SNAKE_SPRITE_URL);
   }
 
+  // TODO: Move Snake to constructor
   public render(aSnake: Snake) {
     this._imageLoader.waitForImageToLoad().then(() => {
       aSnake.forEachBodyPart((obj: BoardObject) => {
-        this._baseRenderer.renderImage(this._transformSnakeBodyPart(obj));
+        this._baseRenderer.renderImage(this._transformSnakeBodyPart(obj, aSnake));
       });
     });
   }
 
-  private _transformSnakeBodyPart(obj: BoardObject) {
+  private _transformSnakeBodyPart(obj: BoardObject, aSnake: Snake) {
+    const { x, y } = this._calculateTileCoordinates(obj, aSnake);
     return new BoardImageObject(
       this._imageLoader.image,
-      this._calculateTileX(obj),
-      this._calculateTileY(obj),
+      x,
+      y,
       SNAKE_TILE_WIDTH,
       SNAKE_TILE_HEIGHT,
       obj.x,
@@ -66,29 +70,80 @@ export default class SnakeRenderer {
     );
   }
 
-  /*
-
-    head - 4 vars
-    tail - 4 vars
-    other - 6 vars
-
-  */
-
-  private _calculateTileCoordinates(aSnake: Snake, obj: BoardObject) {
+  private _calculateTileCoordinates(obj: BoardObject, aSnake: Snake) {
     if (aSnake.body.head === obj) {
-
+      return this._calculateHeadTileCoordinates(aSnake);
     } else if (aSnake.body.tail === obj) {
-
+      return this._calculateTailTileCoordinates(aSnake);
     } else {
-
+      return this._calculateBodyTileCoordinates(obj, aSnake);
     }
   }
 
-  private _calculateTileX(obj: BoardObject) {
-    return BODY_DOWN_TO_LEFT_TURN_TILE_X;
+  private _calculateHeadTileCoordinates(aSnake: Snake) {
+    switch (aSnake.direction) {
+      case Snake.DIRECTION_UP:
+        return {
+          x: HEAD_UP_TILE_X,
+          y: HEAD_UP_TILE_Y,
+        };
+      case Snake.DIRECTION_RIGHT:
+        return {
+          x: HEAD_RIGHT_TILE_X,
+          y: HEAD_RIGHT_TILE_Y,
+        };
+      case Snake.DIRECTION_DOWN:
+        return {
+          x: HEAD_DOWN_TILE_X,
+          y: HEAD_DOWN_TILE_Y,
+        };
+      case Snake.DIRECTION_LEFT:
+        return {
+          x: HEAD_LEFT_TILE_X,
+          y: HEAD_LEFT_TILE_Y,
+        };
+      default:
+        return {
+          x: HEAD_RIGHT_TILE_X,
+          y: HEAD_RIGHT_TILE_Y,
+        };
+    }
   }
 
-  private _calculateTileY(obj: BoardObject) {
-    return BODY_DOWN_TO_LEFT_TURN_TILE_Y;
+  private _calculateTailTileCoordinates(aSnake: Snake) {
+    switch (aSnake.direction) {
+      case Snake.DIRECTION_UP:
+        return {
+          x: TAIL_DOWN_TILE_X,
+          y: TAIL_DOWN_TILE_Y,
+        };
+      case Snake.DIRECTION_RIGHT:
+        return {
+          x: TAIL_LEFT_TILE_X,
+          y: TAIL_LEFT_TILE_Y,
+        };
+      case Snake.DIRECTION_DOWN:
+        return {
+          x: TAIL_UP_TILE_X,
+          y: TAIL_UP_TILE_Y,
+        };
+      case Snake.DIRECTION_LEFT:
+        return {
+          x: TAIL_RIGHT_TILE_X,
+          y: TAIL_RIGHT_TILE_Y,
+        };
+      default:
+        return {
+          x: TAIL_LEFT_TILE_X,
+          y: TAIL_LEFT_TILE_Y,
+        };
+    }
+  }
+
+  private _calculateBodyTileCoordinates(obj: BoardObject, aSnake: Snake) {
+    return {
+      x: BODY_DOWN_TO_LEFT_TURN_TILE_X,
+      y: BODY_DOWN_TO_LEFT_TURN_TILE_Y,
+    };
   }
 }

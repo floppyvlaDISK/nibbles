@@ -21,7 +21,7 @@ export const TAIL_DOWN_TILE_X = 192;
 export const TAIL_DOWN_TILE_Y = 128;
 
 export const TAIL_LEFT_TILE_X = 256;
-export const TAIL_LEFT_TILE_Y = 192;
+export const TAIL_LEFT_TILE_Y = 128;
 
 export const TAIL_RIGHT_TILE_X = 192;
 export const TAIL_RIGHT_TILE_Y = 192;
