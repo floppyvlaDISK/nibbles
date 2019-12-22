@@ -19,8 +19,6 @@ export default class BoardObject {
     this._color = color;
   }
 
-  public static OFF_BOARD_CELL_INDEX = -1;
-
   public copy() {
     return new BoardObject(
       this.x,

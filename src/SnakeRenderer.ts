@@ -50,18 +50,14 @@ export default class SnakeRenderer {
 
   public render() {
     this._imageLoader.waitForImageToLoad().then(() => {
-      const bodyPartsArr: Array<BoardObject> = this._snake.bodyPartsToArray();
-      bodyPartsArr.forEach(
-        (obj: BoardObject, index: number) => {
-          this._baseRenderer.renderImage(
-            this._transformSnakeBodyPart(
-              obj,
-              bodyPartsArr[index - 1],
-              bodyPartsArr[index + 1],
-            )
-          );
-        }
-      )
+      const bodyParts: Array<BoardObject> = this._snake.visibleBodyPartsToArray();
+      bodyParts.forEach((obj: BoardObject, index: number) => {
+        this._baseRenderer.renderImage(this._transformSnakeBodyPart(
+          obj,
+          bodyParts[index - 1],
+          bodyParts[index + 1],
+        ));
+      });
     });
   }
 
@@ -91,7 +87,7 @@ export default class SnakeRenderer {
   ) {
     if (this._snake.body.head === curr) {
       return this._calculateHeadTileCoordinates();
-    } else if (this._snake.body.tail === curr) {
+    } else if (!next) {
       return this._calculateTailTileCoordinates(curr, prev);
     } else {
       return this._calculateBodyTileCoordinates(curr, prev, next);

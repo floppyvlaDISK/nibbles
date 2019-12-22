@@ -3,6 +3,7 @@ import { ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT } from './utils/isArrowKe
 import Target from './Target';
 import SnakeBody from './SnakeBody';
 import SnakeScore from './SnakeScore';
+import Coordinates from './utils/Coordinates';
 
 export default class Snake {
   private _snakeBody: SnakeBody;
@@ -21,6 +22,8 @@ export default class Snake {
   public static DIRECTION_RIGHT = 'right';
   public static DIRECTION_DOWN = 'down';
   public static DIRECTION_LEFT = 'left';
+
+  public static OFF_BOARD_COORDINATE = new Coordinates(-1, -1);
 
   public static directionFromKeyCode(value: number) {
     let result = {
@@ -62,12 +65,8 @@ export default class Snake {
   }
 
   // TODO: Test
-  public bodyPartsToArray() {
-    const result: Array<BoardObject> = [];
-    this._snakeBody.body.forEach((obj: BoardObject) => {
-      result.push(obj);
-    });
-    return result;
+  public visibleBodyPartsToArray() {
+    return this._snakeBody.visibleBodyPartsToArray();
   }
 
   public move() {

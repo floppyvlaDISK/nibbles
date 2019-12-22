@@ -4,7 +4,6 @@ import Snake from './Snake';
 import { CELL_WIDTH, CELL_HEIGHT } from './constants/common';
 import Target from './Target';
 
-// FIXME: Should I underscore this class to signal that it's an internal one?
 export default class SnakeBody {
   private _head: BoardObject;
   private _body: LinkedList<BoardObject>;
@@ -13,7 +12,7 @@ export default class SnakeBody {
 
   constructor(
     head: BoardObject,
-    direction: string | undefined // FIXME: Can I solve this without undefined?
+    direction: string | undefined,
   ) {
     this._head = head.copy();
     this._body = this._initialBody;
@@ -71,13 +70,23 @@ export default class SnakeBody {
   public growBodyPart() {
     this._body.insert(
       new BoardObject(
-        BoardObject.OFF_BOARD_CELL_INDEX,
-        BoardObject.OFF_BOARD_CELL_INDEX,
+        Snake.OFF_BOARD_COORDINATE.x,
+        Snake.OFF_BOARD_COORDINATE.y,
         CELL_WIDTH,
         CELL_HEIGHT,
         this._body.head.color
       )
     );
+  }
+
+  public visibleBodyPartsToArray() {
+    const result: Array<BoardObject> = [];
+    this._body.forEach((obj: BoardObject) => {
+      if (!obj.coordinates.equals(Snake.OFF_BOARD_COORDINATE)) {
+        result.push(obj);
+      }
+    });
+    return result;
   }
 
   private get _initialBody() {
