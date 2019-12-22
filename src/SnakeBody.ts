@@ -71,8 +71,8 @@ export default class SnakeBody {
   public growBodyPart() {
     this._body.insert(
       new BoardObject(
-        -1,
-        -1,
+        BoardObject.OFF_BOARD_CELL_INDEX,
+        BoardObject.OFF_BOARD_CELL_INDEX,
         CELL_WIDTH,
         CELL_HEIGHT,
         this._body.head.color
