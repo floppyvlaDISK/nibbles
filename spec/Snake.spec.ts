@@ -282,4 +282,29 @@ describe('Snake', () => {
       expect(aSnake.direction).toBe(initialDirection);
     });
   });
+
+  describe('visibleBodyPartsToArray()', () => {
+    it('puts every body part into array except for the off-board one', () => {
+      const aSnake = new Snake(
+        new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, ''),
+        Snake.DIRECTION_RIGHT,
+        0
+      );
+      const targets = [
+        new Target(4, 3, CELL_WIDTH, CELL_HEIGHT, 'red', 5),
+        new Target(5, 3, CELL_WIDTH, CELL_HEIGHT, 'red', 5),
+      ]
+
+      targets.forEach(t => {
+        aSnake.move();
+        aSnake.eat(t);
+      });
+
+      expect(aSnake.visibleBodyPartsToArray().length).toBe(2);
+
+      aSnake.move();
+
+      expect(aSnake.visibleBodyPartsToArray().length).toBe(3);
+    });
+  });
 });

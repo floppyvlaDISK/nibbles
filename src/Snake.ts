@@ -64,7 +64,6 @@ export default class Snake {
     this._snakeBody.body.forEach(fn);
   }
 
-  // TODO: Test
   public visibleBodyPartsToArray() {
     return this._snakeBody.visibleBodyPartsToArray();
   }
