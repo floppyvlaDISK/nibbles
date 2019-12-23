@@ -1,18 +1,19 @@
-import TargetRenderer from '../src/TargetRenderer';
-import Renderer from '../src/Renderer';
-import Target from '../src/Target';
-import { CELL_WIDTH, CELL_HEIGHT } from '../src/constants/common';
+import SnakeRenderer from '../src/SnakeRenderer';
 import { flushPromise } from './support/helpers/testingUtils';
+import Renderer from '../src/Renderer';
+import Snake from '../src/Snake';
+import BoardObject from '../src/BoardObject';
+import { CELL_WIDTH, CELL_HEIGHT } from '../src/constants/common';
 
-describe('TargetRenderer', () => {
+describe('SnakeRenderer', () => {
   beforeEach(() => {
     jasmine.clock().install();
   });
 
-  it('renders target image after snake sprite has loaded', async () => {
-    const { aTargetRenderer, rendererMock } = setup();
+  it('renders snake image after snake sprite has loaded', async () => {
+    const { aSnakeRenderer, rendererMock } = setup();
 
-    aTargetRenderer.render();
+    aSnakeRenderer.render();
 
     expect(rendererMock.renderImage).toHaveBeenCalledTimes(0);
 
@@ -21,7 +22,7 @@ describe('TargetRenderer', () => {
 
     expect(rendererMock.renderImage).toHaveBeenCalledTimes(1);
 
-    aTargetRenderer.render();
+    aSnakeRenderer.render();
     await flushPromise();
 
     expect(rendererMock.renderImage).toHaveBeenCalledTimes(2);
@@ -33,18 +34,22 @@ describe('TargetRenderer', () => {
 
   function setup() {
     const rendererMock: jasmine.SpyObj<Renderer> = createRendererMock();
-    const aTargetRenderer = new TargetRenderer(
+    const aSnakeRenderer = new SnakeRenderer(
       rendererMock,
-      new Target(1, 1, CELL_WIDTH, CELL_HEIGHT, '', 25)
+      new Snake(
+        new BoardObject(1, 1, CELL_WIDTH, CELL_HEIGHT, ''),
+        Snake.DIRECTION_RIGHT,
+        0
+      )
     );
     return {
-      aTargetRenderer,
+      aSnakeRenderer,
       rendererMock,
     };
     function createRendererMock() {
       return jasmine.createSpyObj(
         'Renderer',
-        ['renderImage'],
+        ['renderImage']
       );
     }
   }
