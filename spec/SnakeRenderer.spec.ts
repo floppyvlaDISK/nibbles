@@ -12,8 +12,11 @@ import {
   HEAD_LEFT_TILE_X,
   HEAD_LEFT_TILE_Y,
   HEAD_UP_TILE_X,
-  HEAD_UP_TILE_Y
+  HEAD_UP_TILE_Y,
+  BODY_HORIZONTAL_TILE_X,
+  BODY_HORIZONTAL_TILE_Y
 } from '../src/constants/snakeSprite';
+import Target from '../src/Target';
 
 describe('SnakeRenderer', () => {
   beforeEach(() => {
@@ -37,7 +40,7 @@ describe('SnakeRenderer', () => {
     expect(rendererMock.renderImage).toHaveBeenCalledTimes(2);
   });
 
-  describe('picks correct tile', () => {
+  describe('picks correct tile for', () => {
     describe('head', () => {
       const testCases = [
         {
@@ -74,15 +77,40 @@ describe('SnakeRenderer', () => {
         await loadSnakeSprite();
 
         expect(rendererMock.renderImage).toHaveBeenCalledTimes(1);
-        const [aBoardImageObject] = rendererMock.renderImage.calls.argsFor(0);
-        expect(aBoardImageObject.sourceX).toBe(t.expectedSourceX);
-        expect(aBoardImageObject.sourceY).toBe(t.expectedSourceY);
+        const [result] = rendererMock.renderImage.calls.argsFor(0);
+        expect(result.sourceX).toBe(t.expectedSourceX);
+        expect(result.sourceY).toBe(t.expectedSourceY);
       }));
     });
 
-    describe('tail', () => {});
+    // TODO: Return
+    describe('body', () => {
+      it('renders body horizontal tile', async () => {
+        const { aSnakeRenderer, aSnake, rendererMock } = setup({
+          snakeData: {
+            x: 3, y: 3, direction: Snake.DIRECTION_RIGHT,
+          },
+        });
 
-    describe('body', () => {});
+        aSnake.move();
+        aSnake.eat(new Target(4, 3, CELL_WIDTH, CELL_HEIGHT, 'red', 5));
+        aSnake.move();
+        aSnake.eat(new Target(5, 3, CELL_WIDTH, CELL_HEIGHT, 'red', 5));
+        aSnake.move();
+        aSnakeRenderer.render();
+        await loadSnakeSprite();
+
+        expect(rendererMock.renderImage).toHaveBeenCalledTimes(3);
+        const [result] = rendererMock.renderImage.calls.argsFor(1);
+        expect(result.sourceX).toBe(BODY_HORIZONTAL_TILE_X);
+        expect(result.sourceY).toBe(BODY_HORIZONTAL_TILE_Y);
+      });
+    });
+
+    // TODO: Return
+    describe('tail', () => {
+
+    });
   });
 
   afterEach(() => {
@@ -93,9 +121,11 @@ describe('SnakeRenderer', () => {
     snakeData = {},
   } = {}) {
     const rendererMock: jasmine.SpyObj<Renderer> = createRendererMock();
-    const aSnakeRenderer = new SnakeRenderer(rendererMock, createSnake(snakeData));
+    const aSnake = createSnake(snakeData);
+    const aSnakeRenderer = new SnakeRenderer(rendererMock, aSnake);
     return {
       aSnakeRenderer,
+      aSnake,
       rendererMock,
     };
     function createRendererMock() {
