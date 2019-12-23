@@ -17,7 +17,7 @@ import {
 } from '../src/constants/common';
 import PubSub from '../src/utils/PubSub';
 import TargetRenderer from '../src/TargetRenderer';
-import { flushPromise } from './support/helpers/testingUtils';
+import { flushPromise, loadSnakeSprite } from './support/helpers/testingUtils';
 import SnakeRenderer from '../src/SnakeRenderer';
 
 describe('Nibbles', () => {
@@ -31,7 +31,7 @@ describe('Nibbles', () => {
     const { aNibbles, rendererMock } = setup();
 
     aNibbles.render();
-    await waitForSpiteToLoad();
+    await loadSnakeSprite();
 
     testRenderCalls(rendererMock, 1);
   });
@@ -41,7 +41,7 @@ describe('Nibbles', () => {
       const { aNibbles, rendererMock } = setup();
 
       aNibbles.start();
-      await waitForSpiteToLoad();
+      await loadSnakeSprite();
 
       testRenderCalls(rendererMock, 1);
 
@@ -346,9 +346,5 @@ describe('Nibbles', () => {
       stub.onCall(index).returns(arg);
     });
     return stub;
-  }
-  async function waitForSpiteToLoad() {
-    jasmine.clock().tick(50);
-    await flushPromise();
   }
 });

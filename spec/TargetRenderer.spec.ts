@@ -2,7 +2,7 @@ import TargetRenderer from '../src/TargetRenderer';
 import Renderer from '../src/Renderer';
 import Target from '../src/Target';
 import { CELL_WIDTH, CELL_HEIGHT } from '../src/constants/common';
-import { flushPromise } from './support/helpers/testingUtils';
+import { flushPromise, loadSnakeSprite } from './support/helpers/testingUtils';
 
 describe('TargetRenderer', () => {
   beforeEach(() => {
@@ -16,8 +16,7 @@ describe('TargetRenderer', () => {
 
     expect(rendererMock.renderImage).toHaveBeenCalledTimes(0);
 
-    jasmine.clock().tick(50);
-    await flushPromise();
+    await loadSnakeSprite();
 
     expect(rendererMock.renderImage).toHaveBeenCalledTimes(1);
 
@@ -26,6 +25,8 @@ describe('TargetRenderer', () => {
 
     expect(rendererMock.renderImage).toHaveBeenCalledTimes(2);
   });
+
+  xit('picks correct tile', () => {});
 
   afterEach(() => {
     jasmine.clock().uninstall();

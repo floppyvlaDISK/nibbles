@@ -36,6 +36,7 @@ import {
 import Snake from './Snake';
 import BoardObject from './BoardObject';
 import BoardImageObject from './BoardImageObject';
+import Coordinates from './utils/Coordinates';
 
 export default class SnakeRenderer {
   private _baseRenderer: Renderer;
@@ -66,11 +67,11 @@ export default class SnakeRenderer {
     prev: BoardObject,
     next: BoardObject,
   ) {
-    const { x, y } = this._calculateTileCoordinates(curr, prev, next);
+    const tileCoords = this._calculateTileCoordinates(curr, prev, next);
     return new BoardImageObject(
       this._imageLoader.image,
-      x,
-      y,
+      tileCoords.x,
+      tileCoords.y,
       SNAKE_TILE_WIDTH,
       SNAKE_TILE_HEIGHT,
       curr.x,
@@ -85,13 +86,15 @@ export default class SnakeRenderer {
     prev: BoardObject,
     next: BoardObject,
   ) {
+    let result;
     if (this._snake.body.head === curr) {
-      return this._calculateHeadTileCoordinates();
+      result = this._calculateHeadTileCoordinates();
     } else if (!next) {
-      return this._calculateTailTileCoordinates(curr, prev);
+      result = this._calculateTailTileCoordinates(curr, prev);
     } else {
-      return this._calculateBodyTileCoordinates(curr, prev, next);
+      result = this._calculateBodyTileCoordinates(curr, prev, next);
     }
+    return new Coordinates(result.x, result.y);
   }
 
   private _calculateHeadTileCoordinates() {
