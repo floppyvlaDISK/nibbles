@@ -10,9 +10,9 @@ describe('TargetRenderer', () => {
   });
 
   it('renders target image after image has loaded', async () => {
-    const { aTargetRenderer, aTarget, rendererMock } = setup();
+    const { aTargetRenderer, rendererMock } = setup();
 
-    aTargetRenderer.render(aTarget);
+    aTargetRenderer.render();
 
     expect(rendererMock.renderImage).toHaveBeenCalledTimes(0);
 
@@ -21,7 +21,7 @@ describe('TargetRenderer', () => {
 
     expect(rendererMock.renderImage).toHaveBeenCalledTimes(1);
 
-    aTargetRenderer.render(aTarget);
+    aTargetRenderer.render();
     await flushPromise();
 
     expect(rendererMock.renderImage).toHaveBeenCalledTimes(2);
@@ -33,11 +33,12 @@ describe('TargetRenderer', () => {
 
   function setup() {
     const rendererMock: jasmine.SpyObj<Renderer> = createRendererMock();
-    const aTargetRenderer = new TargetRenderer(rendererMock);
-    const aTarget = new Target(1, 1, CELL_WIDTH, CELL_HEIGHT, '', 25);
+    const aTargetRenderer = new TargetRenderer(
+      rendererMock,
+      new Target(1, 1, CELL_WIDTH, CELL_HEIGHT, '', 25)
+    );
     return {
       aTargetRenderer,
-      aTarget,
       rendererMock,
     };
     function createRendererMock() {
