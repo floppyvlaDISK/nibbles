@@ -3,7 +3,10 @@ import { flushPromise, loadSnakeSprite } from './support/helpers/testingUtils';
 import Renderer from '../src/Renderer';
 import Snake from '../src/Snake';
 import BoardObject from '../src/BoardObject';
-import { CELL_WIDTH, CELL_HEIGHT } from '../src/constants/common';
+import {
+  CELL_WIDTH as C_W,
+  CELL_HEIGHT as C_H,
+} from '../src/constants/common';
 import {
   HEAD_RIGHT_TILE_X,
   HEAD_RIGHT_TILE_Y,
@@ -16,7 +19,6 @@ import {
   BODY_HORIZONTAL_TILE_X,
   BODY_HORIZONTAL_TILE_Y
 } from '../src/constants/snakeSprite';
-import Target from '../src/Target';
 
 describe('SnakeRenderer', () => {
   beforeEach(() => {
@@ -86,17 +88,17 @@ describe('SnakeRenderer', () => {
     // TODO: Return
     describe('body', () => {
       it('renders body horizontal tile', async () => {
-        const { aSnakeRenderer, aSnake, rendererMock } = setup({
+        const { aSnakeRenderer, rendererMock } = setup({
           snakeData: {
-            x: 3, y: 3, direction: Snake.DIRECTION_RIGHT,
+            body: [
+              new BoardObject(3, 3, C_W, C_H, ''),
+              new BoardObject(4, 3, C_W, C_H, ''),
+              new BoardObject(5, 3, C_W, C_H, ''),
+            ],
+            direction: Snake.DIRECTION_RIGHT,
           },
         });
 
-        aSnake.move();
-        aSnake.eat(new Target(4, 3, CELL_WIDTH, CELL_HEIGHT, 'red', 5));
-        aSnake.move();
-        aSnake.eat(new Target(5, 3, CELL_WIDTH, CELL_HEIGHT, 'red', 5));
-        aSnake.move();
         aSnakeRenderer.render();
         await loadSnakeSprite();
 
@@ -135,19 +137,13 @@ describe('SnakeRenderer', () => {
       );
     }
     function createSnake({
-      x = 1,
-      y = 1,
+      body = [new BoardObject(1, 1, C_W, C_H, '')],
       direction = Snake.DIRECTION_RIGHT,
     }: {
-      x?: number,
-      y?: number,
+      body?: Array<BoardObject>,
       direction?: string,
     }) {
-      return new Snake(
-        [new BoardObject(x, y, CELL_WIDTH, CELL_HEIGHT, '')],
-        direction,
-        0
-      );
+      return new Snake(body, direction, 0);
     }
   }
 });

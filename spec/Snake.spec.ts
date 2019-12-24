@@ -48,17 +48,13 @@ describe('Snake', () => {
 
       it(`rest of body - ${testCase.title}`, () => {
         const aSnake = new Snake(
-          [new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, 'red')],
+          [
+            new BoardObject(testCase.expectedX, testCase.expectedY, CELL_WIDTH, CELL_HEIGHT, 'red'),
+            new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, 'red'),
+          ],
           testCase.direction,
           0,
         );
-        const aTarget = new Target(3, 3, CELL_WIDTH, CELL_HEIGHT, 'blue', 25);
-
-        aSnake.eat(aTarget);
-        aSnake.move();
-
-        expect(aSnake.body.tail.x).toBe(3);
-        expect(aSnake.body.tail.y).toBe(3);
 
         aSnake.move();
 
@@ -213,33 +209,30 @@ describe('Snake', () => {
     const testCases = [
       {
         title: 'is true if some snake\'s body part has the same coordinate as head',
-        head: new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, 'red'),
-        direction: Snake.DIRECTION_DOWN,
-        bodyParts: [
+        body: [
+          new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, 'red'),
           new BoardObject(4, 3, CELL_WIDTH, CELL_HEIGHT, 'red'),
           new BoardObject(4, 4, CELL_WIDTH, CELL_HEIGHT, 'red'),
           new BoardObject(3, 4, CELL_WIDTH, CELL_HEIGHT, 'red'),
           new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, 'red'),
         ],
+        direction: Snake.DIRECTION_DOWN,
         expectedResult: true,
       },
       {
         title: 'is false if none of snake\'s body parts have the same coordinate as head',
-        head: new BoardObject(5, 5, CELL_WIDTH, CELL_HEIGHT, 'red'),
-        direction: Snake.DIRECTION_RIGHT,
-        bodyParts: [
+        body: [
+          new BoardObject(5, 5, CELL_WIDTH, CELL_HEIGHT, 'red'),
           new BoardObject(4, 5, CELL_WIDTH, CELL_HEIGHT, 'red'),
           new BoardObject(3, 5, CELL_WIDTH, CELL_HEIGHT, 'red'),
           new BoardObject(2, 5, CELL_WIDTH, CELL_HEIGHT, 'red'),
         ],
+        direction: Snake.DIRECTION_RIGHT,
         expectedResult: false,
       },
     ];
     testCases.forEach(t => it(t.title, () => {
-      const aSnake = new Snake([t.head], t.direction, 0);
-      for (let bodyPart of t.bodyParts) {
-        aSnake.body.insert(bodyPart);
-      }
+      const aSnake = new Snake(t.body, t.direction, 0);
 
       expect(aSnake.hasEatenItself()).toBe(t.expectedResult);
     }));
@@ -310,25 +303,21 @@ describe('Snake', () => {
   describe('visibleBodyPartsToArray()', () => {
     it('puts every body part into array except for the off-board one', () => {
       const aSnake = new Snake(
-        [new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, '')],
+        [
+          new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, ''),
+          new BoardObject(4, 3, CELL_WIDTH, CELL_HEIGHT, ''),
+          new BoardObject(5, 3, CELL_WIDTH, CELL_HEIGHT, ''),
+          new BoardObject(Snake.OFF_BOARD_COORDINATE.x, Snake.OFF_BOARD_COORDINATE.y, CELL_WIDTH, CELL_HEIGHT, ''),
+        ],
         Snake.DIRECTION_RIGHT,
         0
       );
-      const targets = [
-        new Target(4, 3, CELL_WIDTH, CELL_HEIGHT, 'red', 5),
-        new Target(5, 3, CELL_WIDTH, CELL_HEIGHT, 'red', 5),
-      ]
 
-      targets.forEach(t => {
-        aSnake.move();
-        aSnake.eat(t);
-      });
-
-      expect(aSnake.visibleBodyPartsToArray().length).toBe(2);
+      expect(aSnake.visibleBodyPartsToArray().length).toBe(3);
 
       aSnake.move();
 
-      expect(aSnake.visibleBodyPartsToArray().length).toBe(3);
+      expect(aSnake.visibleBodyPartsToArray().length).toBe(4);
     });
   });
 });

@@ -9,9 +9,9 @@ import * as randomWithin from '../src/utils/randomWithin';
 import BoardObject from '../src/BoardObject';
 import {
   BOARD_WIDTH,
-  CELL_HEIGHT,
   BOARD_HEIGHT,
-  CELL_WIDTH,
+  CELL_HEIGHT as C_H,
+  CELL_WIDTH as C_W,
   LAST_CELL_INDEX_BY_HEIGHT,
   LAST_CELL_INDEX_BY_WIDTH
 } from '../src/constants/common';
@@ -67,7 +67,9 @@ describe('Nibbles', () => {
 
     it('makes the snake eat the target if their positions on board intersects after snake move', () => {
       const { aNibbles, snakeMock } = setup({
-        snakeMockData: { x: 1, y: 1, direction: Snake.DIRECTION_RIGHT },
+        snakeMockData: {
+          body: [new BoardObject(1, 1, C_W, C_H, '')],
+          direction: Snake.DIRECTION_RIGHT },
         targetMockData: { x: 2, y: 1 },
       });
 
@@ -84,7 +86,10 @@ describe('Nibbles', () => {
       const nextX = 3;
       const nextY = 4;
       const { aNibbles, targetMock } = setup({
-        snakeMockData: { x: 1, y: 1, direction: Snake.DIRECTION_RIGHT },
+        snakeMockData: {
+          body: [new BoardObject(1, 1, C_W, C_H, '')],
+          direction: Snake.DIRECTION_RIGHT
+        },
         targetMockData: { x: 2, y: 1 },
       });
       const randomWithinStub = stubRandomWithin([nextX, nextY]);
@@ -100,7 +105,10 @@ describe('Nibbles', () => {
       const nextX = 3;
       const nextY = 4;
       const { aNibbles } = setup({
-        snakeMockData: { x: 1, y: 1, direction: Snake.DIRECTION_RIGHT },
+        snakeMockData: {
+          body: [new BoardObject(1, 1, C_W, C_H, '')],
+          direction: Snake.DIRECTION_RIGHT,
+        },
         targetMockData: { x: 2, y: 1 },
       });
       const randomWithinStub = stubRandomWithin([nextX, nextY]);
@@ -117,7 +125,10 @@ describe('Nibbles', () => {
       const nextX = 5;
       const nextY = 6;
       const { aNibbles, targetMock } = setup({
-        snakeMockData: { x: 1, y: 1, direction: Snake.DIRECTION_RIGHT },
+        snakeMockData: {
+          body: [new BoardObject(1, 1, C_W, C_H, '')],
+          direction: Snake.DIRECTION_RIGHT
+        },
         targetMockData: { x: 2, y: 1 },
       });
       const randomWithinStub = stubRandomWithin([
@@ -137,7 +148,10 @@ describe('Nibbles', () => {
       const nextX = 5;
       const nextY = 6;
       const { aNibbles, targetMock } = setup({
-        snakeMockData: { x: 1, y: 1, direction: Snake.DIRECTION_RIGHT },
+        snakeMockData: {
+          body: [new BoardObject(1, 1, C_W, C_H, '')],
+          direction: Snake.DIRECTION_RIGHT
+        },
         targetMockData: { x: targetX, y: targetY },
       });
       const randomWithinStub = stubRandomWithin([
@@ -153,7 +167,10 @@ describe('Nibbles', () => {
 
     it('checks if snake should die because of collision with the wall', () => {
       const { aNibbles, snakeMock } = setup({
-        snakeMockData: { x: 5, y: 1, direction: Snake.DIRECTION_UP },
+        snakeMockData: {
+          body: [new BoardObject(5, 1, C_W, C_H, '')],
+          direction: Snake.DIRECTION_UP
+        },
       });
 
       aNibbles.start();
@@ -164,31 +181,28 @@ describe('Nibbles', () => {
     it('checks if snake should die because of eating itself', () => {
       const { aNibbles, snakeMock } = setup({
         snakeMockData: {
-          x: 3, y: 3, direction: Snake.DIRECTION_DOWN,
+          body: [
+            new BoardObject(3, 3, C_W, C_H, ''),
+            new BoardObject(4, 3, C_W, C_H, ''),
+            new BoardObject(4, 4, C_W, C_H, ''),
+            new BoardObject(3, 4, C_W, C_H, ''),
+            new BoardObject(2, 4, C_W, C_H, ''),
+          ],
+          direction: Snake.DIRECTION_DOWN,
         },
       });
-      snakeMock.body.insert(
-        new BoardObject(4, 3, CELL_WIDTH, CELL_HEIGHT, 'green')
-      );
-      snakeMock.body.insert(
-        new BoardObject(4, 4, CELL_WIDTH, CELL_HEIGHT, 'green')
-      );
-      snakeMock.body.insert(
-        new BoardObject(3, 4, CELL_WIDTH, CELL_HEIGHT, 'green')
-      );
-      snakeMock.body.insert(
-        new BoardObject(2, 4, CELL_WIDTH, CELL_HEIGHT, 'green')
-      );
 
       aNibbles.start();
-      jasmine.clock().tick(Nibbles.UPDATE_FREQUENCY_MS);
 
       expect(snakeMock.die).toHaveBeenCalledTimes(1);
     });
 
     it('cancels following updates if snake has died', () => {
       const { aNibbles, snakeMock } = setup({
-        snakeMockData: { x: 5, y: 1, direction: Snake.DIRECTION_UP },
+        snakeMockData: {
+          body: [new BoardObject(5, 1, C_W, C_H, '')],
+          direction: Snake.DIRECTION_UP
+        },
       });
 
       aNibbles.start();
@@ -199,7 +213,10 @@ describe('Nibbles', () => {
 
     it('publishes "SnakeScoreChanged" event after snake has eaten the target', () => {
       const { aNibbles, pubSubMock } = setup({
-        snakeMockData: { x: 1, y: 1, direction: Snake.DIRECTION_RIGHT, score: 0 },
+        snakeMockData: {
+          body: [new BoardObject(1, 1, C_W, C_H, '')],
+          direction: Snake.DIRECTION_RIGHT, score: 0
+        },
         targetMockData: { x: 2, y: 1, score: 25 },
       });
 
@@ -211,7 +228,10 @@ describe('Nibbles', () => {
 
     it('publishes "SnakeScoreChanged" event after snakes has died', () => {
       const { aNibbles, pubSubMock } = setup({
-        snakeMockData: { x: 5, y: 1, direction: Snake.DIRECTION_UP, score: 10 },
+        snakeMockData: {
+          body: [new BoardObject(5, 1, C_W, C_H, '')],
+          direction: Snake.DIRECTION_UP, score: 10
+        },
       });
 
       aNibbles.start();
@@ -224,7 +244,10 @@ describe('Nibbles', () => {
   describe('setSnakeDirectionFromKeyCode()', () => {
     it('queues snake direction change to be set when performing update', () => {
       const { aNibbles, snakeMock } = setup({
-        snakeMockData: { x: 5, y: 5, direction: Snake.DIRECTION_RIGHT }
+        snakeMockData: {
+          body: [new BoardObject(5, 5, C_W, C_H, '')],
+          direction: Snake.DIRECTION_RIGHT
+        }
       });
 
       expect(snakeMock.direction).toBe(Snake.DIRECTION_RIGHT);
@@ -272,14 +295,14 @@ describe('Nibbles', () => {
   ) {
     return new Nibbles(
       rendererMock,
-      new BoardObject(0, 0, BOARD_WIDTH, CELL_HEIGHT, 'pink'),
+      new BoardObject(0, 0, BOARD_WIDTH, C_H, 'pink'),
       snakeMock,
       targetMock,
       [
-        new BoardObject(0, 0, BOARD_WIDTH, CELL_HEIGHT, 'pink'),
-        new BoardObject(0, LAST_CELL_INDEX_BY_HEIGHT, BOARD_WIDTH, CELL_HEIGHT, 'pink'),
-        new BoardObject(LAST_CELL_INDEX_BY_WIDTH, 0, CELL_WIDTH, BOARD_HEIGHT, 'pink'),
-        new BoardObject(0, 0, CELL_WIDTH, BOARD_HEIGHT, 'pink'),
+        new BoardObject(0, 0, BOARD_WIDTH, C_H, 'pink'),
+        new BoardObject(0, LAST_CELL_INDEX_BY_HEIGHT, BOARD_WIDTH, C_H, 'pink'),
+        new BoardObject(LAST_CELL_INDEX_BY_WIDTH, 0, C_W, BOARD_HEIGHT, 'pink'),
+        new BoardObject(0, 0, C_W, BOARD_HEIGHT, 'pink'),
       ],
       pubSubMock,
       new TargetRenderer(rendererMock, targetMock),
@@ -293,22 +316,15 @@ describe('Nibbles', () => {
     );
   }
   function createSnakeMock({
-    x = 1,
-    y = 1,
+    body = [new BoardObject(1, 1, C_W, C_H, '')],
     direction = Snake.DIRECTION_RIGHT,
     score = 25,
   }: {
-    canEat?: boolean,
-    x?: number,
-    y?: number,
+    body?: Array<BoardObject>,
     direction?: string,
     score?: number,
   }) {
-    const result = new Snake(
-      [new BoardObject(x, y, CELL_WIDTH, CELL_HEIGHT, 'green')],
-      direction,
-      score,
-    );
+    const result = new Snake(body, direction, score);
     spyOn(result, 'move').and.callThrough();
     spyOn(result, 'die').and.callThrough();
     spyOn(result, 'eat').and.callThrough();
@@ -324,7 +340,7 @@ describe('Nibbles', () => {
     y?: number,
     value?: number
   }) {
-    const result = new Target(x, y, CELL_WIDTH, CELL_HEIGHT, 'red', value);
+    const result = new Target(x, y, C_W, C_H, 'red', value);
     spyOnProperty(result, 'value').and.callThrough();
     return result;
   }
