@@ -27,7 +27,15 @@ import {
   BODY_RIGHT_TO_DOWN_TURN_TILE_X,
   BODY_RIGHT_TO_DOWN_TURN_TILE_Y,
   BODY_DOWN_TO_LEFT_TURN_TILE_Y,
-  BODY_DOWN_TO_LEFT_TURN_TILE_X
+  BODY_DOWN_TO_LEFT_TURN_TILE_X,
+  TAIL_UP_TILE_X,
+  TAIL_UP_TILE_Y,
+  TAIL_RIGHT_TILE_X,
+  TAIL_RIGHT_TILE_Y,
+  TAIL_DOWN_TILE_Y,
+  TAIL_DOWN_TILE_X,
+  TAIL_LEFT_TILE_X,
+  TAIL_LEFT_TILE_Y
 } from '../src/constants/snakeSprite';
 
 describe('SnakeRenderer', () => {
@@ -270,7 +278,69 @@ describe('SnakeRenderer', () => {
     });
 
     describe('tail', () => {
+      const testCases = [
+        {
+          title: 'renders tail-up-tile when tail is pointed up',
+          snakeData: {
+            body: [
+              new BoardObject(3, 4, C_W, C_H, ''),
+              new BoardObject(3, 3, C_W, C_H, ''),
+            ],
+            direction: Snake.DIRECTION_DOWN
+          },
+          expectedSourceX: TAIL_UP_TILE_X,
+          expectedSourceY: TAIL_UP_TILE_Y,
+        },
+        {
+          title: 'renders tail-right-tile when tail is pointed right',
+          snakeData: {
+            body: [
+              new BoardObject(3, 3, C_W, C_H, ''),
+              new BoardObject(4, 3, C_W, C_H, ''),
+            ],
+            direction: Snake.DIRECTION_LEFT,
+          },
+          expectedSourceX: TAIL_RIGHT_TILE_X,
+          expectedSourceY: TAIL_RIGHT_TILE_Y,
+        },
+        {
+          title: 'renders tail-down-tile when tail is pointed down',
+          snakeData: {
+            body: [
+              new BoardObject(3, 3, C_W, C_H, ''),
+              new BoardObject(3, 4, C_W, C_H, ''),
+            ],
+            direction: Snake.DIRECTION_UP,
+          },
+          expectedSourceX: TAIL_DOWN_TILE_X,
+          expectedSourceY: TAIL_DOWN_TILE_Y,
+        },
+        {
+          title: 'renders tail-left-tile whe tail is pointed left',
+          snakeData: {
+            body: [
+              new BoardObject(4, 3, C_W, C_H, ''),
+              new BoardObject(3, 3, C_W, C_H, ''),
+            ],
+            direction: Snake.DIRECTION_RIGHT,
+          },
+          expectedSourceX: TAIL_LEFT_TILE_X,
+          expectedSourceY: TAIL_LEFT_TILE_Y,
+        },
+      ];
+      testCases.forEach(t => it(t.title, async () => {
+        const { aSnakeRenderer, rendererMock } = setup({
+          snakeData: t.snakeData
+        });
 
+        aSnakeRenderer.render();
+        await loadSnakeSprite();
+
+        expect(rendererMock.renderImage).toHaveBeenCalledTimes(2);
+        const [result] = rendererMock.renderImage.calls.argsFor(1);
+        expect(result.sourceX).toBe(t.expectedSourceX);
+        expect(result.sourceY).toBe(t.expectedSourceY);
+      }));
     });
   });
 
