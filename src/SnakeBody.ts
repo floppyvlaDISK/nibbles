@@ -5,17 +5,17 @@ import { CELL_WIDTH, CELL_HEIGHT } from './constants/common';
 import Target from './Target';
 
 export default class SnakeBody {
-  private _head: BoardObject;
+  private _initialBody: Array<BoardObject>;
   private _body: LinkedList<BoardObject>;
   private _direction: string | undefined;
   private _initialDirection: string | undefined;
 
   constructor(
-    head: BoardObject,
+    body: Array<BoardObject>,
     direction: string | undefined,
   ) {
-    this._head = head.copy();
-    this._body = this._initialBody;
+    this._initialBody = body;
+    this._body = this._copyInitialBody();
     this._direction = direction;
     this._initialDirection = direction;
 
@@ -41,7 +41,7 @@ export default class SnakeBody {
   }
 
   public reset() {
-    this._body = this._initialBody;
+    this._body = this._copyInitialBody();
     this._direction = this._initialDirection;
   }
 
@@ -89,9 +89,9 @@ export default class SnakeBody {
     return result;
   }
 
-  private get _initialBody() {
+  private _copyInitialBody() {
     const result = new LinkedList<BoardObject>();
-    result.insert(this._head.copy());
+    this._initialBody.forEach(b => result.insert(b.copy()));
     return result;
   }
 

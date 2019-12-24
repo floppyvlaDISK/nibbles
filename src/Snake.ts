@@ -10,11 +10,11 @@ export default class Snake {
   private _snakeScore: SnakeScore;
 
   constructor(
-    head: BoardObject,
+    body: Array<BoardObject>,
     direction: string,
     score: number,
   ) {
-    this._snakeBody = new SnakeBody(head, direction);
+    this._snakeBody = new SnakeBody(body, direction);
     this._snakeScore = new SnakeScore(score);
   }
 

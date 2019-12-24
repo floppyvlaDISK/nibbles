@@ -305,7 +305,7 @@ describe('Nibbles', () => {
     score?: number,
   }) {
     const result = new Snake(
-      new BoardObject(x, y, CELL_WIDTH, CELL_HEIGHT, 'green'),
+      [new BoardObject(x, y, CELL_WIDTH, CELL_HEIGHT, 'green')],
       direction,
       score,
     );

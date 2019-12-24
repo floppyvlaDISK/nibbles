@@ -22,7 +22,10 @@ import SnakeRenderer from './SnakeRenderer';
 const aRenderer = new Renderer(document.getElementById('nibbles'));
 const board = new BoardObject(0, 0, BOARD_WIDTH, BOARD_HEIGHT, '#FFE4E1');
 const aSnake = new Snake(
-  new BoardObject(2, 2, CELL_WIDTH, CELL_HEIGHT, 'green'),
+  [
+    new BoardObject(2, 2, CELL_WIDTH, CELL_HEIGHT, ''),
+    new BoardObject(1, 2, CELL_WIDTH, CELL_HEIGHT, ''),
+  ],
   undefined,
   0
 );

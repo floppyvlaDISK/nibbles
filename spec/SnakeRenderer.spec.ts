@@ -144,7 +144,7 @@ describe('SnakeRenderer', () => {
       direction?: string,
     }) {
       return new Snake(
-        new BoardObject(x, y, CELL_WIDTH, CELL_HEIGHT, ''),
+        [new BoardObject(x, y, CELL_WIDTH, CELL_HEIGHT, '')],
         direction,
         0
       );
