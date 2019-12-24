@@ -17,7 +17,17 @@ import {
   HEAD_UP_TILE_X,
   HEAD_UP_TILE_Y,
   BODY_HORIZONTAL_TILE_X,
-  BODY_HORIZONTAL_TILE_Y
+  BODY_HORIZONTAL_TILE_Y,
+  BODY_VERTICAL_TILE_X,
+  BODY_VERTICAL_TILE_Y,
+  BODY_LEFT_TO_UP_TURN_TILE_Y,
+  BODY_LEFT_TO_UP_TURN_TILE_X,
+  BODY_UP_TO_RIGHT_TURN_TILE_X,
+  BODY_UP_TO_RIGHT_TURN_TILE_Y,
+  BODY_RIGHT_TO_DOWN_TURN_TILE_X,
+  BODY_RIGHT_TO_DOWN_TURN_TILE_Y,
+  BODY_DOWN_TO_LEFT_TURN_TILE_Y,
+  BODY_DOWN_TO_LEFT_TURN_TILE_X
 } from '../src/constants/snakeSprite';
 
 describe('SnakeRenderer', () => {
@@ -85,18 +95,168 @@ describe('SnakeRenderer', () => {
       }));
     });
 
-    // TODO: Return
     describe('body', () => {
-      it('renders body horizontal tile', async () => {
-        const { aSnakeRenderer, rendererMock } = setup({
+      const testCases = [
+        {
+          title: 'renders body-horizontal-tile when snake is facing to left',
           snakeData: {
             body: [
               new BoardObject(3, 3, C_W, C_H, ''),
               new BoardObject(4, 3, C_W, C_H, ''),
               new BoardObject(5, 3, C_W, C_H, ''),
             ],
+            direction: Snake.DIRECTION_LEFT,
+          },
+          expectedSourceX: BODY_HORIZONTAL_TILE_X,
+          expectedSourceY: BODY_HORIZONTAL_TILE_Y,
+        },
+        {
+          title: 'renders body-horizontal-tile when snake is facing to right',
+          snakeData: {
+            body: [
+              new BoardObject(5, 3, C_W, C_H, ''),
+              new BoardObject(4, 3, C_W, C_H, ''),
+              new BoardObject(3, 3, C_W, C_H, ''),
+            ],
             direction: Snake.DIRECTION_RIGHT,
           },
+          expectedSourceX: BODY_HORIZONTAL_TILE_X,
+          expectedSourceY: BODY_HORIZONTAL_TILE_Y,
+        },
+        {
+          title: 'renders body-vertical-tile when snake is facing up',
+          snakeData: {
+            body: [
+              new BoardObject(3, 3, C_W, C_H, ''),
+              new BoardObject(3, 4, C_W, C_H, ''),
+              new BoardObject(3, 5, C_W, C_H, ''),
+            ],
+            direction: Snake.DIRECTION_UP,
+          },
+          expectedSourceX: BODY_VERTICAL_TILE_X,
+          expectedSourceY: BODY_VERTICAL_TILE_Y,
+        },
+        {
+          title: 'renders body-vertical-tile when snake is facing down',
+          snakeData: {
+            body: [
+              new BoardObject(3, 5, C_W, C_H, ''),
+              new BoardObject(3, 4, C_W, C_H, ''),
+              new BoardObject(3, 3, C_W, C_H, ''),
+            ],
+            direction: Snake.DIRECTION_DOWN,
+          },
+          expectedSourceX: BODY_VERTICAL_TILE_X,
+          expectedSourceY: BODY_VERTICAL_TILE_Y,
+        },
+        {
+          title: 'renders body-left-to-up-turn-tile when snake is making left to up turn',
+          snakeData: {
+            body: [
+              new BoardObject(3, 3, C_W, C_H, ''),
+              new BoardObject(3, 4, C_W, C_H, ''),
+              new BoardObject(4, 4, C_W, C_H, ''),
+            ],
+            direction: Snake.DIRECTION_UP,
+          },
+          expectedSourceX: BODY_LEFT_TO_UP_TURN_TILE_X,
+          expectedSourceY: BODY_LEFT_TO_UP_TURN_TILE_Y,
+        },
+        {
+          title: 'renders body-left-to-up-turn-tile when snake is making down to right turn',
+          snakeData: {
+            body: [
+              new BoardObject(4, 4, C_W, C_H, ''),
+              new BoardObject(3, 4, C_W, C_H, ''),
+              new BoardObject(3, 3, C_W, C_H, ''),
+            ],
+            direction: Snake.DIRECTION_RIGHT,
+          },
+          expectedSourceX: BODY_LEFT_TO_UP_TURN_TILE_X,
+          expectedSourceY: BODY_LEFT_TO_UP_TURN_TILE_Y,
+        },
+        {
+          title: 'renders body-up-to-right-turn-tile when snake is making up to right turn',
+          snakeData: {
+            body: [
+              new BoardObject(4, 2, C_W, C_H, ''),
+              new BoardObject(3, 2, C_W, C_H, ''),
+              new BoardObject(3, 3, C_W, C_H, ''),
+            ],
+            direction: Snake.DIRECTION_RIGHT,
+          },
+          expectedSourceX: BODY_UP_TO_RIGHT_TURN_TILE_X,
+          expectedSourceY: BODY_UP_TO_RIGHT_TURN_TILE_Y,
+        },
+        {
+          title: 'renders body-up-to-right-turn-title when snake is making left to down turn',
+          snakeData: {
+            body: [
+              new BoardObject(2, 4, C_W, C_H, ''),
+              new BoardObject(2, 3, C_W, C_H, ''),
+              new BoardObject(3, 3, C_W, C_H, ''),
+            ],
+            direction: Snake.DIRECTION_DOWN,
+          },
+          expectedSourceX: BODY_UP_TO_RIGHT_TURN_TILE_X,
+          expectedSourceY: BODY_UP_TO_RIGHT_TURN_TILE_Y,
+        },
+        {
+          title: 'renders body-right-to-down-tile when snake is making right to down turn',
+          snakeData: {
+            body: [
+              new BoardObject(4, 4, C_W, C_H, ''),
+              new BoardObject(4, 3, C_W, C_H, ''),
+              new BoardObject(3, 3, C_W, C_H, ''),
+            ],
+            direction: Snake.DIRECTION_DOWN,
+          },
+          expectedSourceX: BODY_RIGHT_TO_DOWN_TURN_TILE_X,
+          expectedSourceY: BODY_RIGHT_TO_DOWN_TURN_TILE_Y,
+        },
+        {
+          title: 'renders body-right-to-down-tile when snake is making up to left turn',
+          snakeData: {
+            body: [
+              new BoardObject(2, 2, C_W, C_H, ''),
+              new BoardObject(3, 2, C_W, C_H, ''),
+              new BoardObject(3, 3, C_W, C_H, ''),
+            ],
+            direction: Snake.DIRECTION_LEFT,
+          },
+          expectedSourceX: BODY_RIGHT_TO_DOWN_TURN_TILE_X,
+          expectedSourceY: BODY_RIGHT_TO_DOWN_TURN_TILE_Y,
+        },
+        {
+          title: 'renders body-down-to-left-turn-tile when snake is making down to left turn',
+          snakeData: {
+            body: [
+              new BoardObject(2, 4, C_W, C_H, ''),
+              new BoardObject(3, 4, C_W, C_H, ''),
+              new BoardObject(3, 3, C_W, C_H, ''),
+            ],
+            direction: Snake.DIRECTION_LEFT,
+          },
+          expectedSourceX: BODY_DOWN_TO_LEFT_TURN_TILE_X,
+          expectedSourceY: BODY_DOWN_TO_LEFT_TURN_TILE_Y,
+        },
+        {
+          title: 'renders body-down-to-left-turn-tile when snake is making right to up turn',
+          snakeData: {
+            body: [
+              new BoardObject(4, 2, C_W, C_H, ''),
+              new BoardObject(4, 3, C_W, C_H, ''),
+              new BoardObject(3, 3, C_W, C_H, ''),
+            ],
+            direction: Snake.DIRECTION_UP,
+          },
+          expectedSourceX: BODY_DOWN_TO_LEFT_TURN_TILE_X,
+          expectedSourceY: BODY_DOWN_TO_LEFT_TURN_TILE_Y,
+        }
+      ];
+      testCases.forEach(t => it(t.title, async () => {
+        const { aSnakeRenderer, rendererMock } = setup({
+          snakeData: t.snakeData
         });
 
         aSnakeRenderer.render();
@@ -104,12 +264,11 @@ describe('SnakeRenderer', () => {
 
         expect(rendererMock.renderImage).toHaveBeenCalledTimes(3);
         const [result] = rendererMock.renderImage.calls.argsFor(1);
-        expect(result.sourceX).toBe(BODY_HORIZONTAL_TILE_X);
-        expect(result.sourceY).toBe(BODY_HORIZONTAL_TILE_Y);
-      });
+        expect(result.sourceX).toBe(t.expectedSourceX);
+        expect(result.sourceY).toBe(t.expectedSourceY);
+      }));
     });
 
-    // TODO: Return
     describe('tail', () => {
 
     });

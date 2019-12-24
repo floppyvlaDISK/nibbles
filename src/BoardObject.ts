@@ -9,8 +9,8 @@ export default class BoardObject {
   constructor(
     x: number,
     y: number,
-    width: number,
-    height: number,
+    width: number, // TODO: Provide default value
+    height: number, // TODO: Provide default value
     color: string, // FIXME: Does every board object need a color?
   ) {
     this._coordinates = new Coordinates(x, y);

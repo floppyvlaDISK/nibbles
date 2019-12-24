@@ -89,10 +89,10 @@ export default class SnakeRenderer {
     let result;
     if (this._snake.body.head === curr) {
       result = this._calculateHeadTileCoordinates();
-    } else if (!next) {
-      result = this._calculateTailTileCoordinates(curr, prev);
-    } else {
+    } else if (next) {
       result = this._calculateBodyTileCoordinates(curr, prev, next);
+    } else {
+      result = this._calculateTailTileCoordinates(curr, prev);
     }
     return new Coordinates(result.x, result.y);
   }
