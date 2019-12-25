@@ -54,7 +54,7 @@ export default class SnakeBody {
     return this._body.head.coordinatesEqual(aTarget.coordinates);
   }
 
-  public hasEatenItself() {
+  public canEatItself() {
     let result = false;
     this._body.forEach((obj: BoardObject) => {
       if (

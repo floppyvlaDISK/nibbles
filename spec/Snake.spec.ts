@@ -208,7 +208,7 @@ describe('Snake', () => {
     }));
   });
 
-  describe('hasEatenItself()', () => {
+  describe('canEatItself()', () => {
     const testCases = [
       {
         title: 'is true if some snake\'s body part has the same coordinate as head',
@@ -237,7 +237,7 @@ describe('Snake', () => {
     testCases.forEach(t => it(t.title, () => {
       const aSnake = new Snake(t.body, t.direction, 0);
 
-      expect(aSnake.hasEatenItself()).toBe(t.expectedResult);
+      expect(aSnake.canEatItself()).toBe(t.expectedResult);
     }));
 
     it('is false when snake has just eaten a target and grown a body part', () => {
@@ -250,7 +250,7 @@ describe('Snake', () => {
 
       aSnake.eat(aTarget);
 
-      expect(aSnake.hasEatenItself()).toBe(false);
+      expect(aSnake.canEatItself()).toBe(false);
     });
   });
 

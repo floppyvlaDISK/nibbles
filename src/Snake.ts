@@ -86,7 +86,7 @@ export default class Snake {
     return this._snakeBody.canEat(aTarget);
   }
 
-  public hasEatenItself() {
-    return this._snakeBody.hasEatenItself();
+  public canEatItself() {
+    return this._snakeBody.canEatItself();
   }
 }
