@@ -7,36 +7,7 @@ import {
   CELL_WIDTH as C_W,
   CELL_HEIGHT as C_H,
 } from '../src/constants/common';
-import {
-  HEAD_RIGHT_TILE_X,
-  HEAD_RIGHT_TILE_Y,
-  HEAD_DOWN_TILE_X,
-  HEAD_DOWN_TILE_Y,
-  HEAD_LEFT_TILE_X,
-  HEAD_LEFT_TILE_Y,
-  HEAD_UP_TILE_X,
-  HEAD_UP_TILE_Y,
-  BODY_HORIZONTAL_TILE_X,
-  BODY_HORIZONTAL_TILE_Y,
-  BODY_VERTICAL_TILE_X,
-  BODY_VERTICAL_TILE_Y,
-  BODY_LEFT_TO_UP_TURN_TILE_Y,
-  BODY_LEFT_TO_UP_TURN_TILE_X,
-  BODY_UP_TO_RIGHT_TURN_TILE_X,
-  BODY_UP_TO_RIGHT_TURN_TILE_Y,
-  BODY_RIGHT_TO_DOWN_TURN_TILE_X,
-  BODY_RIGHT_TO_DOWN_TURN_TILE_Y,
-  BODY_DOWN_TO_LEFT_TURN_TILE_Y,
-  BODY_DOWN_TO_LEFT_TURN_TILE_X,
-  TAIL_UP_TILE_X,
-  TAIL_UP_TILE_Y,
-  TAIL_RIGHT_TILE_X,
-  TAIL_RIGHT_TILE_Y,
-  TAIL_DOWN_TILE_Y,
-  TAIL_DOWN_TILE_X,
-  TAIL_LEFT_TILE_X,
-  TAIL_LEFT_TILE_Y
-} from '../src/constants/snakeSprite';
+import * as S from '../src/constants/snakeSprite';
 
 describe('SnakeRenderer', () => {
   beforeEach(() => {
@@ -66,26 +37,26 @@ describe('SnakeRenderer', () => {
         {
           title: 'renders head right tile',
           snakeData: { direction: Snake.DIRECTION_RIGHT },
-          expectedSourceX: HEAD_RIGHT_TILE_X,
-          expectedSourceY: HEAD_RIGHT_TILE_Y,
+          expectedSourceX: S.HEAD_RIGHT_TILE_X,
+          expectedSourceY: S.HEAD_RIGHT_TILE_Y,
         },
         {
           title: 'renders head down tile',
           snakeData: { direction: Snake.DIRECTION_DOWN },
-          expectedSourceX: HEAD_DOWN_TILE_X,
-          expectedSourceY: HEAD_DOWN_TILE_Y,
+          expectedSourceX: S.HEAD_DOWN_TILE_X,
+          expectedSourceY: S.HEAD_DOWN_TILE_Y,
         },
         {
           title: 'renders head left tile',
           snakeData: { direction: Snake.DIRECTION_LEFT },
-          expectedSourceX: HEAD_LEFT_TILE_X,
-          expectedSourceY: HEAD_LEFT_TILE_Y,
+          expectedSourceX: S.HEAD_LEFT_TILE_X,
+          expectedSourceY: S.HEAD_LEFT_TILE_Y,
         },
         {
           title: 'renders head up tile',
           snakeData: { direction: Snake.DIRECTION_UP },
-          expectedSourceX: HEAD_UP_TILE_X,
-          expectedSourceY: HEAD_UP_TILE_Y,
+          expectedSourceX: S.HEAD_UP_TILE_X,
+          expectedSourceY: S.HEAD_UP_TILE_Y,
         }
       ];
       testCases.forEach(t => it(t.title, async () => {
@@ -115,8 +86,8 @@ describe('SnakeRenderer', () => {
             ],
             direction: Snake.DIRECTION_LEFT,
           },
-          expectedSourceX: BODY_HORIZONTAL_TILE_X,
-          expectedSourceY: BODY_HORIZONTAL_TILE_Y,
+          expectedSourceX: S.BODY_HORIZONTAL_TILE_X,
+          expectedSourceY: S.BODY_HORIZONTAL_TILE_Y,
         },
         {
           title: 'renders body-horizontal-tile when snake is facing to right',
@@ -128,8 +99,8 @@ describe('SnakeRenderer', () => {
             ],
             direction: Snake.DIRECTION_RIGHT,
           },
-          expectedSourceX: BODY_HORIZONTAL_TILE_X,
-          expectedSourceY: BODY_HORIZONTAL_TILE_Y,
+          expectedSourceX: S.BODY_HORIZONTAL_TILE_X,
+          expectedSourceY: S.BODY_HORIZONTAL_TILE_Y,
         },
         {
           title: 'renders body-vertical-tile when snake is facing up',
@@ -141,8 +112,8 @@ describe('SnakeRenderer', () => {
             ],
             direction: Snake.DIRECTION_UP,
           },
-          expectedSourceX: BODY_VERTICAL_TILE_X,
-          expectedSourceY: BODY_VERTICAL_TILE_Y,
+          expectedSourceX: S.BODY_VERTICAL_TILE_X,
+          expectedSourceY: S.BODY_VERTICAL_TILE_Y,
         },
         {
           title: 'renders body-vertical-tile when snake is facing down',
@@ -154,8 +125,8 @@ describe('SnakeRenderer', () => {
             ],
             direction: Snake.DIRECTION_DOWN,
           },
-          expectedSourceX: BODY_VERTICAL_TILE_X,
-          expectedSourceY: BODY_VERTICAL_TILE_Y,
+          expectedSourceX: S.BODY_VERTICAL_TILE_X,
+          expectedSourceY: S.BODY_VERTICAL_TILE_Y,
         },
         {
           title: 'renders body-left-to-up-turn-tile when snake is making left to up turn',
@@ -167,8 +138,8 @@ describe('SnakeRenderer', () => {
             ],
             direction: Snake.DIRECTION_UP,
           },
-          expectedSourceX: BODY_LEFT_TO_UP_TURN_TILE_X,
-          expectedSourceY: BODY_LEFT_TO_UP_TURN_TILE_Y,
+          expectedSourceX: S.BODY_LEFT_TO_UP_TURN_TILE_X,
+          expectedSourceY: S.BODY_LEFT_TO_UP_TURN_TILE_Y,
         },
         {
           title: 'renders body-left-to-up-turn-tile when snake is making down to right turn',
@@ -180,8 +151,8 @@ describe('SnakeRenderer', () => {
             ],
             direction: Snake.DIRECTION_RIGHT,
           },
-          expectedSourceX: BODY_LEFT_TO_UP_TURN_TILE_X,
-          expectedSourceY: BODY_LEFT_TO_UP_TURN_TILE_Y,
+          expectedSourceX: S.BODY_LEFT_TO_UP_TURN_TILE_X,
+          expectedSourceY: S.BODY_LEFT_TO_UP_TURN_TILE_Y,
         },
         {
           title: 'renders body-up-to-right-turn-tile when snake is making up to right turn',
@@ -193,8 +164,8 @@ describe('SnakeRenderer', () => {
             ],
             direction: Snake.DIRECTION_RIGHT,
           },
-          expectedSourceX: BODY_UP_TO_RIGHT_TURN_TILE_X,
-          expectedSourceY: BODY_UP_TO_RIGHT_TURN_TILE_Y,
+          expectedSourceX: S.BODY_UP_TO_RIGHT_TURN_TILE_X,
+          expectedSourceY: S.BODY_UP_TO_RIGHT_TURN_TILE_Y,
         },
         {
           title: 'renders body-up-to-right-turn-title when snake is making left to down turn',
@@ -206,8 +177,8 @@ describe('SnakeRenderer', () => {
             ],
             direction: Snake.DIRECTION_DOWN,
           },
-          expectedSourceX: BODY_UP_TO_RIGHT_TURN_TILE_X,
-          expectedSourceY: BODY_UP_TO_RIGHT_TURN_TILE_Y,
+          expectedSourceX: S.BODY_UP_TO_RIGHT_TURN_TILE_X,
+          expectedSourceY: S.BODY_UP_TO_RIGHT_TURN_TILE_Y,
         },
         {
           title: 'renders body-right-to-down-tile when snake is making right to down turn',
@@ -219,8 +190,8 @@ describe('SnakeRenderer', () => {
             ],
             direction: Snake.DIRECTION_DOWN,
           },
-          expectedSourceX: BODY_RIGHT_TO_DOWN_TURN_TILE_X,
-          expectedSourceY: BODY_RIGHT_TO_DOWN_TURN_TILE_Y,
+          expectedSourceX: S.BODY_RIGHT_TO_DOWN_TURN_TILE_X,
+          expectedSourceY: S.BODY_RIGHT_TO_DOWN_TURN_TILE_Y,
         },
         {
           title: 'renders body-right-to-down-tile when snake is making up to left turn',
@@ -232,8 +203,8 @@ describe('SnakeRenderer', () => {
             ],
             direction: Snake.DIRECTION_LEFT,
           },
-          expectedSourceX: BODY_RIGHT_TO_DOWN_TURN_TILE_X,
-          expectedSourceY: BODY_RIGHT_TO_DOWN_TURN_TILE_Y,
+          expectedSourceX: S.BODY_RIGHT_TO_DOWN_TURN_TILE_X,
+          expectedSourceY: S.BODY_RIGHT_TO_DOWN_TURN_TILE_Y,
         },
         {
           title: 'renders body-down-to-left-turn-tile when snake is making down to left turn',
@@ -245,8 +216,8 @@ describe('SnakeRenderer', () => {
             ],
             direction: Snake.DIRECTION_LEFT,
           },
-          expectedSourceX: BODY_DOWN_TO_LEFT_TURN_TILE_X,
-          expectedSourceY: BODY_DOWN_TO_LEFT_TURN_TILE_Y,
+          expectedSourceX: S.BODY_DOWN_TO_LEFT_TURN_TILE_X,
+          expectedSourceY: S.BODY_DOWN_TO_LEFT_TURN_TILE_Y,
         },
         {
           title: 'renders body-down-to-left-turn-tile when snake is making right to up turn',
@@ -258,8 +229,8 @@ describe('SnakeRenderer', () => {
             ],
             direction: Snake.DIRECTION_UP,
           },
-          expectedSourceX: BODY_DOWN_TO_LEFT_TURN_TILE_X,
-          expectedSourceY: BODY_DOWN_TO_LEFT_TURN_TILE_Y,
+          expectedSourceX: S.BODY_DOWN_TO_LEFT_TURN_TILE_X,
+          expectedSourceY: S.BODY_DOWN_TO_LEFT_TURN_TILE_Y,
         }
       ];
       testCases.forEach(t => it(t.title, async () => {
@@ -288,8 +259,8 @@ describe('SnakeRenderer', () => {
             ],
             direction: Snake.DIRECTION_DOWN
           },
-          expectedSourceX: TAIL_UP_TILE_X,
-          expectedSourceY: TAIL_UP_TILE_Y,
+          expectedSourceX: S.TAIL_UP_TILE_X,
+          expectedSourceY: S.TAIL_UP_TILE_Y,
         },
         {
           title: 'renders tail-right-tile when tail is pointed right',
@@ -300,8 +271,8 @@ describe('SnakeRenderer', () => {
             ],
             direction: Snake.DIRECTION_LEFT,
           },
-          expectedSourceX: TAIL_RIGHT_TILE_X,
-          expectedSourceY: TAIL_RIGHT_TILE_Y,
+          expectedSourceX: S.TAIL_RIGHT_TILE_X,
+          expectedSourceY: S.TAIL_RIGHT_TILE_Y,
         },
         {
           title: 'renders tail-down-tile when tail is pointed down',
@@ -312,8 +283,8 @@ describe('SnakeRenderer', () => {
             ],
             direction: Snake.DIRECTION_UP,
           },
-          expectedSourceX: TAIL_DOWN_TILE_X,
-          expectedSourceY: TAIL_DOWN_TILE_Y,
+          expectedSourceX: S.TAIL_DOWN_TILE_X,
+          expectedSourceY: S.TAIL_DOWN_TILE_Y,
         },
         {
           title: 'renders tail-left-tile whe tail is pointed left',
@@ -324,8 +295,8 @@ describe('SnakeRenderer', () => {
             ],
             direction: Snake.DIRECTION_RIGHT,
           },
-          expectedSourceX: TAIL_LEFT_TILE_X,
-          expectedSourceY: TAIL_LEFT_TILE_Y,
+          expectedSourceX: S.TAIL_LEFT_TILE_X,
+          expectedSourceY: S.TAIL_LEFT_TILE_Y,
         },
       ];
       testCases.forEach(t => it(t.title, async () => {

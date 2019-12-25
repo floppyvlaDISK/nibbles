@@ -1,38 +1,6 @@
 import Renderer from './Renderer';
 import ImageLoader from './ImageLoader';
-import {
-  SNAKE_SPRITE_URL,
-  SNAKE_TILE_HEIGHT,
-  SNAKE_TILE_WIDTH,
-  HEAD_UP_TILE_X,
-  HEAD_UP_TILE_Y,
-  HEAD_LEFT_TILE_X,
-  HEAD_LEFT_TILE_Y,
-  HEAD_DOWN_TILE_X,
-  HEAD_DOWN_TILE_Y,
-  TAIL_DOWN_TILE_X,
-  TAIL_DOWN_TILE_Y,
-  TAIL_LEFT_TILE_X,
-  TAIL_LEFT_TILE_Y,
-  TAIL_RIGHT_TILE_X,
-  TAIL_RIGHT_TILE_Y,
-  TAIL_UP_TILE_X,
-  TAIL_UP_TILE_Y,
-  BODY_HORIZONTAL_TILE_X,
-  BODY_HORIZONTAL_TILE_Y,
-  BODY_VERTICAL_TILE_X,
-  BODY_VERTICAL_TILE_Y,
-  BODY_LEFT_TO_UP_TURN_TILE_X,
-  BODY_LEFT_TO_UP_TURN_TILE_Y,
-  BODY_DOWN_TO_LEFT_TURN_TILE_X,
-  BODY_DOWN_TO_LEFT_TURN_TILE_Y,
-  HEAD_RIGHT_TILE_X,
-  HEAD_RIGHT_TILE_Y,
-  BODY_UP_TO_RIGHT_TURN_TILE_X,
-  BODY_UP_TO_RIGHT_TURN_TILE_Y,
-  BODY_RIGHT_TO_DOWN_TURN_TILE_X,
-  BODY_RIGHT_TO_DOWN_TURN_TILE_Y
-} from './constants/snakeSprite';
+import * as S from './constants/snakeSprite';
 import Snake from './Snake';
 import BoardObject from './BoardObject';
 import BoardImageObject from './BoardImageObject';
@@ -46,7 +14,7 @@ export default class SnakeRenderer {
   constructor(renderer: Renderer, snake: Snake) {
     this._baseRenderer = renderer;
     this._snake = snake;
-    this._imageLoader = new ImageLoader(SNAKE_SPRITE_URL);
+    this._imageLoader = new ImageLoader(S.SNAKE_SPRITE_URL);
   }
 
   public render() {
@@ -72,8 +40,8 @@ export default class SnakeRenderer {
       this._imageLoader.image,
       tileCoords.x,
       tileCoords.y,
-      SNAKE_TILE_WIDTH,
-      SNAKE_TILE_HEIGHT,
+      S.SNAKE_TILE_WIDTH,
+      S.SNAKE_TILE_HEIGHT,
       curr.x,
       curr.y,
       curr.width,
@@ -101,28 +69,28 @@ export default class SnakeRenderer {
     switch (this._snake.direction) {
       case Snake.DIRECTION_UP:
         return {
-          x: HEAD_UP_TILE_X,
-          y: HEAD_UP_TILE_Y,
+          x: S.HEAD_UP_TILE_X,
+          y: S.HEAD_UP_TILE_Y,
         };
       case Snake.DIRECTION_RIGHT:
         return {
-          x: HEAD_RIGHT_TILE_X,
-          y: HEAD_RIGHT_TILE_Y,
+          x: S.HEAD_RIGHT_TILE_X,
+          y: S.HEAD_RIGHT_TILE_Y,
         };
       case Snake.DIRECTION_DOWN:
         return {
-          x: HEAD_DOWN_TILE_X,
-          y: HEAD_DOWN_TILE_Y,
+          x: S.HEAD_DOWN_TILE_X,
+          y: S.HEAD_DOWN_TILE_Y,
         };
       case Snake.DIRECTION_LEFT:
         return {
-          x: HEAD_LEFT_TILE_X,
-          y: HEAD_LEFT_TILE_Y,
+          x: S.HEAD_LEFT_TILE_X,
+          y: S.HEAD_LEFT_TILE_Y,
         };
       default:
         return {
-          x: HEAD_RIGHT_TILE_X,
-          y: HEAD_RIGHT_TILE_Y,
+          x: S.HEAD_RIGHT_TILE_X,
+          y: S.HEAD_RIGHT_TILE_Y,
         };
     }
   }
@@ -133,26 +101,26 @@ export default class SnakeRenderer {
   ) {
     if (isUp()) {
       return {
-        x: TAIL_UP_TILE_X,
-        y: TAIL_UP_TILE_Y,
+        x: S.TAIL_UP_TILE_X,
+        y: S.TAIL_UP_TILE_Y,
       }
     }
     if (isRight()) {
       return {
-        x: TAIL_RIGHT_TILE_X,
-        y: TAIL_RIGHT_TILE_Y,
+        x: S.TAIL_RIGHT_TILE_X,
+        y: S.TAIL_RIGHT_TILE_Y,
       };
     }
     if (isDown()) {
       return {
-        x: TAIL_DOWN_TILE_X,
-        y: TAIL_DOWN_TILE_Y,
+        x: S.TAIL_DOWN_TILE_X,
+        y: S.TAIL_DOWN_TILE_Y,
       };
     }
     if (isLeft()) {
       return {
-        x: TAIL_LEFT_TILE_X,
-        y: TAIL_LEFT_TILE_Y,
+        x: S.TAIL_LEFT_TILE_X,
+        y: S.TAIL_LEFT_TILE_Y,
       };
     }
 
@@ -181,38 +149,38 @@ export default class SnakeRenderer {
   ) {
     if (isHorizontal()) {
       return {
-        x: BODY_HORIZONTAL_TILE_X,
-        y: BODY_HORIZONTAL_TILE_Y,
+        x: S.BODY_HORIZONTAL_TILE_X,
+        y: S.BODY_HORIZONTAL_TILE_Y,
       };
     }
     if (isVertical()) {
       return {
-        x: BODY_VERTICAL_TILE_X,
-        y: BODY_VERTICAL_TILE_Y,
+        x: S.BODY_VERTICAL_TILE_X,
+        y: S.BODY_VERTICAL_TILE_Y,
       };
     }
     if (isLeftToUpTurn() || isDownToRightTurn()) {
       return {
-        x: BODY_LEFT_TO_UP_TURN_TILE_X,
-        y: BODY_LEFT_TO_UP_TURN_TILE_Y,
+        x: S.BODY_LEFT_TO_UP_TURN_TILE_X,
+        y: S.BODY_LEFT_TO_UP_TURN_TILE_Y,
       };
     }
     if (isUpToRightTurn() || isLeftToDownTurn()) {
       return {
-        x: BODY_UP_TO_RIGHT_TURN_TILE_X,
-        y: BODY_UP_TO_RIGHT_TURN_TILE_Y,
+        x: S.BODY_UP_TO_RIGHT_TURN_TILE_X,
+        y: S.BODY_UP_TO_RIGHT_TURN_TILE_Y,
       };
     }
     if (isRightToDownTurn() || isUpToLeftTurn()) {
       return {
-        x: BODY_RIGHT_TO_DOWN_TURN_TILE_X,
-        y: BODY_RIGHT_TO_DOWN_TURN_TILE_Y,
+        x: S.BODY_RIGHT_TO_DOWN_TURN_TILE_X,
+        y: S.BODY_RIGHT_TO_DOWN_TURN_TILE_Y,
       };
     }
     if (isDownToLeftTurn() || isRightToUpTurn()) {
       return {
-        x: BODY_DOWN_TO_LEFT_TURN_TILE_X,
-        y: BODY_DOWN_TO_LEFT_TURN_TILE_Y,
+        x: S.BODY_DOWN_TO_LEFT_TURN_TILE_X,
+        y: S.BODY_DOWN_TO_LEFT_TURN_TILE_Y,
       };
     }
 
