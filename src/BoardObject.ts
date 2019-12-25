@@ -58,7 +58,6 @@ export default class BoardObject {
     return this._coordinates.equalPartially(other);
   }
 
-  // FIXME: Should this be exposed?
   get coordinates() {
     return this._coordinates;
   }
