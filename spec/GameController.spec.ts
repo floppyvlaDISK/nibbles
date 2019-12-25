@@ -1,6 +1,8 @@
 import GameController from '../src/GameController';
 import { ARROW_UP } from '../src/utils/isArrowKey';
 import Nibbles from '../src/Nibbles';
+import { createNibblesMock } from './support/helpers/componentMocks';
+import { fireKeybordEvent } from './support/helpers/testingUtils';
 
 describe('GameController', () => {
   let nibblesMock: jasmine.SpyObj<Nibbles>;
@@ -49,16 +51,4 @@ describe('GameController', () => {
     expect(nibblesMock.setSnakeDirectionFromKeyCode).toHaveBeenCalledTimes(1);
     expect(nibblesMock.setSnakeDirectionFromKeyCode).toHaveBeenCalledWith(ARROW_UP);
   });
-
-  function createNibblesMock() {
-    return jasmine.createSpyObj(
-      'Nibbles',
-      ['render', 'start', 'setSnakeDirectionFromKeyCode']
-    );
-  }
-
-  function fireKeybordEvent(eventInitDict = {}) {
-    const event = new KeyboardEvent('keydown', eventInitDict);
-    document.body.dispatchEvent(event);
-  }
 });

@@ -1,4 +1,5 @@
 import ScoreDashboard from '../src/ScoreDashboard';
+import { createContainerMock } from './support/helpers/componentMocks';
 
 describe('ScoreDashboard', () => {
   let containerMock: jasmine.SpyObj<HTMLElement>;
@@ -15,6 +16,7 @@ describe('ScoreDashboard', () => {
 
   it('throws if container is not defined', () => {
     const fn = () => new ScoreDashboard(null);
+
     expect(fn).toThrow();
   });
 
@@ -25,11 +27,4 @@ describe('ScoreDashboard', () => {
 
     expect(dashboard.toString()).toBe('Score: 10');
   });
-
-  function createContainerMock() {
-    return jasmine.createSpyObj(
-      'container',
-      ['appendChild'],
-    );
-  }
 });

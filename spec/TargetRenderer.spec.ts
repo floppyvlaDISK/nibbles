@@ -2,7 +2,13 @@ import TargetRenderer from '../src/TargetRenderer';
 import Renderer from '../src/Renderer';
 import Target from '../src/Target';
 import { CELL_WIDTH, CELL_HEIGHT } from '../src/constants/common';
-import { flushPromise, loadSnakeSprite } from './support/helpers/testingUtils';
+import {
+  flushPromise,
+  loadSnakeSprite,
+} from './support/helpers/testingUtils';
+import {
+  createRendererMock,
+} from './support/helpers/componentMocks';
 import { TARGET_TILE_X, TARGET_TILE_Y } from '../src/constants/snakeSprite';
 
 describe('TargetRenderer', () => {
@@ -53,11 +59,5 @@ describe('TargetRenderer', () => {
       aTargetRenderer,
       rendererMock,
     };
-    function createRendererMock() {
-      return jasmine.createSpyObj(
-        'Renderer',
-        ['renderImage'],
-      );
-    }
   }
 });

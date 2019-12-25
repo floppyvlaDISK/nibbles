@@ -17,7 +17,16 @@ import {
 } from '../src/constants/common';
 import PubSub from '../src/utils/PubSub';
 import TargetRenderer from '../src/TargetRenderer';
-import { flushPromise, loadSnakeSprite } from './support/helpers/testingUtils';
+import {
+  createRendererMock,
+  createPubSubMock,
+  createSnakeMock,
+  createTargetMock,
+} from './support/helpers/componentMocks';
+import {
+  flushPromise,
+  loadSnakeSprite,
+} from './support/helpers/testingUtils';
 import SnakeRenderer from '../src/SnakeRenderer';
 import BoardColoredObject from '../src/BoardColoredObject';
 
@@ -276,7 +285,7 @@ describe('Nibbles', () => {
 
   function setup({
     snakeMockData = {},
-    targetMockData = {}
+    targetMockData = {},
   } = {}) {
     const rendererMock = createRendererMock();
     const snakeMock = createSnakeMock(snakeMockData);
@@ -295,7 +304,6 @@ describe('Nibbles', () => {
       ),
     };
   }
-  // FIXME: Put createMock functions into some util file?
   function setupNibbles(
     rendererMock: jasmine.SpyObj<Renderer>,
     snakeMock: Snake,
@@ -317,46 +325,6 @@ describe('Nibbles', () => {
       new TargetRenderer(rendererMock, targetMock),
       new SnakeRenderer(rendererMock, snakeMock),
     );
-  }
-  function createRendererMock() {
-    return jasmine.createSpyObj(
-      'Renderer',
-      ['render', 'renderImage'],
-    );
-  }
-  function createSnakeMock({
-    body = [new BoardObject(1, 1)],
-    direction = Snake.DIRECTION_RIGHT,
-    score = 25,
-  }: {
-    body?: Array<BoardObject>,
-    direction?: string,
-    score?: number,
-  }) {
-    const result = new Snake(body, direction, score);
-    spyOn(result, 'move').and.callThrough();
-    spyOn(result, 'die').and.callThrough();
-    spyOn(result, 'eat').and.callThrough();
-    spyOn(result, 'canEat').and.callThrough();
-    return result;
-  }
-  function createTargetMock({
-    x = 4,
-    y = 4,
-    value = 25,
-  }: {
-    x?: number,
-    y?: number,
-    value?: number
-  }) {
-    const result = new Target(x, y, C_W, C_H, value);
-    spyOnProperty(result, 'value').and.callThrough();
-    return result;
-  }
-  function createPubSubMock() {
-    const result = new PubSub();
-    spyOn(result, 'publish');
-    return result;
   }
   function testRenderCalls(
     rendererMock: jasmine.SpyObj<Renderer>,

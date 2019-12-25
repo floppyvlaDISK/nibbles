@@ -1,6 +1,7 @@
 import Renderer from '../src/Renderer';
 import { CELL_WIDTH as C_W, CELL_HEIGHT as C_H } from '../src/constants/common';
 import BoardColoredObject from '../src/BoardColoredObject';
+import { createContainerMock } from './support/helpers/componentMocks';
 
 describe('Renderer', () => {
   let containerMock: jasmine.SpyObj<HTMLElement>;
@@ -42,11 +43,6 @@ describe('Renderer', () => {
     canvasMock = createCanvasMock();
     createDocumentMock();
 
-    function createContainerMock() {
-      return jasmine.createSpyObj('container', {
-        appendChild: jasmine.createSpy(),
-      });
-    }
     function createCanvasMock() {
       return jasmine.createSpyObj('canvas', {
         setAttribute: undefined,
