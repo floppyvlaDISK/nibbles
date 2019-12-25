@@ -16,27 +16,28 @@ import PubSub from './utils/PubSub';
 import ScoreDashboard from './ScoreDashboard';
 import TargetRenderer from './TargetRenderer';
 import SnakeRenderer from './SnakeRenderer';
+import BoardColoredObject from './BoardColoredObject';
 
 // FIXME: Create setup files for nibbles and scoredashboard
 
 const aRenderer = new Renderer(document.getElementById('nibbles'));
-const board = new BoardObject(0, 0, BOARD_WIDTH, BOARD_HEIGHT, '#FFE4E1');
+const board = new BoardColoredObject(0, 0, BOARD_WIDTH, BOARD_HEIGHT, '#FFE4E1');
 const aSnake = new Snake(
   [
-    new BoardObject(2, 2, CELL_WIDTH, CELL_HEIGHT, ''),
-    new BoardObject(1, 2, CELL_WIDTH, CELL_HEIGHT, ''),
+    new BoardObject(2, 2, CELL_WIDTH, CELL_HEIGHT),
+    new BoardObject(1, 2, CELL_WIDTH, CELL_HEIGHT),
   ],
   undefined,
   0
 );
-const aTarget = new Target(4, 4, CELL_WIDTH, CELL_HEIGHT, 'red', 25);
+const aTarget = new Target(4, 4, CELL_WIDTH, CELL_HEIGHT, 25);
 const aSnakeRenderer = new SnakeRenderer(aRenderer, aSnake);
 const aTargetRenderer = new TargetRenderer(aRenderer, aTarget);
 const walls = [
-  new BoardObject(0, 0, BOARD_WIDTH, CELL_HEIGHT, 'pink'),
-  new BoardObject(0, LAST_CELL_INDEX_BY_HEIGHT, BOARD_WIDTH, CELL_HEIGHT, 'pink'),
-  new BoardObject(LAST_CELL_INDEX_BY_WIDTH, 0, CELL_WIDTH, BOARD_HEIGHT, 'pink'),
-  new BoardObject(0, 0, CELL_WIDTH, BOARD_HEIGHT, 'pink'),
+  new BoardColoredObject(0, 0, BOARD_WIDTH, CELL_HEIGHT, 'pink'),
+  new BoardColoredObject(0, LAST_CELL_INDEX_BY_HEIGHT, BOARD_WIDTH, CELL_HEIGHT, 'pink'),
+  new BoardColoredObject(LAST_CELL_INDEX_BY_WIDTH, 0, CELL_WIDTH, BOARD_HEIGHT, 'pink'),
+  new BoardColoredObject(0, 0, CELL_WIDTH, BOARD_HEIGHT, 'pink'),
 ];
 const aPubSub = new PubSub();
 const aNibbles = new Nibbles(

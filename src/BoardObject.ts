@@ -1,22 +1,20 @@
 import Coordinates from './utils/Coordinates';
+import { CELL_WIDTH, CELL_HEIGHT } from './constants/common';
 
 export default class BoardObject {
   private _coordinates: Coordinates;
   private _width: number;
   private _height: number;
-  private _color: string;
 
   constructor(
     x: number,
     y: number,
-    width: number, // TODO: Provide default value
-    height: number, // TODO: Provide default value
-    color: string, // FIXME: Does every board object need a color?
+    width: number = CELL_WIDTH,
+    height: number = CELL_HEIGHT,
   ) {
     this._coordinates = new Coordinates(x, y);
     this._width = width;
     this._height = height;
-    this._color = color;
   }
 
   public copy() {
@@ -25,7 +23,6 @@ export default class BoardObject {
       this.y,
       this.width,
       this.height,
-      this.color,
     );
   }
 
@@ -53,10 +50,7 @@ export default class BoardObject {
     return this._height;
   }
 
-  get color() {
-    return this._color;
-  }
-
+  // FIXME: Should this be exposed?
   get coordinates() {
     return this._coordinates;
   }

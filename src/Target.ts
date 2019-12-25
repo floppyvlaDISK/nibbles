@@ -8,10 +8,9 @@ export default class Target extends BoardObject {
     y: number,
     width: number,
     height: number,
-    color: string,
     value: number,
   ) {
-    super(x, y, width, height, color);
+    super(x, y, width, height);
     this._value = value;
   }
 

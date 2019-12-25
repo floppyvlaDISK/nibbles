@@ -3,10 +3,6 @@ import { flushPromise, loadSnakeSprite } from './support/helpers/testingUtils';
 import Renderer from '../src/Renderer';
 import Snake from '../src/Snake';
 import BoardObject from '../src/BoardObject';
-import {
-  CELL_WIDTH as C_W,
-  CELL_HEIGHT as C_H,
-} from '../src/constants/common';
 import * as S from '../src/constants/snakeSprite';
 
 describe('SnakeRenderer', () => {
@@ -80,9 +76,9 @@ describe('SnakeRenderer', () => {
           title: 'renders body-horizontal-tile when snake is facing to left',
           snakeData: {
             body: [
-              new BoardObject(3, 3, C_W, C_H, ''),
-              new BoardObject(4, 3, C_W, C_H, ''),
-              new BoardObject(5, 3, C_W, C_H, ''),
+              new BoardObject(3, 3),
+              new BoardObject(4, 3),
+              new BoardObject(5, 3),
             ],
             direction: Snake.DIRECTION_LEFT,
           },
@@ -93,9 +89,9 @@ describe('SnakeRenderer', () => {
           title: 'renders body-horizontal-tile when snake is facing to right',
           snakeData: {
             body: [
-              new BoardObject(5, 3, C_W, C_H, ''),
-              new BoardObject(4, 3, C_W, C_H, ''),
-              new BoardObject(3, 3, C_W, C_H, ''),
+              new BoardObject(5, 3),
+              new BoardObject(4, 3),
+              new BoardObject(3, 3),
             ],
             direction: Snake.DIRECTION_RIGHT,
           },
@@ -106,9 +102,9 @@ describe('SnakeRenderer', () => {
           title: 'renders body-vertical-tile when snake is facing up',
           snakeData: {
             body: [
-              new BoardObject(3, 3, C_W, C_H, ''),
-              new BoardObject(3, 4, C_W, C_H, ''),
-              new BoardObject(3, 5, C_W, C_H, ''),
+              new BoardObject(3, 3),
+              new BoardObject(3, 4),
+              new BoardObject(3, 5),
             ],
             direction: Snake.DIRECTION_UP,
           },
@@ -119,9 +115,9 @@ describe('SnakeRenderer', () => {
           title: 'renders body-vertical-tile when snake is facing down',
           snakeData: {
             body: [
-              new BoardObject(3, 5, C_W, C_H, ''),
-              new BoardObject(3, 4, C_W, C_H, ''),
-              new BoardObject(3, 3, C_W, C_H, ''),
+              new BoardObject(3, 5),
+              new BoardObject(3, 4),
+              new BoardObject(3, 3),
             ],
             direction: Snake.DIRECTION_DOWN,
           },
@@ -132,9 +128,9 @@ describe('SnakeRenderer', () => {
           title: 'renders body-left-to-up-turn-tile when snake is making left to up turn',
           snakeData: {
             body: [
-              new BoardObject(3, 3, C_W, C_H, ''),
-              new BoardObject(3, 4, C_W, C_H, ''),
-              new BoardObject(4, 4, C_W, C_H, ''),
+              new BoardObject(3, 3),
+              new BoardObject(3, 4),
+              new BoardObject(4, 4),
             ],
             direction: Snake.DIRECTION_UP,
           },
@@ -145,9 +141,9 @@ describe('SnakeRenderer', () => {
           title: 'renders body-left-to-up-turn-tile when snake is making down to right turn',
           snakeData: {
             body: [
-              new BoardObject(4, 4, C_W, C_H, ''),
-              new BoardObject(3, 4, C_W, C_H, ''),
-              new BoardObject(3, 3, C_W, C_H, ''),
+              new BoardObject(4, 4),
+              new BoardObject(3, 4),
+              new BoardObject(3, 3),
             ],
             direction: Snake.DIRECTION_RIGHT,
           },
@@ -158,9 +154,9 @@ describe('SnakeRenderer', () => {
           title: 'renders body-up-to-right-turn-tile when snake is making up to right turn',
           snakeData: {
             body: [
-              new BoardObject(4, 2, C_W, C_H, ''),
-              new BoardObject(3, 2, C_W, C_H, ''),
-              new BoardObject(3, 3, C_W, C_H, ''),
+              new BoardObject(4, 2),
+              new BoardObject(3, 2),
+              new BoardObject(3, 3),
             ],
             direction: Snake.DIRECTION_RIGHT,
           },
@@ -171,9 +167,9 @@ describe('SnakeRenderer', () => {
           title: 'renders body-up-to-right-turn-title when snake is making left to down turn',
           snakeData: {
             body: [
-              new BoardObject(2, 4, C_W, C_H, ''),
-              new BoardObject(2, 3, C_W, C_H, ''),
-              new BoardObject(3, 3, C_W, C_H, ''),
+              new BoardObject(2, 4),
+              new BoardObject(2, 3),
+              new BoardObject(3, 3),
             ],
             direction: Snake.DIRECTION_DOWN,
           },
@@ -184,9 +180,9 @@ describe('SnakeRenderer', () => {
           title: 'renders body-right-to-down-tile when snake is making right to down turn',
           snakeData: {
             body: [
-              new BoardObject(4, 4, C_W, C_H, ''),
-              new BoardObject(4, 3, C_W, C_H, ''),
-              new BoardObject(3, 3, C_W, C_H, ''),
+              new BoardObject(4, 4),
+              new BoardObject(4, 3),
+              new BoardObject(3, 3),
             ],
             direction: Snake.DIRECTION_DOWN,
           },
@@ -197,9 +193,9 @@ describe('SnakeRenderer', () => {
           title: 'renders body-right-to-down-tile when snake is making up to left turn',
           snakeData: {
             body: [
-              new BoardObject(2, 2, C_W, C_H, ''),
-              new BoardObject(3, 2, C_W, C_H, ''),
-              new BoardObject(3, 3, C_W, C_H, ''),
+              new BoardObject(2, 2),
+              new BoardObject(3, 2),
+              new BoardObject(3, 3),
             ],
             direction: Snake.DIRECTION_LEFT,
           },
@@ -210,9 +206,9 @@ describe('SnakeRenderer', () => {
           title: 'renders body-down-to-left-turn-tile when snake is making down to left turn',
           snakeData: {
             body: [
-              new BoardObject(2, 4, C_W, C_H, ''),
-              new BoardObject(3, 4, C_W, C_H, ''),
-              new BoardObject(3, 3, C_W, C_H, ''),
+              new BoardObject(2, 4),
+              new BoardObject(3, 4),
+              new BoardObject(3, 3),
             ],
             direction: Snake.DIRECTION_LEFT,
           },
@@ -223,9 +219,9 @@ describe('SnakeRenderer', () => {
           title: 'renders body-down-to-left-turn-tile when snake is making right to up turn',
           snakeData: {
             body: [
-              new BoardObject(4, 2, C_W, C_H, ''),
-              new BoardObject(4, 3, C_W, C_H, ''),
-              new BoardObject(3, 3, C_W, C_H, ''),
+              new BoardObject(4, 2),
+              new BoardObject(4, 3),
+              new BoardObject(3, 3),
             ],
             direction: Snake.DIRECTION_UP,
           },
@@ -254,8 +250,8 @@ describe('SnakeRenderer', () => {
           title: 'renders tail-up-tile when tail is pointed up',
           snakeData: {
             body: [
-              new BoardObject(3, 4, C_W, C_H, ''),
-              new BoardObject(3, 3, C_W, C_H, ''),
+              new BoardObject(3, 4),
+              new BoardObject(3, 3),
             ],
             direction: Snake.DIRECTION_DOWN
           },
@@ -266,8 +262,8 @@ describe('SnakeRenderer', () => {
           title: 'renders tail-right-tile when tail is pointed right',
           snakeData: {
             body: [
-              new BoardObject(3, 3, C_W, C_H, ''),
-              new BoardObject(4, 3, C_W, C_H, ''),
+              new BoardObject(3, 3),
+              new BoardObject(4, 3),
             ],
             direction: Snake.DIRECTION_LEFT,
           },
@@ -278,8 +274,8 @@ describe('SnakeRenderer', () => {
           title: 'renders tail-down-tile when tail is pointed down',
           snakeData: {
             body: [
-              new BoardObject(3, 3, C_W, C_H, ''),
-              new BoardObject(3, 4, C_W, C_H, ''),
+              new BoardObject(3, 3),
+              new BoardObject(3, 4),
             ],
             direction: Snake.DIRECTION_UP,
           },
@@ -290,8 +286,8 @@ describe('SnakeRenderer', () => {
           title: 'renders tail-left-tile whe tail is pointed left',
           snakeData: {
             body: [
-              new BoardObject(4, 3, C_W, C_H, ''),
-              new BoardObject(3, 3, C_W, C_H, ''),
+              new BoardObject(4, 3),
+              new BoardObject(3, 3),
             ],
             direction: Snake.DIRECTION_RIGHT,
           },
@@ -337,7 +333,7 @@ describe('SnakeRenderer', () => {
       );
     }
     function createSnake({
-      body = [new BoardObject(1, 1, C_W, C_H, '')],
+      body = [new BoardObject(1, 1)],
       direction = Snake.DIRECTION_RIGHT,
     }: {
       body?: Array<BoardObject>,

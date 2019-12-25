@@ -1,6 +1,6 @@
 import Renderer from '../src/Renderer';
-import BoardObject from '../src/BoardObject';
-import { CELL_WIDTH, CELL_HEIGHT } from '../src/constants/common';
+import { CELL_WIDTH as C_W, CELL_HEIGHT as C_H } from '../src/constants/common';
+import BoardColoredObject from '../src/BoardColoredObject';
 
 describe('Renderer', () => {
   let containerMock: jasmine.SpyObj<HTMLElement>;
@@ -20,19 +20,19 @@ describe('Renderer', () => {
 
   it('render()', () => {
     const r = new Renderer(containerMock);
-    const aBoardObject = new BoardObject(3, 3, CELL_WIDTH, CELL_HEIGHT, 'blue');
+    const obj = new BoardColoredObject(3, 3, C_W, C_H, 'blue');
 
-    r.render(aBoardObject);
+    r.render(obj);
 
     expect(canvasMock.getContext).toHaveBeenCalledTimes(2);
     expect(canvasMock.getContext).toHaveBeenCalledWith('2d');
     expect(contextMock.fillStyle).toBe('blue');
     expect(contextMock.fillRect).toHaveBeenCalledTimes(1);
     expect(contextMock.fillRect.calls.argsFor(0)).toEqual([
-      3 * CELL_WIDTH,
-      3 * CELL_HEIGHT,
-      CELL_WIDTH,
-      CELL_HEIGHT,
+      3 * C_W,
+      3 * C_H,
+      C_W,
+      C_H,
     ]);
   });
 

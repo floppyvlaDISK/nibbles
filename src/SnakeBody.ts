@@ -74,7 +74,6 @@ export default class SnakeBody {
         Snake.OFF_BOARD_COORDINATE.y,
         CELL_WIDTH,
         CELL_HEIGHT,
-        this._body.head.color
       )
     );
   }

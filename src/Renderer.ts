@@ -1,6 +1,6 @@
-import BoardObject from './BoardObject';
 import { BOARD_WIDTH, BOARD_HEIGHT } from './constants/common';
 import BoardImageObject from './BoardImageObject';
+import BoardColoredObject from './BoardColoredObject';
 
 export default class Renderer {
   private _canvas: HTMLCanvasElement;
@@ -12,7 +12,7 @@ export default class Renderer {
     this._canvas = Renderer._createCanvas(container);
   }
 
-  public render(obj: BoardObject) {
+  public render(obj: BoardColoredObject) {
     this._ctx.fillStyle = obj.color;
     this._ctx.fillRect(
       obj.x * obj.width,

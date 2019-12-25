@@ -7,25 +7,26 @@ import Coordinates from './utils/Coordinates';
 import PubSub from './utils/PubSub';
 import TargetRenderer from './TargetRenderer';
 import SnakeRenderer from './SnakeRenderer';
+import BoardColoredObject from './BoardColoredObject';
 
 export default class Nibbles {
   private _renderer: Renderer;
   private _targetRenderer: TargetRenderer;
   private _snakeRenderer: SnakeRenderer;
-  private _board: BoardObject;
+  private _board: BoardColoredObject;
   private _snake: Snake;
   private _target: Target;
-  private _walls: Array<BoardObject>;
+  private _walls: Array<BoardColoredObject>;
   private _pubSub: PubSub;
   private _snakeDirectionsQueue: Array<string>;
   private _intervalId: number | undefined;
 
   constructor(
     renderer: Renderer,
-    board: BoardObject,
+    board: BoardColoredObject,
     snake: Snake,
     target: Target,
-    walls: Array<BoardObject>,
+    walls: Array<BoardColoredObject>,
     pubSub: PubSub,
     targetRenderer: TargetRenderer,
     snakeRenderer: SnakeRenderer,

@@ -47,7 +47,7 @@ describe('TargetRenderer', () => {
     const rendererMock: jasmine.SpyObj<Renderer> = createRendererMock();
     const aTargetRenderer = new TargetRenderer(
       rendererMock,
-      new Target(1, 1, CELL_WIDTH, CELL_HEIGHT, '', 25)
+      new Target(1, 1, CELL_WIDTH, CELL_HEIGHT, 25)
     );
     return {
       aTargetRenderer,

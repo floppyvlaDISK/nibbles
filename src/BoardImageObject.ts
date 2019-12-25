@@ -18,13 +18,15 @@ export default class BoardImageObject extends BoardObject {
     width: number,
     height: number,
   ) {
-    super(x, y, width, height, '');
+    super(x, y, width, height);
     this._image = image;
     this._sourceX = sourceX;
     this._sourceY = sourceY;
     this._sourceWidth = sourceWidth;
     this._sourceHeight = sourceHeight;
   }
+
+  // FIXME: does it need to override copy()?
 
   get image() {
     return this._image;
