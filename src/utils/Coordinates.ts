@@ -23,10 +23,12 @@ export default class Coordinates {
     this._y = arg;
   }
 
+  // FIXME: equal
   public equals(other: Coordinates) {
     return this._x === other.x && this._y === other.y;
   }
 
+  // FIXME: equalPartially
   public equalsPartially(other: Coordinates) {
     return this._x === other.x || this._y === other.y;
   }

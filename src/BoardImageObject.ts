@@ -26,8 +26,6 @@ export default class BoardImageObject extends BoardObject {
     this._sourceHeight = sourceHeight;
   }
 
-  // FIXME: does it need to override copy()?
-
   get image() {
     return this._image;
   }

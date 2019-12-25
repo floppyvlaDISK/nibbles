@@ -50,6 +50,14 @@ export default class BoardObject {
     return this._height;
   }
 
+  public coordinatesEqual(other: Coordinates) {
+    return this._coordinates.equals(other);
+  }
+
+  public coordinatesEqualPartially(other: Coordinates) {
+    return this._coordinates.equalsPartially(other);
+  }
+
   // FIXME: Should this be exposed?
   get coordinates() {
     return this._coordinates;

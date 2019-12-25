@@ -51,7 +51,7 @@ export default class SnakeBody {
   }
 
   public canEat(aTarget: Target) {
-    return this._body.head.coordinates.equals(aTarget.coordinates);
+    return this._body.head.coordinatesEqual(aTarget.coordinates);
   }
 
   public hasEatenItself() {
@@ -59,7 +59,7 @@ export default class SnakeBody {
     this._body.forEach((obj: BoardObject) => {
       if (
         obj !== this._body.head
-        && obj.coordinates.equals(this._body.head.coordinates)
+        && obj.coordinatesEqual(this._body.head.coordinates)
       ) {
         result = true;
       }
@@ -81,7 +81,7 @@ export default class SnakeBody {
   public visibleBodyPartsToArray() {
     const result: Array<BoardObject> = [];
     this._body.forEach((obj: BoardObject) => {
-      if (!obj.coordinates.equals(Snake.OFF_BOARD_COORDINATE)) {
+      if (!obj.coordinatesEqual(Snake.OFF_BOARD_COORDINATE)) {
         result.push(obj);
       }
     });

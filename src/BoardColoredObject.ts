@@ -14,8 +14,6 @@ export default class BoardColoredObject extends BoardObject {
     this._color = color;
   }
 
-  // FIXME: does it need to override copy()?
-
   get color() {
     return this._color;
   }

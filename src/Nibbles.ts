@@ -126,13 +126,13 @@ export default class Nibbles {
   }
 
   private _isOccupied(aCoordinate: Coordinates) {
-    if (this._target.coordinates.equals(aCoordinate)) {
+    if (this._target.coordinatesEqual(aCoordinate)) {
       return true;
     }
     let result = false;
     this._snake.forEachBodyPart(
       (obj: BoardObject) => {
-        result = obj.coordinates.equals(aCoordinate) || result;
+        result = obj.coordinatesEqual(aCoordinate) || result;
       }
     );
   }
@@ -143,7 +143,7 @@ export default class Nibbles {
 
   private _hasSnakeCollidedWithTheWall() {
     return this._walls.some(
-      w => w.coordinates.equalsPartially(this._snake.headCoordinates)
+      w => w.coordinatesEqualPartially(this._snake.headCoordinates)
     );
   }
 }
