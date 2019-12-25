@@ -108,7 +108,6 @@ export default class Nibbles {
     let result;
     while (!result) {
       result = new Coordinates(randomWithin(1, 18), randomWithin(1, 18));
-      // FIXME: Sometimes the target spawn on the snake body part
       if (this._isOccupied(result)) {
         result = undefined;
       }
@@ -117,7 +116,6 @@ export default class Nibbles {
     this._target.y = result.y;
   }
 
-
   private _trySetSnakeDirectionFromQueue() {
     const nextDirection = this._snakeDirectionsQueue.shift();
     if (nextDirection) {
@@ -125,16 +123,23 @@ export default class Nibbles {
     }
   }
 
-  private _isOccupied(aCoordinate: Coordinates) {
-    if (this._target.coordinatesEqual(aCoordinate)) {
-      return true;
-    }
+  private _isOccupied(aCoordinates: Coordinates) {
+    return this._isOccupiedByTarget(aCoordinates)
+      || this._isOccupiedBySnake(aCoordinates);
+  }
+
+  private _isOccupiedByTarget(aCoordinates: Coordinates) {
+    return this._target.coordinatesEqual(aCoordinates);
+  }
+
+  private _isOccupiedBySnake(aCoordinates: Coordinates) {
     let result = false;
     this._snake.forEachBodyPart(
       (obj: BoardObject) => {
-        result = obj.coordinatesEqual(aCoordinate) || result;
+        result = obj.coordinatesEqual(aCoordinates) || result;
       }
     );
+    return result;
   }
 
   private _shouldSnakeDie() {

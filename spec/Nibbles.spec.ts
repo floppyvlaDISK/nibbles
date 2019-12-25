@@ -66,7 +66,7 @@ describe('Nibbles', () => {
       expect(snakeMock.move).toHaveBeenCalledTimes(2);
     });
 
-    it('makes the snake eat the target if their positions on board intersects after snake move', () => {
+    it('makes the snake eat the target if their positions on board intersect after snake move', () => {
       const { aNibbles, snakeMock } = setup({
         snakeMockData: {
           body: [new BoardObject(1, 1)],
@@ -121,26 +121,34 @@ describe('Nibbles', () => {
     });
 
     it('does not overlap target with snake on target spawning', () => {
-      const snakeX = 2;
-      const snakeY = 1;
+      const snakeX1 = 3;
+      const snakeY1 = 1;
+      const snakeX2 = 2;
+      const snakeY2 = 1;
       const nextX = 5;
       const nextY = 6;
       const { aNibbles, targetMock } = setup({
         snakeMockData: {
-          body: [new BoardObject(1, 1)],
+          body: [
+            new BoardObject(3, 1),
+            new BoardObject(2, 1),
+            new BoardObject(1, 1),
+          ],
           direction: Snake.DIRECTION_RIGHT
         },
-        targetMockData: { x: 2, y: 1 },
+        targetMockData: { x: 4, y: 1 },
       });
       const randomWithinStub = stubRandomWithin([
-        snakeX, snakeY, nextX, nextY
+        snakeX1, snakeY1,
+        snakeX2, snakeY2,
+        nextX, nextY,
       ]);
 
       aNibbles.start();
 
       expect(targetMock.x).toBe(nextX);
       expect(targetMock.y).toBe(nextY);
-      expect(randomWithinStub.callCount).toBe(4);
+      expect(randomWithinStub.callCount).toBe(6);
     });
 
     it('does not spawn target to same coordinate it was before', () => {
