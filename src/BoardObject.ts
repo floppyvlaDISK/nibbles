@@ -51,11 +51,11 @@ export default class BoardObject {
   }
 
   public coordinatesEqual(other: Coordinates) {
-    return this._coordinates.equals(other);
+    return this._coordinates.equal(other);
   }
 
   public coordinatesEqualPartially(other: Coordinates) {
-    return this._coordinates.equalsPartially(other);
+    return this._coordinates.equalPartially(other);
   }
 
   // FIXME: Should this be exposed?

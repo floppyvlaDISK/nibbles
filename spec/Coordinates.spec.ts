@@ -1,7 +1,7 @@
 import Coordinates from '../src/utils/Coordinates';
 
 describe('Coordinates', () => {
-  describe('equals', () => {
+  describe('equal()', () => {
     const testCases = [
       {
         title: 'true if both x and y match',
@@ -23,11 +23,11 @@ describe('Coordinates', () => {
       },
     ];
     testCases.forEach(t => it(t.title, () => {
-      expect(t.aCoordinates.equals(t.other)).toBe(t.expectedResult);
+      expect(t.aCoordinates.equal(t.other)).toBe(t.expectedResult);
     }));
   });
 
-  describe('equalsPartially', () => {
+  describe('equalPartially()', () => {
     const testCases = [
       {
         title: 'true if x matches',
@@ -49,7 +49,7 @@ describe('Coordinates', () => {
       }
     ];
     testCases.forEach(t => it(t.title, () => {
-      expect(t.aCoordinates.equalsPartially(t.other)).toBe(t.expectedResult);
+      expect(t.aCoordinates.equalPartially(t.other)).toBe(t.expectedResult);
     }));
   });
 });
