@@ -20,11 +20,13 @@ describe('CurrentScore', () => {
     expect(fn).toThrow();
   });
 
-  it('render() updates score element content', () => {
-    const dashboard = new CurrentScore(containerMock);
+  describe('render()', () => {
+    it('updates score element content', () => {
+      const dashboard = new CurrentScore(containerMock);
 
-    dashboard.render(10);
+      dashboard.render(10);
 
-    expect(dashboard.toString()).toBe('Score: 10');
+      expect(dashboard.toString()).toBe('Score: 10');
+    });
   });
 });

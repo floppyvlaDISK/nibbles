@@ -244,7 +244,7 @@ describe('Nibbles', () => {
       expect(pubSubMock.publish).toHaveBeenCalledWith('SnakeScoreChanged', 25);
     });
 
-    it('publishes "SnakeScoreChanged" event after snakes has died', () => {
+    it('publishes "SnakeScoreChanged" and "SnakeDied" events after snakes has died', () => {
       const { aNibbles, pubSubMock } = setup({
         snakeMockData: {
           body: [new BoardObject(5, 1)],
@@ -254,8 +254,10 @@ describe('Nibbles', () => {
 
       aNibbles.start();
 
-      expect(pubSubMock.publish).toHaveBeenCalledTimes(1);
-      expect(pubSubMock.publish).toHaveBeenCalledWith('SnakeScoreChanged', 10);
+      const publishSpy: jasmine.Spy = pubSubMock.publish as jasmine.Spy;
+      expect(publishSpy).toHaveBeenCalledTimes(2);
+      expect(publishSpy.calls.argsFor(0)).toEqual(['SnakeDied', 10]);
+      expect(publishSpy.calls.argsFor(1)).toEqual(['SnakeScoreChanged', 10]);
     });
   });
 

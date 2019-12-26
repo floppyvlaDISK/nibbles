@@ -1,7 +1,9 @@
 import jsdom from 'jsdom';
 import { Image } from './domMocks';
 
-const { window } = new jsdom.JSDOM('<!doctype html><html><body></body></html>');
+const { window } = new jsdom.JSDOM('<!doctype html><html><body></body></html>', {
+  url: 'http://localhost',
+});
 const globalAny: any = global;
 
 globalAny.window = window;

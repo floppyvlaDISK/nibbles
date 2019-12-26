@@ -101,6 +101,7 @@ export default class Nibbles {
   }
 
   private _handleSnakeDies() {
+    this._pubSub.publish('SnakeDied', this._snake.score);
     this._snake.die();
     this._reset();
     this._pubSub.publish('SnakeScoreChanged', this._snake.score);
