@@ -1,0 +1,24 @@
+html, body {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.flexbox {
+  display: flex;
+}
+
+.dashboard {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  font-weight: bold;
+  text-align: left;
+}
+.dashboard__section {
+  padding: 30px 50px;
+}
+.dashboard__separator {
+  height: 1px;
+  border-bottom: 1px solid pink;
+}

@@ -7,15 +7,20 @@
   <meta name="description" content="Nibbles game" />
   <link rel="icon" href="./static/nibbles-logo.png" />
   <title>Nibbles</title>
+  <link rel="stylesheet" href="./index.css" />
 </head>
 
 <body>
-  <main style="display: flex;">
+  <main class="flexbox">
     <section id="nibbles"></section>
-    <section id="score-board" style="padding: 30px; flex: 1; text-align: center;"></section>
+    <div class="dashboard">
+      <section id="score-board" class="dashboard__section"></section>
+      <div class="dashboard__separator" />
+      <section id="top-scores" class="dashboard__section"></section>
+    </div>
   </main>
   <script src="./src/index.ts"></script>
   <noscript>You need to enable JavaScript to run this app.</noscript>
-</body>
+</bod>
 
 </html>
