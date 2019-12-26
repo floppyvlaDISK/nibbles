@@ -1,9 +1,9 @@
-export default class ScoreDashboard {
+export default class CurrentScore {
   private _scoreElement: HTMLElement;
 
   constructor(container: HTMLElement | null) {
     if (!container) {
-      throw new TypeError('ScoreDashboard: container is not a valid HTMLElement');
+      throw new TypeError('CurrentScore: container is not a valid HTMLElement');
     }
     this._scoreElement = this._createScoreElement(container);
 

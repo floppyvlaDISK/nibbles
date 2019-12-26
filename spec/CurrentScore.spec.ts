@@ -1,7 +1,7 @@
-import ScoreDashboard from '../src/ScoreDashboard';
+import CurrentScore from '../src/CurrentScore';
 import { createContainerMock } from './support/helpers/componentMocks';
 
-describe('ScoreDashboard', () => {
+describe('CurrentScore', () => {
   let containerMock: jasmine.SpyObj<HTMLElement>;
 
   beforeEach(() => {
@@ -9,19 +9,19 @@ describe('ScoreDashboard', () => {
   });
 
   it('creates score element on instantiation', () => {
-    new ScoreDashboard(containerMock);
+    new CurrentScore(containerMock);
 
     expect(containerMock.appendChild).toHaveBeenCalledTimes(1);
   });
 
   it('throws if container is not defined', () => {
-    const fn = () => new ScoreDashboard(null);
+    const fn = () => new CurrentScore(null);
 
     expect(fn).toThrow();
   });
 
   it('render() updates score element content', () => {
-    const dashboard = new ScoreDashboard(containerMock);
+    const dashboard = new CurrentScore(containerMock);
 
     dashboard.render(10);
 

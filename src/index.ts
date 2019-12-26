@@ -1,11 +1,11 @@
 import GameController from './GameController';
-import ScoreDashboard from './ScoreDashboard';
+import CurrentScore from './CurrentScore';
 import setupNibbles from './setupNibbles';
 
 const { aNibbles, aSnake, aPubSub } = setupNibbles(document.getElementById('nibbles'));
-const aGameController = new GameController(aNibbles);
-const aScoreDashboard = new ScoreDashboard(document.getElementById('score-board'));
+const gameController = new GameController(aNibbles);
+const currentScore = new CurrentScore(document.getElementById('score-board'));
 
-aPubSub.subscribe('SnakeScoreChanged', aScoreDashboard.render);
-aScoreDashboard.render(aSnake.score);
-aGameController.exec();
+aPubSub.subscribe('SnakeScoreChanged', currentScore.render);
+currentScore.render(aSnake.score);
+gameController.exec();
