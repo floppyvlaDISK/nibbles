@@ -1,4 +1,5 @@
 import LocalStorageWrapper from './utils/LocalStorageWrapper';
+import removeDuplicatesFrom from './utils/removeDuplicatesFrom';
 
 export default class TopScoresList {
   private _listElement: HTMLElement;
@@ -51,7 +52,7 @@ export default class TopScoresList {
   private _addScore(value: number) {
     const result = (
       value
-        ? [...(new Set([...this._scores(), String(value)]))]
+        ? removeDuplicatesFrom([...this._scores(), String(value)])
         : this._scores()
     )
       .sort((a, b) => Number(b) - Number(a))
