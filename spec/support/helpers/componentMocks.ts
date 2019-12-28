@@ -28,20 +28,6 @@ export function createSnakeMock({
   return result;
 }
 
-export function createTargetMock({
-  x = 4,
-  y = 4,
-  value = 25,
-}: {
-  x?: number,
-  y?: number,
-  value?: number
-}) {
-  const result = new Target(x, y, CELL_WIDTH, CELL_HEIGHT, value);
-  spyOnProperty(result, 'value').and.callThrough();
-  return result;
-}
-
 export function createNibblesMock() {
   return jasmine.createSpyObj(
     'Nibbles',

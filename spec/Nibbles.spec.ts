@@ -20,7 +20,6 @@ import TargetRenderer from '../src/TargetRenderer';
 import {
   createRendererMock,
   createSnakeMock,
-  createTargetMock,
 } from './support/helpers/componentMocks';
 import {
   flushPromise,
@@ -78,7 +77,8 @@ describe('Nibbles', () => {
       const { aNibbles, snakeMock } = setup({
         snakeMockData: {
           body: [new BoardObject(1, 1)],
-          direction: Snake.DIRECTION_RIGHT },
+          direction: Snake.DIRECTION_RIGHT
+        },
         targetMockData: { x: 2, y: 1 },
       });
 
@@ -94,7 +94,7 @@ describe('Nibbles', () => {
     it('spawns target if it\'s eaten by snake', () => {
       const nextX = 3;
       const nextY = 4;
-      const { aNibbles, targetMock } = setup({
+      const { aNibbles, target } = setup({
         snakeMockData: {
           body: [new BoardObject(1, 1)],
           direction: Snake.DIRECTION_RIGHT
@@ -105,8 +105,8 @@ describe('Nibbles', () => {
 
       aNibbles.start();
 
-      expect(targetMock.x).toBe(nextX);
-      expect(targetMock.y).toBe(nextY);
+      expect(target.x).toBe(nextX);
+      expect(target.y).toBe(nextY);
       expect(randomWithinStub.callCount).toBe(2);
     });
 
@@ -135,7 +135,7 @@ describe('Nibbles', () => {
       const snakeY2 = 1;
       const nextX = 5;
       const nextY = 6;
-      const { aNibbles, targetMock } = setup({
+      const { aNibbles, target } = setup({
         snakeMockData: {
           body: [
             new BoardObject(3, 1),
@@ -154,8 +154,8 @@ describe('Nibbles', () => {
 
       aNibbles.start();
 
-      expect(targetMock.x).toBe(nextX);
-      expect(targetMock.y).toBe(nextY);
+      expect(target.x).toBe(nextX);
+      expect(target.y).toBe(nextY);
       expect(randomWithinStub.callCount).toBe(6);
     });
 
@@ -164,7 +164,7 @@ describe('Nibbles', () => {
       const targetY = 1;
       const nextX = 5;
       const nextY = 6;
-      const { aNibbles, targetMock } = setup({
+      const { aNibbles, target } = setup({
         snakeMockData: {
           body: [new BoardObject(1, 1)],
           direction: Snake.DIRECTION_RIGHT
@@ -177,8 +177,8 @@ describe('Nibbles', () => {
 
       aNibbles.start();
 
-      expect(targetMock.x).toBe(nextX);
-      expect(targetMock.y).toBe(nextY);
+      expect(target.x).toBe(nextX);
+      expect(target.y).toBe(nextY);
       expect(randomWithinStub.callCount).toBe(4);
     });
 
@@ -289,16 +289,14 @@ describe('Nibbles', () => {
   } = {}) {
     const rendererMock = createRendererMock();
     const snakeMock = createSnakeMock(snakeMockData);
-    const targetMock = createTargetMock(targetMockData);
-
+    const target = createTarget(targetMockData);
     const pubSub = new PubSub();
     const pubSubPublishSpy = spyOn(pubSub, 'publish').and.callThrough();
-
     const aNibbles = new Nibbles(
       rendererMock,
       new BoardColoredObject(0, 0, B_W, C_H, 'pink'),
       snakeMock,
-      targetMock,
+      target,
       [
         new BoardColoredObject(0, 0, B_W, C_H, 'pink'),
         new BoardColoredObject(0, LAST_CELL_INDEX_BY_HEIGHT, B_W, C_H, 'pink'),
@@ -306,18 +304,32 @@ describe('Nibbles', () => {
         new BoardColoredObject(0, 0, C_W, B_H, 'pink'),
       ],
       pubSub,
-      new TargetRenderer(rendererMock, targetMock),
+      new TargetRenderer(rendererMock, target),
       new SnakeRenderer(rendererMock, snakeMock),
     );
 
     return {
       rendererMock,
       snakeMock,
-      targetMock,
+      target,
       pubSub,
       pubSubPublishSpy,
       aNibbles,
     };
+
+
+    function createTarget({
+      x = 4,
+      y = 4,
+      value = 25,
+    }: {
+      x?: number,
+      y?: number,
+      value?: number
+    }) {
+      const result = new Target(x, y, C_W, C_H, value);
+      return result;
+    }
   }
   function testRenderCalls(
     rendererMock: jasmine.SpyObj<Renderer>,
