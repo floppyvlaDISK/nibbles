@@ -1,5 +1,6 @@
 import TopScoresList from '../src/TopScoresList';
 import LocalStorageWrapper from '../src/utils/LocalStorageWrapper';
+import { createContainer } from './support/helpers/testingUtils';
 
 describe('TopScoresList', () => {
   let container: HTMLElement;
@@ -11,7 +12,7 @@ describe('TopScoresList', () => {
   it('creates list element on instantiation', () => {
     new TopScoresList(container, new LocalStorageWrapper());
 
-    expect(container.childNodes.length).toBeGreaterThan(0);
+    expect(container.children.length).toBeGreaterThan(0);
   });
 
   it('throws if container is not defined', () => {
@@ -78,10 +79,4 @@ describe('TopScoresList', () => {
       expect(setSpy.calls.argsFor(0)).toEqual(['topScores', t.expectedResult]);
     }));
   });
-
-  function createContainer() {
-    const div = document.createElement('div');
-    document.body.appendChild(div);
-    return div;
-  }
 });

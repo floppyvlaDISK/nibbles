@@ -10,12 +10,8 @@ export default class CurrentScore {
     this.render = this.render.bind(this);
   }
 
-  public toString() {
-    return this._scoreElement.textContent;
-  }
-
   public render(value: number) {
-    this._scoreElement.textContent = `Score: ${value}`;
+    this._scoreElement.textContent = `Current score: ${value}`;
   }
 
   private _createScoreElement(container: HTMLElement) {

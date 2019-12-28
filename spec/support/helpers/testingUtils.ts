@@ -11,3 +11,9 @@ export function fireKeybordEvent(eventInitDict = {}) {
   const event = new KeyboardEvent('keydown', eventInitDict);
   document.body.dispatchEvent(event);
 }
+
+export function createContainer() {
+  const div = document.createElement('div');
+  document.body.appendChild(div);
+  return div;
+}

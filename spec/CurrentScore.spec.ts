@@ -1,17 +1,17 @@
 import CurrentScore from '../src/CurrentScore';
-import { createContainerMock } from './support/helpers/componentMocks';
+import { createContainer } from './support/helpers/testingUtils';
 
 describe('CurrentScore', () => {
-  let containerMock: jasmine.SpyObj<HTMLElement>;
+  let container: HTMLElement;
 
   beforeEach(() => {
-    containerMock = createContainerMock();
+    container = createContainer();
   });
 
   it('creates score element on instantiation', () => {
-    new CurrentScore(containerMock);
+    new CurrentScore(container);
 
-    expect(containerMock.appendChild).toHaveBeenCalledTimes(1);
+    expect(container.children.length).toBeGreaterThan(0);
   });
 
   it('throws if container is not defined', () => {
@@ -22,11 +22,11 @@ describe('CurrentScore', () => {
 
   describe('render()', () => {
     it('updates score element content', () => {
-      const dashboard = new CurrentScore(containerMock);
+      const currentScore = new CurrentScore(container);
 
-      dashboard.render(10);
+      currentScore.render(10);
 
-      expect(dashboard.toString()).toBe('Score: 10');
+      expect(container.textContent).toBe('Current score: 10');
     });
   });
 });
