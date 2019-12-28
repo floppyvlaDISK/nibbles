@@ -11,12 +11,6 @@ export function createRendererMock() {
   );
 }
 
-export function createPubSubMock() {
-  const result = new PubSub();
-  spyOn(result, 'publish');
-  return result;
-}
-
 export function createSnakeMock({
   body = [new BoardObject(1, 1)],
   direction = Snake.DIRECTION_RIGHT,

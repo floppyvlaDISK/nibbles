@@ -19,7 +19,6 @@ import PubSub from '../src/utils/PubSub';
 import TargetRenderer from '../src/TargetRenderer';
 import {
   createRendererMock,
-  createPubSubMock,
   createSnakeMock,
   createTargetMock,
 } from './support/helpers/componentMocks';
@@ -230,7 +229,7 @@ describe('Nibbles', () => {
     });
 
     it('publishes "SnakeScoreChanged" event after snake has eaten the target', () => {
-      const { aNibbles, pubSubMock } = setup({
+      const { aNibbles, pubSubPublishSpy } = setup({
         snakeMockData: {
           body: [new BoardObject(1, 1)],
           direction: Snake.DIRECTION_RIGHT, score: 0
@@ -240,12 +239,12 @@ describe('Nibbles', () => {
 
       aNibbles.start();
 
-      expect(pubSubMock.publish).toHaveBeenCalledTimes(1);
-      expect(pubSubMock.publish).toHaveBeenCalledWith('SnakeScoreChanged', 25);
+      expect(pubSubPublishSpy).toHaveBeenCalledTimes(1);
+      expect(pubSubPublishSpy).toHaveBeenCalledWith('SnakeScoreChanged', 25);
     });
 
     it('publishes "SnakeScoreChanged" and "SnakeDied" events after snakes has died', () => {
-      const { aNibbles, pubSubMock } = setup({
+      const { aNibbles, pubSubPublishSpy } = setup({
         snakeMockData: {
           body: [new BoardObject(5, 1)],
           direction: Snake.DIRECTION_UP, score: 10
@@ -254,10 +253,9 @@ describe('Nibbles', () => {
 
       aNibbles.start();
 
-      const publishSpy: jasmine.Spy = pubSubMock.publish as jasmine.Spy;
-      expect(publishSpy).toHaveBeenCalledTimes(2);
-      expect(publishSpy.calls.argsFor(0)).toEqual(['SnakeDied', 10]);
-      expect(publishSpy.calls.argsFor(1)).toEqual(['SnakeScoreChanged', 10]);
+      expect(pubSubPublishSpy).toHaveBeenCalledTimes(2);
+      expect(pubSubPublishSpy.calls.argsFor(0)).toEqual(['SnakeDied', 10]);
+      expect(pubSubPublishSpy.calls.argsFor(1)).toEqual(['SnakeScoreChanged', 10]);
     });
   });
 
@@ -292,27 +290,11 @@ describe('Nibbles', () => {
     const rendererMock = createRendererMock();
     const snakeMock = createSnakeMock(snakeMockData);
     const targetMock = createTargetMock(targetMockData);
-    const pubSubMock = createPubSubMock();
-    return {
-      rendererMock,
-      snakeMock,
-      targetMock,
-      pubSubMock,
-      aNibbles: setupNibbles(
-        rendererMock,
-        snakeMock,
-        targetMock,
-        pubSubMock
-      ),
-    };
-  }
-  function setupNibbles(
-    rendererMock: jasmine.SpyObj<Renderer>,
-    snakeMock: Snake,
-    targetMock: Target,
-    pubSubMock: PubSub,
-  ) {
-    return new Nibbles(
+
+    const pubSub = new PubSub();
+    const pubSubPublishSpy = spyOn(pubSub, 'publish').and.callThrough();
+
+    const aNibbles = new Nibbles(
       rendererMock,
       new BoardColoredObject(0, 0, B_W, C_H, 'pink'),
       snakeMock,
@@ -323,10 +305,19 @@ describe('Nibbles', () => {
         new BoardColoredObject(LAST_CELL_INDEX_BY_WIDTH, 0, C_W, B_H, 'pink'),
         new BoardColoredObject(0, 0, C_W, B_H, 'pink'),
       ],
-      pubSubMock,
+      pubSub,
       new TargetRenderer(rendererMock, targetMock),
       new SnakeRenderer(rendererMock, snakeMock),
     );
+
+    return {
+      rendererMock,
+      snakeMock,
+      targetMock,
+      pubSub,
+      pubSubPublishSpy,
+      aNibbles,
+    };
   }
   function testRenderCalls(
     rendererMock: jasmine.SpyObj<Renderer>,
