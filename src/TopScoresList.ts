@@ -20,13 +20,20 @@ export default class TopScoresList {
 
   public render() {
     this._listElement.innerHTML = this._scores().length
-      ? this._renderScoresList()
+      ? `
+        ${this._renderTitle()}
+        ${this._renderScoresList()}
+      `.trim()
       : this._renderNoItemsMessage();
   }
 
   public updateTopScores(value: number) {
     this._addScore(value);
     this.render();
+  }
+
+  private _renderTitle() {
+    return '<p>Top scores</p>';
   }
 
   private _renderScoresList() {
