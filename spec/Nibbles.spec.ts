@@ -17,10 +17,8 @@ import {
 } from '../src/constants/common';
 import PubSub from '../src/utils/PubSub';
 import TargetRenderer from '../src/TargetRenderer';
-import {
-  createRendererMock,
-  createSnakeMock,
-} from './support/helpers/componentMocks';
+import { createRendererMock } from './support/helpers/componentMocks';
+import { createSnake  } from './support/helpers/testingUtils';
 import {
   flushPromise,
   loadSnakeSprite,
@@ -60,21 +58,21 @@ describe('Nibbles', () => {
     });
 
     it('moves the snake', () => {
-      const { aNibbles, snakeMock } = setup();
+      const { aNibbles, snakeMoveSpy } = setup();
 
-      expect(snakeMock.move).toHaveBeenCalledTimes(0);
+      expect(snakeMoveSpy).toHaveBeenCalledTimes(0);
 
       aNibbles.start();
 
-      expect(snakeMock.move).toHaveBeenCalledTimes(1);
+      expect(snakeMoveSpy).toHaveBeenCalledTimes(1);
 
       jasmine.clock().tick(Nibbles.UPDATE_FREQUENCY_MS);
 
-      expect(snakeMock.move).toHaveBeenCalledTimes(2);
+      expect(snakeMoveSpy).toHaveBeenCalledTimes(2);
     });
 
     it('makes the snake eat the target if their positions on board intersect after snake move', () => {
-      const { aNibbles, snakeMock } = setup({
+      const { aNibbles, snakeCanEatSpy, snakeEatSpy } = setup({
         snakeMockData: {
           body: [new BoardObject(1, 1)],
           direction: Snake.DIRECTION_RIGHT
@@ -82,13 +80,13 @@ describe('Nibbles', () => {
         targetMockData: { x: 2, y: 1 },
       });
 
-      expect(snakeMock.canEat).toHaveBeenCalledTimes(0);
-      expect(snakeMock.eat).toHaveBeenCalledTimes(0);
+      expect(snakeCanEatSpy).toHaveBeenCalledTimes(0);
+      expect(snakeEatSpy).toHaveBeenCalledTimes(0);
 
       aNibbles.start();
 
-      expect(snakeMock.canEat).toHaveBeenCalledTimes(1);
-      expect(snakeMock.eat).toHaveBeenCalledTimes(1);
+      expect(snakeCanEatSpy).toHaveBeenCalledTimes(1);
+      expect(snakeEatSpy).toHaveBeenCalledTimes(1);
     });
 
     it('spawns target if it\'s eaten by snake', () => {
@@ -183,7 +181,7 @@ describe('Nibbles', () => {
     });
 
     it('checks if snake should die because of collision with the wall', () => {
-      const { aNibbles, snakeMock } = setup({
+      const { aNibbles, snakeDieSpy } = setup({
         snakeMockData: {
           body: [new BoardObject(5, 1)],
           direction: Snake.DIRECTION_UP
@@ -192,11 +190,11 @@ describe('Nibbles', () => {
 
       aNibbles.start();
 
-      expect(snakeMock.die).toHaveBeenCalledTimes(1);
+      expect(snakeDieSpy).toHaveBeenCalledTimes(1);
     });
 
     it('checks if snake should die because of eating itself', () => {
-      const { aNibbles, snakeMock } = setup({
+      const { aNibbles, snakeDieSpy } = setup({
         snakeMockData: {
           body: [
             new BoardObject(3, 3),
@@ -211,11 +209,11 @@ describe('Nibbles', () => {
 
       aNibbles.start();
 
-      expect(snakeMock.die).toHaveBeenCalledTimes(1);
+      expect(snakeDieSpy).toHaveBeenCalledTimes(1);
     });
 
     it('cancels following updates if snake has died', () => {
-      const { aNibbles, snakeMock } = setup({
+      const { aNibbles, snakeMoveSpy  } = setup({
         snakeMockData: {
           body: [new BoardObject(5, 1)],
           direction: Snake.DIRECTION_UP
@@ -225,7 +223,7 @@ describe('Nibbles', () => {
       aNibbles.start();
       jasmine.clock().tick(Nibbles.UPDATE_FREQUENCY_MS * 5);
 
-      expect(snakeMock.move).toHaveBeenCalledTimes(2); // FIXME: Why not 1?
+      expect(snakeMoveSpy).toHaveBeenCalledTimes(2); // FIXME: Why not 1?
     });
 
     it('publishes "SnakeScoreChanged" event after snake has eaten the target', () => {
@@ -261,20 +259,20 @@ describe('Nibbles', () => {
 
   describe('setSnakeDirectionFromKeyCode()', () => {
     it('queues snake direction change to be set when performing update', () => {
-      const { aNibbles, snakeMock } = setup({
+      const { aNibbles, snake } = setup({
         snakeMockData: {
           body: [new BoardObject(5, 5)],
           direction: Snake.DIRECTION_RIGHT
         }
       });
 
-      expect(snakeMock.direction).toBe(Snake.DIRECTION_RIGHT);
+      expect(snake.direction).toBe(Snake.DIRECTION_RIGHT);
 
       aNibbles.setSnakeDirectionFromKeyCode(ARROW_UP);
       aNibbles.start();
       jasmine.clock().tick(Nibbles.UPDATE_FREQUENCY_MS);
 
-      expect(snakeMock.direction).toBe(Snake.DIRECTION_UP);
+      expect(snake.direction).toBe(Snake.DIRECTION_UP);
     });
   });
 
@@ -288,14 +286,22 @@ describe('Nibbles', () => {
     targetMockData = {},
   } = {}) {
     const rendererMock = createRendererMock();
-    const snakeMock = createSnakeMock(snakeMockData);
+
+    const snake = createSnake(snakeMockData);
+    const snakeMoveSpy = spyOn(snake, 'move').and.callThrough();
+    const snakeDieSpy = spyOn(snake, 'die').and.callThrough();
+    const snakeEatSpy = spyOn(snake, 'eat').and.callThrough();
+    const snakeCanEatSpy = spyOn(snake, 'canEat').and.callThrough();
+
     const target = createTarget(targetMockData);
+
     const pubSub = new PubSub();
     const pubSubPublishSpy = spyOn(pubSub, 'publish').and.callThrough();
+
     const aNibbles = new Nibbles(
       rendererMock,
       new BoardColoredObject(0, 0, B_W, C_H, 'pink'),
-      snakeMock,
+      snake,
       target,
       [
         new BoardColoredObject(0, 0, B_W, C_H, 'pink'),
@@ -305,18 +311,21 @@ describe('Nibbles', () => {
       ],
       pubSub,
       new TargetRenderer(rendererMock, target),
-      new SnakeRenderer(rendererMock, snakeMock),
+      new SnakeRenderer(rendererMock, snake),
     );
 
     return {
       rendererMock,
-      snakeMock,
+      snake,
+      snakeMoveSpy,
+      snakeEatSpy,
+      snakeCanEatSpy,
+      snakeDieSpy,
       target,
       pubSub,
       pubSubPublishSpy,
       aNibbles,
     };
-
 
     function createTarget({
       x = 4,

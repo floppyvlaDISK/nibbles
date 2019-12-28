@@ -2,10 +2,9 @@ import SnakeRenderer from '../src/SnakeRenderer';
 import {
   flushPromise,
   loadSnakeSprite,
+  createSnake,
 } from './support/helpers/testingUtils';
-import {
-  createRendererMock, createSnakeMock,
-} from './support/helpers/componentMocks';
+import { createRendererMock } from './support/helpers/componentMocks';
 import Renderer from '../src/Renderer';
 import Snake from '../src/Snake';
 import BoardObject from '../src/BoardObject';
@@ -325,7 +324,7 @@ describe('SnakeRenderer', () => {
     snakeData = {},
   } = {}) {
     const rendererMock: jasmine.SpyObj<Renderer> = createRendererMock();
-    const aSnakeRenderer = new SnakeRenderer(rendererMock, createSnakeMock(snakeData));
+    const aSnakeRenderer = new SnakeRenderer(rendererMock, createSnake(snakeData));
     return {
       aSnakeRenderer,
       rendererMock,
