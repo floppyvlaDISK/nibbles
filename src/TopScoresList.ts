@@ -49,7 +49,11 @@ export default class TopScoresList {
   }
 
   private _addScore(value: number) {
-    const result = [...(new Set([...this._scores(), String(value)]))]
+    const result = (
+      value
+        ? [...(new Set([...this._scores(), String(value)]))]
+        : this._scores()
+    )
       .sort((a, b) => Number(b) - Number(a))
       .slice(0, TopScoresList.MAX_LEN);
     this._storage.set('topScores', LocalStorageWrapper.stringify(result));

@@ -23,8 +23,7 @@ describe('TopScoresList', () => {
 
   describe('render()', () => {
     it('renders "no items message" if there are 0 scores', () => {
-      const localStorageWrapper = new LocalStorageWrapper();
-      spyOn(localStorageWrapper, 'get').and.returnValue(null);
+      spyOn(LocalStorageWrapper.prototype, 'get').and.returnValue(null);
       const topScoresList = new TopScoresList(container, new LocalStorageWrapper());
 
       topScoresList.render();
@@ -50,23 +49,29 @@ describe('TopScoresList', () => {
   describe('updateTopScores()', () => {
     const testCases = [
       {
-        title: 'changes top 5 values if new value is amount top 5',
+        title: 'changes top 5 values if new value is among top 5',
         score: JSON.stringify(['10', '7', '6', '5', '3']),
         value: 8,
         expectedResult: JSON.stringify(['10', '8', '7', '6', '5']),
       },
       {
-        title: 'does not change top 5 values if new value is not amount top 5',
+        title: 'does not change top 5 values if new value is not among top 5',
         score: JSON.stringify(['10', '7', '6', '5', '3']),
         value: 2,
         expectedResult: JSON.stringify(['10', '7', '6', '5', '3']),
       },
       {
-        title: 'removes duplicates',
+        title: 'does not allow duplicates',
         score: JSON.stringify(['10', '7', '6', '5', '3']),
         value: 10,
         expectedResult: JSON.stringify(['10', '7', '6', '5', '3']),
       },
+      {
+        title: 'does not allow zero value',
+        score: JSON.stringify(['10']),
+        value: 0,
+        expectedResult: JSON.stringify(['10']),
+      }
     ];
     testCases.forEach(t => it(t.title, () => {
       spyOn(LocalStorageWrapper.prototype, 'get').and.returnValue(t.score);
